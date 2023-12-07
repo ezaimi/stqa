@@ -1,0 +1,3 @@
+Title: "Don Quixote", Quantities: 1, OriginalPrice 6.59, Price: 6.59
+
+Total price: 6.59 Date: Wed Dec 06 20:43:17 CET 2023
