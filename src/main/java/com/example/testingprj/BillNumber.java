@@ -11,21 +11,10 @@ public abstract class BillNumber {
 	public static double  totalIncome=0;
 	public static int totalBooksSold=0;
 
-	private static final String STOCK_FILE_PATH = "Books.bin";
+	public static String STOCK_FILE_PATH = "Books.bin";
 	//3 - shkruan 10 librat hard coded plus librat qe shton useri ne file
 	public static void updateBooks(ArrayList<Book> arr) throws IOException {
-//
-////		FileOutputStream out = new FileOutputStream("Books.txt");
-////		ObjectOutputStream objout = new ObjectOutputStream(out);
-////
-////		for (int i=0;i<arr.size();i++) {
-////			objout.writeObject(arr.get(i));
-////		}
-////
-////		out.close();
-////		objout.close();
-//
-//
+/
 		// Read existing books from the file
 		ArrayList<Book> existingBooks = getStockBooks();
 
@@ -256,10 +245,23 @@ public abstract class BillNumber {
 //		BillNumber.updateBooks(stockbooks);
 //	}
 	//it saves the books to a file when the user adds a book
+//	public static void addBookToStock(Book book) {
+//		ArrayList<Book> stockBooks = getStockBooks();
+//		stockBooks.add(book);
+//		try (ObjectOutputStream objout = new ObjectOutputStream(new FileOutputStream(STOCK_FILE_PATH))) {
+//			for (Book b : stockBooks) {
+//				objout.writeObject(b);
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	public static void addBookToStock(Book book) {
 		ArrayList<Book> stockBooks = getStockBooks();
 		stockBooks.add(book);
 		try (ObjectOutputStream objout = new ObjectOutputStream(new FileOutputStream(STOCK_FILE_PATH))) {
+			// Clear the file before writing the updated list of books
+			objout.reset();
 			for (Book b : stockBooks) {
 				objout.writeObject(b);
 			}
@@ -267,7 +269,8 @@ public abstract class BillNumber {
 			e.printStackTrace();
 		}
 	}
-	
+
+
 	public static String showStringStock() {
 		
 		String ans="Currently in Stock:\n";

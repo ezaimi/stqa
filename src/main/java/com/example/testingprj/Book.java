@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class Book implements Serializable{
 
@@ -446,5 +447,16 @@ public int getTotalBooksBought() {
 				+ ", sellingPrice=" + sellingPrice
 				+ ", originalPrice=" + originalPrice + ", author=" + author + ", stock=" + stock + "]";
 	}
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Book book = (Book) obj;
+		return Objects.equals(ISBN, book.ISBN);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ISBN);
+	}
 }
