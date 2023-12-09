@@ -10,49 +10,61 @@ public abstract class BillNumber {
 	public static int billNumber=0;
 	public static double  totalIncome=0;
 	public static int totalBooksSold=0;
-	
-	
+
+	private static String STOCK_FILE_PATH = "Books.bin";
+	//3 - shkruan 10 librat hard coded plus librat qe shton useri ne file
 	public static void updateBooks(ArrayList<Book> arr) throws IOException {
-		
-		FileOutputStream out = new FileOutputStream("Books.txt");
+//
+////		FileOutputStream out = new FileOutputStream("Books.txt");
+////		ObjectOutputStream objout = new ObjectOutputStream(out);
+////
+////		for (int i=0;i<arr.size();i++) {
+////			objout.writeObject(arr.get(i));
+////		}
+////
+////		out.close();
+////		objout.close();
+//
+//
+		// Read existing books from the file
+		ArrayList<Book> existingBooks = getStockBooks();
+
+		// Add books with changes to the existing list
+		existingBooks.addAll(arr);
+
+		// Save the updated list to the file
+		FileOutputStream out = new FileOutputStream("Books.bin");
 		ObjectOutputStream objout = new ObjectOutputStream(out);
-		
-		for (int i=0;i<arr.size();i++) {
-			objout.writeObject(arr.get(i));
+
+		for (Book book : existingBooks) {
+			objout.writeObject(book);
 		}
-		
+
 		out.close();
 		objout.close();
-		
+//
 	}
-	
-	public static ArrayList<Book> getStockBooks(){
-		
-		ArrayList<Book> stockBooks = new ArrayList<>();
-		try {
-			FileInputStream fis = new FileInputStream("Books.txt");
-		    ObjectInputStream objis = new ObjectInputStream(fis);
+	//2 - i ruan librat e file ne nje array
 
+	//it reads books from Books.bin
+	public static ArrayList<Book> getStockBooks(){
+		ArrayList<Book> stockBooks = new ArrayList<>();
+		try (ObjectInputStream objis = new ObjectInputStream(new FileInputStream(STOCK_FILE_PATH))) {
 			while (true) {
 				try {
 					stockBooks.add((Book) objis.readObject());
 				} catch (EOFException e) {
-					// End of file reached, exit the loop
 					break;
 				}
 			}
-		    
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-		catch(IOException i) {
-			i.printStackTrace();
-		}
-		catch(ClassNotFoundException c) {
-			c.printStackTrace();
-		}
-
 		return stockBooks;
+
 	}
-	
+
+
 //	public static void setInitialStock(String path) throws IOException {
 //		FileOutputStream out = new FileOutputStream("Books.txt");
 //		ObjectOutputStream objout = new ObjectOutputStream(out);
@@ -94,59 +106,82 @@ public abstract class BillNumber {
 //	}
 
 
-	public static ArrayList<Book> getInitialStock(){
+//	public static ArrayList<Book> getInitialStock(){
+//
+//		ArrayList<Book> bookArrayList = new ArrayList<>();
+//
+//		Book book = new Book("0096184570112","In Search of Lost Time","Modernist","Ingram Content Group, Inc",65.00,73.96,"Marcel Proust",5);
+//		bookArrayList.add(book);
+//
+//		book = new Book("4647500268094","Ulysses","Fiction","Baker & Taylor",15.00,18.00,"James Joyce",2);
+//		bookArrayList.add(book);
+//
+//		book = new Book("0629778828041","Don Quixote","Novel","BCH Fulfillment & Distribution",5.00,6.59,"Miguel de Cervantes",10);
+//		bookArrayList.add(book);
+//
+//		book = new Book("3655736671389","One Hundred Years of Solitude","Magic realism","Ingram Content Group, Inc",13.00,16.99,"Gabriel Garcia Marquez",3);
+//		bookArrayList.add(book);
+//
+//		book = new Book("3115666367951","The Great Gatsby","Tragedy","Ingram Content Group, Inc",10.00,11.95,"F. Scott Fitzgerald",7);
+//		bookArrayList.add(book);
+//
+//		book = new Book("9515267203718","Moby Dick","Adventure fiction","Cardinal Publishers Group",7.00,10.00,"Herman Melville",5);
+//		bookArrayList.add(book);
+//
+//		book = new Book("0725587872636","War and Peace","Historical novel","Bella Distribution",17.00,19.99,"Leo Tolstoy",2);
+//		bookArrayList.add(book);
+//
+//		book = new Book("0664687443145","Hamlet","Tragedy","Publishers Group West",12.00,14.99,"William Shakespeare",12);
+//		bookArrayList.add(book);
+//
+//		book = new Book("8047862766153","The Odyssey","Epic","Publishers Group West",15.00,22.99,"Homer",4);
+//		bookArrayList.add(book);
+//
+//		book = new Book("4535777140780","Lolita","Novel","Ingram Content Group, Inc",10.00,14.40,"Vladimir Nabokov",9);
+//		bookArrayList.add(book);
+//
+//		return bookArrayList;
+//	}
 
-		ArrayList<Book> bookArrayList = new ArrayList<>();
-
-		Book book = new Book("0096184570112","In Search of Lost Time","Modernist","Ingram Content Group, Inc",65.00,73.96,"Marcel Proust",5);
-		bookArrayList.add(book);
-
-		book = new Book("4647500268094","Ulysses","Fiction","Baker & Taylor",15.00,18.00,"James Joyce",2);
-		bookArrayList.add(book);
-
-		book = new Book("0629778828041","Don Quixote","Novel","BCH Fulfillment & Distribution",5.00,6.59,"Miguel de Cervantes",10);
-		bookArrayList.add(book);
-
-		book = new Book("3655736671389","One Hundred Years of Solitude","Magic realism","Ingram Content Group, Inc",13.00,16.99,"Gabriel Garcia Marquez",3);
-		bookArrayList.add(book);
-
-		book = new Book("3115666367951","The Great Gatsby","Tragedy","Ingram Content Group, Inc",10.00,11.95,"F. Scott Fitzgerald",7);
-		bookArrayList.add(book);
-
-		book = new Book("9515267203718","Moby Dick","Adventure fiction","Cardinal Publishers Group",7.00,10.00,"Herman Melville",5);
-		bookArrayList.add(book);
-
-		book = new Book("0725587872636","War and Peace","Historical novel","Bella Distribution",17.00,19.99,"Leo Tolstoy",2);
-		bookArrayList.add(book);
-
-		book = new Book("0664687443145","Hamlet","Tragedy","Publishers Group West",12.00,14.99,"William Shakespeare",12);
-		bookArrayList.add(book);
-
-		book = new Book("8047862766153","The Odyssey","Epic","Publishers Group West",15.00,22.99,"Homer",4);
-		bookArrayList.add(book);
-
-		book = new Book("4535777140780","Lolita","Novel","Ingram Content Group, Inc",10.00,14.40,"Vladimir Nabokov",9);
-		bookArrayList.add(book);
-
-		return bookArrayList;
+	public static ArrayList<Book> getInitialStock() {
+		return getStockBooks(); // Retrieve the stock from the file
 	}
 
-	public static void setInitialStock(String path) throws IOException {
-		FileOutputStream out = new FileOutputStream(path);
-		ObjectOutputStream objout = new ObjectOutputStream(out);
 
-		for (Book book : BillNumber.getInitialStock()){
-			objout.writeObject(book);
-		}
 
-		objout.close();
-		out.close();
-	}
-	
+	//1 - initially the 10 book that are hard-coded are added to the Book File
+//	public static void setInitialStock(String path) throws IOException {
+////		FileOutputStream out = new FileOutputStream(path);
+////		ObjectOutputStream objout = new ObjectOutputStream(out);
+////
+////		for (Book book : BillNumber.getInitialStock()){
+////			objout.writeObject(book);
+////		}
+////
+////		objout.close();
+////		out.close();
+//
+//		File file = new File(path);
+//		if (!file.exists() || file.length() == 0) {
+//			// Create the file only if it doesn't exist or is empty
+//			FileOutputStream out = new FileOutputStream(path);
+//			ObjectOutputStream objout = new ObjectOutputStream(out);
+//
+//			// Hard-coded initial stock
+//			ArrayList<Book> initialStock = getInitialStock();
+//			for (Book book : initialStock) {
+//				objout.writeObject(book);
+//			}
+//
+//			objout.close();
+//			out.close();
+//		}
+//	}
+
 	public static void showStock() {
-		
+
 		try {
-			FileInputStream fis = new FileInputStream("Books.txt");
+			FileInputStream fis = new FileInputStream("Books.bin");
 		    ObjectInputStream objis = new ObjectInputStream(fis);
 
 			while (true) {
@@ -169,56 +204,68 @@ public abstract class BillNumber {
 	}
 
 	public static ArrayList<String> getCategories() {
-		
+
 		ArrayList<String> ans = new ArrayList<>();
-		
+
 		ArrayList<Book> books = BillNumber.getStockBooks();
-		
+
 		for (int i=0;i<books.size();i++) {
 			ans.add( books.get(i).getCategory() );
 		}
-		
-		
+
+
 		return removeDuplicates(ans);
-		
+
 	}
-	
+
 	public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list)
     {
-  
+
         ArrayList<T> newList = new ArrayList<T>();
-  
+
         for (T element : list) {
-  
+
             if (!newList.contains(element)) {
-  
+
                 newList.add(element);
             }
         }
-  
+
         return newList;
     }
-	
+
 	public static ArrayList<Book> getBookFromCategory(String category){
-		
+
 		ArrayList<Book> ans = new ArrayList<>();
 		ArrayList<Book> stockbooks = BillNumber.getStockBooks();
-		
+
 		for (int i=0; i<stockbooks.size(); i++) {
 			if (stockbooks.get(i).getCategory().equals(category)) {
 				ans.add(stockbooks.get(i));
 			}
 		}
-		
+
 		return ans;
-		
+
 	}
-	
-	public static void addBookToStock(Book book) throws IOException {
-		
-		ArrayList<Book> stockbooks = BillNumber.getStockBooks();
-		stockbooks.add(book);
-		BillNumber.updateBooks(stockbooks);
+
+//	public static void addBookToStock(Book book) throws IOException {
+//
+//		ArrayList<Book> stockbooks = BillNumber.getStockBooks();
+//		stockbooks.add(book);
+//		BillNumber.updateBooks(stockbooks);
+//	}
+	//it saves the books to a file when the user adds a book
+	public static void addBookToStock(Book book) {
+		ArrayList<Book> stockBooks = getStockBooks();
+		stockBooks.add(book);
+		try (ObjectOutputStream objout = new ObjectOutputStream(new FileOutputStream(STOCK_FILE_PATH))) {
+			for (Book b : stockBooks) {
+				objout.writeObject(b);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String showStringStock() {
