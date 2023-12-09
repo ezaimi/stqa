@@ -45,12 +45,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainFx extends Application implements EventHandler<ActionEvent> {
-	
+
 	//entry buttons
 	Button bttLibrarian = new Button("Librarian");
 	Button bttManager = new Button("Manager");
 	Button bttAdministrator = new Button("Administrator");
-	
+
 	//shared
 	String usernamePage;
 	TextField username = new TextField();
@@ -70,7 +70,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 	ArrayList<Integer> quantitiesSold = new ArrayList<>();
 	ArrayList<String> titlesBought = new ArrayList<>();
 	ArrayList<Integer> quantitiesBought = new ArrayList<>();
-    
+
 	//librarian variables
 	Librarian librarian;
 	Date date;
@@ -86,7 +86,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 	ArrayList<Book> books = new ArrayList<>();
 	ArrayList<Integer> bookQuantities = new ArrayList<>();
 	ArrayList<String> booksSoldTitles = new ArrayList<>();
-	
+
 	//manager variables
 	Manager manager;
 	TextField magLoginWarning = new TextField();
@@ -127,25 +127,25 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 	TextField totalAmountOfMoneyMadeInYear = new TextField();
 	Text textTotalMoneyYear = new Text("Money made in a year");
 	ArrayList<String> booksBoughtTitles = new ArrayList<>();
-	
+
 	//administrator variables
 	Administrator administrator;
 	TextField admLoginWarning = new TextField();
 	Button bttManageManager = new Button("Manage Managers");
 	Button bttManageLibrarians = new Button("Manage Librarians");
 	Button bttStats = new Button("Stats");
-	
 
-	
+
+
 
 	public static void main(String[] args) throws IOException  {
-		
+
 		//BillNumber.setInitialStock();
 		Manager.InstantiateLibrarians();
 		Administrator.InstantiateManagers();
 		Administrator.InstantiateAdmins();
-		
-		
+
+
 		Application.launch(args);
 
 	}
@@ -153,204 +153,204 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+
 //        primaryStage.getIcons().add(new Image("bookIcon.png"));
-        primaryStage.setTitle("Library System");
-        
-		
+		primaryStage.setTitle("Library System");
+
+
 		Scene scene = new Scene(mainPage());
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		
-		
+
+
+
 	}
-	
-public BorderPane mainPage() {
-		
-	BorderPane border = new BorderPane();
-	border.setMinSize(500,300);
-	
-	StackPane stackText = new StackPane();
-	Text text = new Text("Welcome");
-	text.setFont(new Font(30));
-	stackText.getChildren().add(text);
-	stackText.setPadding(new Insets(20));
-	border.setTop(stackText);
-	
-	mainLoginWarning.setEditable(false);
-	GridPane grid = new GridPane();
-	grid.setAlignment(Pos.CENTER);
-	grid.setHgap(5);
-    grid.setVgap(5);
-    grid.add(textUsername,0,1);
-    grid.add(username,1,1);
-    grid.add(textPassword,0,2);
-    grid.add(password,1,2);
-    grid.add(textSystem, 0, 5);
-    grid.add(mainLoginWarning, 1, 5);
-    grid.add(bttSubmit, 6, 6);
-    border.setCenter(grid);
-    
-    bttSubmit.setOnAction(this);
-    
-   
-	return border;
+
+	public BorderPane mainPage() {
+
+		BorderPane border = new BorderPane();
+		border.setMinSize(500,300);
+
+		StackPane stackText = new StackPane();
+		Text text = new Text("Welcome");
+		text.setFont(new Font(30));
+		stackText.getChildren().add(text);
+		stackText.setPadding(new Insets(20));
+		border.setTop(stackText);
+
+		mainLoginWarning.setEditable(false);
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
+		grid.setHgap(5);
+		grid.setVgap(5);
+		grid.add(textUsername,0,1);
+		grid.add(username,1,1);
+		grid.add(textPassword,0,2);
+		grid.add(password,1,2);
+		grid.add(textSystem, 0, 5);
+		grid.add(mainLoginWarning, 1, 5);
+		grid.add(bttSubmit, 6, 6);
+		border.setCenter(grid);
+
+		bttSubmit.setOnAction(this);
+
+
+		return border;
 	}
-	
-	
+
+
 	public BorderPane librarianMainPage() {
-		
-	   
+
+
 		comboBoxLibrarian = new ComboBox(FXCollections.observableArrayList(BillNumber.getISBNName()));
-		
+
 		Text textHeaderLibrarian = new Text("Welcome "+usernamePage);
 		StackPane stackHeader = new StackPane();
 		textHeaderLibrarian.setFont(new Font(30));
 		stackHeader.getChildren().add(textHeaderLibrarian);
 		stackHeader.setPadding(new Insets(20));
 		borderLibrarianMain.setTop(stackHeader);
-		
+
 		GridPane gridLibrarianMain = new GridPane();
 		gridLibrarianMain.setAlignment(Pos.CENTER);
 		gridLibrarianMain.setHgap(5);
-	    gridLibrarianMain.setVgap(5);
-	    gridLibrarianMain.add(comboBoxLibrarian,1,0);
-	    gridLibrarianMain.add(textQuantity, 0, 2);
-	    gridLibrarianMain.add(quantity, 1, 2);
-	    gridLibrarianMain.add(textSystem, 0, 5);
-	    gridLibrarianMain.add(warningsLibrarian, 1, 5);
-	    warningsLibrarian.setEditable(false);
-	    borderLibrarianMain.setCenter(gridLibrarianMain);
-	    
-	    HBox hbox = new HBox();
-	    hbox.setAlignment(Pos.CENTER);
-	    hbox.getChildren().addAll(bttBack,bttAdd,bttBill);
-	    hbox.setPadding(new Insets(40));
-	    hbox.setSpacing(30);
-	    borderLibrarianMain.setBottom(hbox);
-	    
-	    
-	    bttAdd.setOnAction(this);
-	    bttBill.setOnAction(this);
-        bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-            	quantity.clear();
-            	warningsLibrarian.clear();
-            	bttBack.getScene().setRoot(mainPage());
-            }
-            	
-        });
-	    
-		
+		gridLibrarianMain.setVgap(5);
+		gridLibrarianMain.add(comboBoxLibrarian,1,0);
+		gridLibrarianMain.add(textQuantity, 0, 2);
+		gridLibrarianMain.add(quantity, 1, 2);
+		gridLibrarianMain.add(textSystem, 0, 5);
+		gridLibrarianMain.add(warningsLibrarian, 1, 5);
+		warningsLibrarian.setEditable(false);
+		borderLibrarianMain.setCenter(gridLibrarianMain);
+
+		HBox hbox = new HBox();
+		hbox.setAlignment(Pos.CENTER);
+		hbox.getChildren().addAll(bttBack,bttAdd,bttBill);
+		hbox.setPadding(new Insets(40));
+		hbox.setSpacing(30);
+		borderLibrarianMain.setBottom(hbox);
+
+
+		bttAdd.setOnAction(this);
+		bttBill.setOnAction(this);
+		bttBack.setOnAction(event -> {
+			if(event.getSource()==bttBack) {
+				quantity.clear();
+				warningsLibrarian.clear();
+				bttBack.getScene().setRoot(mainPage());
+			}
+
+		});
+
+
 		return borderLibrarianMain;
 	}
-	
-    
-    
-    public BorderPane mangaerMainPage() {
-    	
-    	BorderPane borderManagerMain = new BorderPane();	
-    	Text textHeaderManager = new Text("Welcome "+usernamePage);
+
+
+
+	public BorderPane mangaerMainPage() {
+
+		BorderPane borderManagerMain = new BorderPane();
+		Text textHeaderManager = new Text("Welcome "+usernamePage);
 		StackPane stackHeader = new StackPane();
 		textHeaderManager.setFont(new Font(30));
 		stackHeader.getChildren().add(textHeaderManager);
 		stackHeader.setPadding(new Insets(20));
 		borderManagerMain.setTop(stackHeader);
-		
+
 		Button bttbookStatistics = new Button("Book Statistics");
-		
+
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(5);
 		grid.setVgap(5);
-	    grid.add(bttSupply,0,0);
-	    grid.add(bttCheckLibrarians, 1, 0);
-	    grid.add(bttBack, 4, 0);
-	    grid.add(bttCheckStock, 2, 0);
-	    grid.add(bttbookStatistics, 3, 0);
-	    grid.setPadding(new Insets(30));
-	    borderManagerMain.setCenter(grid);
-	    
-	    //--------------------
-	    StackPane pane = new StackPane();
-	    TableView table = new TableView();
-    	TableColumn<Book,String> column1 = new TableColumn<>("ISBN");
-    	TableColumn<Book,String> column2 = new TableColumn<>("Title");
-    	TableColumn<Book,String> column3 = new TableColumn<>("Category");
-    	TableColumn<Book,String> column4 = new TableColumn<>("Author");
-    	TableColumn<Book,Double> column5 = new TableColumn<>("Original Price");
-    	TableColumn<Book,Double> column6 = new TableColumn<>("Selling Price");
-    	TableColumn<Book,String> column7 = new TableColumn<>("Supplier");
-    	TableColumn<Book,Integer> column8 = new TableColumn<>("Stock");
-    	
-    	column1.setCellValueFactory(new PropertyValueFactory<Book,String>("ISBN"));
-    	column2.setCellValueFactory(new PropertyValueFactory<Book,String>("title"));
-    	column3.setCellValueFactory(new PropertyValueFactory<Book,String>("category"));
-    	column4.setCellValueFactory(new PropertyValueFactory<Book,String>("author"));
-    	column5.setCellValueFactory(new PropertyValueFactory<Book,Double>("originalPrice"));
-    	column6.setCellValueFactory(new PropertyValueFactory<Book,Double>("sellingPrice"));
-    	column7.setCellValueFactory(new PropertyValueFactory<Book,String>("supplier"));
-    	column8.setCellValueFactory(new PropertyValueFactory<Book,Integer>("stock"));
-    	
-    	table.getColumns().add(column1);
-    	table.getColumns().add(column2);
-    	table.getColumns().add(column3);
-    	table.getColumns().add(column4);
-    	table.getColumns().add(column5);
-    	table.getColumns().add(column6);
-    	table.getColumns().add(column7);
-    	table.getColumns().add(column8);
-    	
-    	table.setItems(FXCollections.observableArrayList(Manager.getLowStock()));
-        table.setMaxHeight(150);
-        pane.getChildren().add(table);
-    	
-    	borderManagerMain.setBottom(pane);
-	    
-	    
-	    
-	    //---------------------
-	    
-	    
-	    
-	    bttSupply.setOnAction(this);
-	    bttCheckStock.setOnAction(this);
-	    bttCheckLibrarians.setOnAction(event ->{
-	    	if (event.getSource()==bttCheckLibrarians) {
-	    		bttCheckLibrarians.getScene().setRoot(librariansAllPage());
-	    	}
-	    	
-	    });
-	    bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-               bttBack.getScene().setRoot(mainPage());	
-            }
-	    });
-    	
-	    bttbookStatistics.setOnAction(event ->{
-	    	bttbookStatistics.getScene().setRoot(managerStatisticsPage());
-	    });
-	    
-    	return borderManagerMain;    	
-    	
-    }
-    
-    public BorderPane managerStatisticsPage() {
-    	
-    	BorderPane border = new BorderPane();
+		grid.add(bttSupply,0,0);
+		grid.add(bttCheckLibrarians, 1, 0);
+		grid.add(bttBack, 4, 0);
+		grid.add(bttCheckStock, 2, 0);
+		grid.add(bttbookStatistics, 3, 0);
+		grid.setPadding(new Insets(30));
+		borderManagerMain.setCenter(grid);
 
-    	
-    	Text text = new Text("Book Statistics");
+		//--------------------
+		StackPane pane = new StackPane();
+		TableView table = new TableView();
+		TableColumn<Book,String> column1 = new TableColumn<>("ISBN");
+		TableColumn<Book,String> column2 = new TableColumn<>("Title");
+		TableColumn<Book,String> column3 = new TableColumn<>("Category");
+		TableColumn<Book,String> column4 = new TableColumn<>("Author");
+		TableColumn<Book,Double> column5 = new TableColumn<>("Original Price");
+		TableColumn<Book,Double> column6 = new TableColumn<>("Selling Price");
+		TableColumn<Book,String> column7 = new TableColumn<>("Supplier");
+		TableColumn<Book,Integer> column8 = new TableColumn<>("Stock");
+
+		column1.setCellValueFactory(new PropertyValueFactory<Book,String>("ISBN"));
+		column2.setCellValueFactory(new PropertyValueFactory<Book,String>("title"));
+		column3.setCellValueFactory(new PropertyValueFactory<Book,String>("category"));
+		column4.setCellValueFactory(new PropertyValueFactory<Book,String>("author"));
+		column5.setCellValueFactory(new PropertyValueFactory<Book,Double>("originalPrice"));
+		column6.setCellValueFactory(new PropertyValueFactory<Book,Double>("sellingPrice"));
+		column7.setCellValueFactory(new PropertyValueFactory<Book,String>("supplier"));
+		column8.setCellValueFactory(new PropertyValueFactory<Book,Integer>("stock"));
+
+		table.getColumns().add(column1);
+		table.getColumns().add(column2);
+		table.getColumns().add(column3);
+		table.getColumns().add(column4);
+		table.getColumns().add(column5);
+		table.getColumns().add(column6);
+		table.getColumns().add(column7);
+		table.getColumns().add(column8);
+
+		table.setItems(FXCollections.observableArrayList(Manager.getLowStock()));
+		table.setMaxHeight(150);
+		pane.getChildren().add(table);
+
+		borderManagerMain.setBottom(pane);
+
+
+
+		//---------------------
+
+
+
+		bttSupply.setOnAction(this);
+		bttCheckStock.setOnAction(this);
+		bttCheckLibrarians.setOnAction(event ->{
+			if (event.getSource()==bttCheckLibrarians) {
+				bttCheckLibrarians.getScene().setRoot(librariansAllPage());
+			}
+
+		});
+		bttBack.setOnAction(event -> {
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot(mainPage());
+			}
+		});
+
+		bttbookStatistics.setOnAction(event ->{
+			bttbookStatistics.getScene().setRoot(managerStatisticsPage());
+		});
+
+		return borderManagerMain;
+
+	}
+
+	public BorderPane managerStatisticsPage() {
+
+		BorderPane border = new BorderPane();
+
+
+		Text text = new Text("Book Statistics");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
 		stack.setPadding(new Insets(20));
 		border.setTop(stack);
-		
+
 		Button bttSold = new Button("Sold");
 		Button bttBought = new Button("Bought");
-		
+
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(5);
@@ -358,123 +358,66 @@ public BorderPane mainPage() {
 		grid.add(bttSold, 0, 0);
 		grid.add(bttBought, 1, 0);
 		border.setCenter(grid);
-		
-		
+
+
 		bttSold.setOnAction(event ->{
 			bttSold.getScene().setRoot(managerSoldPage());
 		});
-		
+
 		bttBought.setOnAction(event -> {
 			bttBought.getScene().setRoot(managerBoughtPage());
 		});
-		
-		
+
+
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( mangaerMainPage() );	
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( mangaerMainPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
-		
+
 		return border;
-    	
-    }
-    
-    public BorderPane managerBoughtPage() {
-    	
-    	 BorderPane border = new BorderPane();
-     	 
-         ArrayList<Book> stockBooks = BillNumber.getStockBooks();
-         for(int i=0;i<stockBooks.size();i++) {
-         	if (stockBooks.get(i).getQuantitiesPurchased()>0) {
-         		titlesBought.add(stockBooks.get(i).getTitle());
-         		quantitiesBought.add(stockBooks.get(i).getQuantitiesPurchased());
-         	}
-         }
-        
-    	 
-    	 PieChart pieChart = new PieChart();
-         BillNumber.removeDuplicatesSoldTitles(titlesBought,quantitiesBought);
-         
-     	for (int i=0;i<titlesBought.size();i++) {
-     		Data test = new Data(titlesBought.get(i), quantitiesBought.get(i));
-     		pieChart.getData().add(test);
-     	}
-     	
-     	Text text = new Text("Bought books throughout day/month/year/total");
- 		StackPane stack = new StackPane();
- 		text.setFont(new Font(30));
- 		stack.getChildren().add(text);
- 		stack.setPadding(new Insets(20));
- 		border.setTop(stack);
- 		
- 	
- 		Text text1 = new Text(BillNumber.getBooksBoughtDay());
- 		Text text2 = new Text(BillNumber.getBooksBoughtMonth());
- 		Text text3 = new Text(BillNumber.getBooksBoughtYear());
- 		Text text4 = new Text(BillNumber.getBooksBoughtTotal());
- 		
- 		GridPane grid = new GridPane();
- 		grid.add(text1, 0, 0);
-		grid.add(text2, 1, 0);
-		grid.add(text3, 2, 0);
-		grid.add(pieChart, 1, 1);
-		grid.setHgap(30);
-		grid.setVgap(30);
-		grid.setAlignment(Pos.CENTER);
-		border.setCenter(grid);
- 		
- 		StackPane stackBackButton = new StackPane();
-		stackBackButton.getChildren().add(bttBackManager);
-		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( managerStatisticsPage() );	
-            }
-	    });
-		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
-		border.setBottom(stackBackButton);
- 		
- 		return border;
-    	
-    }
-    
-    
-    public BorderPane managerSoldPage() {
-    	
-        BorderPane border = new BorderPane();
-               
-        PieChart pieChart = new PieChart();
-        ArrayList<Book> stockBooks = BillNumber.getStockBooks();
-        for(int i=0;i<stockBooks.size();i++) {
-        	if (stockBooks.get(i).getPurchasedAmount()>0) {
-        		titlesSold.add(stockBooks.get(i).getTitle());
-        		quantitiesSold.add(stockBooks.get(i).getPurchasedAmount());
-        	}
-        }
-        BillNumber.removeDuplicatesSoldTitles(titlesSold,quantitiesSold);
-        
-    	for (int i=0;i<titlesSold.size();i++) {
-    		Data test = new Data(titlesSold.get(i), quantitiesSold.get(i));
-    		pieChart.getData().add(test);
-    	}
-    	
-    	Text text = new Text("Sold books throughout day/month/year/total");
+
+	}
+
+	public BorderPane managerBoughtPage() {
+
+		BorderPane border = new BorderPane();
+
+		ArrayList<Book> stockBooks = BillNumber.getStockBooks();
+		for(int i=0;i<stockBooks.size();i++) {
+			if (stockBooks.get(i).getQuantitiesPurchased()>0) {
+				titlesBought.add(stockBooks.get(i).getTitle());
+				quantitiesBought.add(stockBooks.get(i).getQuantitiesPurchased());
+			}
+		}
+
+
+		PieChart pieChart = new PieChart();
+		BillNumber.removeDuplicatesSoldTitles(titlesBought,quantitiesBought);
+
+		for (int i=0;i<titlesBought.size();i++) {
+			Data test = new Data(titlesBought.get(i), quantitiesBought.get(i));
+			pieChart.getData().add(test);
+		}
+
+		Text text = new Text("Bought books throughout day/month/year/total");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
 		stack.setPadding(new Insets(20));
 		border.setTop(stack);
-		
-		Text text1 = new Text(BillNumber.getBooksSoldDay());
-		Text text2 = new Text(BillNumber.getBooksSoldMonth());
-		Text text3 = new Text(BillNumber.getBooksSoldYear());
-		Text text4 = new Text( BillNumber.getBooksSoldTotal());
-		
+
+
+		Text text1 = new Text(BillNumber.getBooksBoughtDay());
+		Text text2 = new Text(BillNumber.getBooksBoughtMonth());
+		Text text3 = new Text(BillNumber.getBooksBoughtYear());
+		Text text4 = new Text(BillNumber.getBooksBoughtTotal());
+
 		GridPane grid = new GridPane();
-		
 		grid.add(text1, 0, 0);
 		grid.add(text2, 1, 0);
 		grid.add(text3, 2, 0);
@@ -483,126 +426,183 @@ public BorderPane mainPage() {
 		grid.setVgap(30);
 		grid.setAlignment(Pos.CENTER);
 		border.setCenter(grid);
-		
-			
+
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( managerStatisticsPage() );	
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( managerStatisticsPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
-		
+
 		return border;
-    	
-    }
-    
-    
-    public BorderPane librariansAllPage() {
-    	
-    	BorderPane border = new BorderPane();
-    	
-    	Text textHeaderManager = new Text("Select Librarians");
+
+	}
+
+
+	public BorderPane managerSoldPage() {
+
+		BorderPane border = new BorderPane();
+
+		PieChart pieChart = new PieChart();
+		ArrayList<Book> stockBooks = BillNumber.getStockBooks();
+		for(int i=0;i<stockBooks.size();i++) {
+			if (stockBooks.get(i).getPurchasedAmount()>0) {
+				titlesSold.add(stockBooks.get(i).getTitle());
+				quantitiesSold.add(stockBooks.get(i).getPurchasedAmount());
+			}
+		}
+		BillNumber.removeDuplicatesSoldTitles(titlesSold,quantitiesSold);
+
+		for (int i=0;i<titlesSold.size();i++) {
+			Data test = new Data(titlesSold.get(i), quantitiesSold.get(i));
+			pieChart.getData().add(test);
+		}
+
+		Text text = new Text("Sold books throughout day/month/year/total");
+		StackPane stack = new StackPane();
+		text.setFont(new Font(30));
+		stack.getChildren().add(text);
+		stack.setPadding(new Insets(20));
+		border.setTop(stack);
+
+		Text text1 = new Text(BillNumber.getBooksSoldDay());
+		Text text2 = new Text(BillNumber.getBooksSoldMonth());
+		Text text3 = new Text(BillNumber.getBooksSoldYear());
+		Text text4 = new Text( BillNumber.getBooksSoldTotal());
+
+		GridPane grid = new GridPane();
+
+		grid.add(text1, 0, 0);
+		grid.add(text2, 1, 0);
+		grid.add(text3, 2, 0);
+		grid.add(pieChart, 1, 1);
+		grid.setHgap(30);
+		grid.setVgap(30);
+		grid.setAlignment(Pos.CENTER);
+		border.setCenter(grid);
+
+
+		StackPane stackBackButton = new StackPane();
+		stackBackButton.getChildren().add(bttBackManager);
+		bttBackManager.setOnAction(event -> {
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( managerStatisticsPage() );
+			}
+		});
+		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
+		border.setBottom(stackBackButton);
+
+		return border;
+
+	}
+
+
+	public BorderPane librariansAllPage() {
+
+		BorderPane border = new BorderPane();
+
+		Text textHeaderManager = new Text("Select Librarians");
 		StackPane stackHeader = new StackPane();
 		textHeaderManager.setFont(new Font(30));
 		stackHeader.getChildren().add(textHeaderManager);
 		stackHeader.setPadding(new Insets(20));
 		border.setTop(stackHeader);
-		
+
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBack);
 		bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-               bttBack.getScene().setRoot( mangaerMainPage() );	
-            }
-	    });
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot( mangaerMainPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
-		
-		
+
+
 		ArrayList<Librarian> librarians = Manager.getLibrarians();
-		
+
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	int k=0;
-     	int j=0;
-     	
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		int k=0;
+		int j=0;
+
 		for (int i=0;i<librarians.size();i++) {
-    		if (i%5==0) {
-    			k=0;
-    			j++;
-    		}
-    			
-    		
-    		Button button = createButton3(librarians.get(i));
-    		
+			if (i%5==0) {
+				k=0;
+				j++;
+			}
+
+
+			Button button = createButton3(librarians.get(i));
+
 			grid.add(button,k++,j);
-			
-    	}
-    	border.setCenter(grid);
-    	
-    	
-    	return border;
-    	
-    	
-    }
-    
-    //------------------------------------------------------------------
-    
-    
-    private Button createButton3(Librarian lib) {
-    	Button button;
-  
-    	if (lib.getName()==null) 
-    		button = new Button(lib.getUsername());
-    	
-    	else 
-    		button = new Button(lib.getName());
-    	
-        
-        button.setOnAction(new ButtonHandler3(lib));
-        return button ;
-    }
-    
-    class ButtonHandler3 implements EventHandler<ActionEvent> {
-    	
-    	private final Librarian lib;
-    	
-        ButtonHandler3(Librarian lib) {
-            this.lib = lib;
-        }
-        
-        @Override
-        public void handle(ActionEvent event) {
-        	Stage stage = new Stage();
-        	Scene scene = new Scene(selectLibrarianPage(lib));
-        	//stage.getIcons().add(new Image("bookIcon.png"));
-        	stage.setWidth(465);
-        	stage.setHeight(465);
-        	stage.setScene(scene);
-        	stage.show();
 
-        }
-
-    }
+		}
+		border.setCenter(grid);
 
 
-    //------------------------------------------------------------------
+		return border;
 
 
-    public BorderPane selectLibrarianPage(Librarian lib) {
+	}
 
-    	BorderPane border = new BorderPane();
+	//------------------------------------------------------------------
 
-    	Text text;
-    	if (lib.getName() == null)
-    		text = new Text("Performance of: "+lib.getUsername());
-    	else
-    		text = new Text("Performance of: "+lib.getName());
+
+	private Button createButton3(Librarian lib) {
+		Button button;
+
+		if (lib.getName()==null)
+			button = new Button(lib.getUsername());
+
+		else
+			button = new Button(lib.getName());
+
+
+		button.setOnAction(new ButtonHandler3(lib));
+		return button ;
+	}
+
+	class ButtonHandler3 implements EventHandler<ActionEvent> {
+
+		private final Librarian lib;
+
+		ButtonHandler3(Librarian lib) {
+			this.lib = lib;
+		}
+
+		@Override
+		public void handle(ActionEvent event) {
+			Stage stage = new Stage();
+			Scene scene = new Scene(selectLibrarianPage(lib));
+			//stage.getIcons().add(new Image("bookIcon.png"));
+			stage.setWidth(465);
+			stage.setHeight(465);
+			stage.setScene(scene);
+			stage.show();
+
+		}
+
+	}
+
+
+	//------------------------------------------------------------------
+
+
+	public BorderPane selectLibrarianPage(Librarian lib) {
+
+		BorderPane border = new BorderPane();
+
+		Text text;
+		if (lib.getName() == null)
+			text = new Text("Performance of: "+lib.getUsername());
+		else
+			text = new Text("Performance of: "+lib.getName());
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -611,79 +611,79 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textTotalNumberBillsLibrarian, 0, 0);
-     	grid.add(totalNumberBillsLibrarian, 1, 0);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textTotalNumberBillsLibrarian, 0, 0);
+		grid.add(totalNumberBillsLibrarian, 1, 0);
 
-     	grid.add(textBooksSold, 0, 1);
-     	grid.add(booksSold, 1, 1);
+		grid.add(textBooksSold, 0, 1);
+		grid.add(booksSold, 1, 1);
 
-     	grid.add(textTotalMoneyDay, 0, 2);
-     	grid.add(totalAmountOfMoneyMadeInDay, 1, 2);
+		grid.add(textTotalMoneyDay, 0, 2);
+		grid.add(totalAmountOfMoneyMadeInDay, 1, 2);
 
-     	grid.add(textTotalMoneyMonth, 0, 3);
-     	grid.add(totalAmountOfMoneyMadeInMonth, 1, 3);
+		grid.add(textTotalMoneyMonth, 0, 3);
+		grid.add(totalAmountOfMoneyMadeInMonth, 1, 3);
 
-     	grid.add(textTotalMoneyYear, 0, 4);
-     	grid.add(totalAmountOfMoneyMadeInYear, 1, 4);
+		grid.add(textTotalMoneyYear, 0, 4);
+		grid.add(totalAmountOfMoneyMadeInYear, 1, 4);
 
-     	totalNumberBillsLibrarian.setEditable(false);
-     	booksSold.setEditable(false);
-     	totalAmountOfMoneyMadeInDay.setEditable(false);
-     	totalAmountOfMoneyMadeInMonth.setEditable(false);
-     	totalAmountOfMoneyMadeInYear.setEditable(false);
+		totalNumberBillsLibrarian.setEditable(false);
+		booksSold.setEditable(false);
+		totalAmountOfMoneyMadeInDay.setEditable(false);
+		totalAmountOfMoneyMadeInMonth.setEditable(false);
+		totalAmountOfMoneyMadeInYear.setEditable(false);
 
-     	totalNumberBillsLibrarian.setText(Integer.toString(lib.getNumberOfBills()));
-     	booksSold.setText(Integer.toString(lib.getBooksSold()));
-     	totalAmountOfMoneyMadeInDay.setText( Double.toString(lib.moneyMadeInDay()) );
-     	totalAmountOfMoneyMadeInMonth.setText( Double.toString(lib.moneyMadeInMonth()) );
-     	totalAmountOfMoneyMadeInYear.setText( Double.toString(lib.moneyMadeInYear()) );
+		totalNumberBillsLibrarian.setText(Integer.toString(lib.getNumberOfBills()));
+		booksSold.setText(Integer.toString(lib.getBooksSold()));
+		totalAmountOfMoneyMadeInDay.setText( Double.toString(lib.moneyMadeInDay()) );
+		totalAmountOfMoneyMadeInMonth.setText( Double.toString(lib.moneyMadeInMonth()) );
+		totalAmountOfMoneyMadeInYear.setText( Double.toString(lib.moneyMadeInYear()) );
 
-     	border.setCenter(grid);
+		border.setCenter(grid);
 
-    	return border;
-    }
-
-
+		return border;
+	}
 
 
-    public BorderPane checkStoragePage() {
 
-    	BorderPane border = new BorderPane();
-    	TableView table = new TableView();
-    	TableColumn<Book,String> column1 = new TableColumn<>("ISBN");
-    	TableColumn<Book,String> column2 = new TableColumn<>("Title");
-    	TableColumn<Book,String> column3 = new TableColumn<>("Category");
-    	TableColumn<Book,String> column4 = new TableColumn<>("Author");
-    	TableColumn<Book,Double> column5 = new TableColumn<>("Original Price");
-    	TableColumn<Book,Double> column6 = new TableColumn<>("Selling Price");
-    	TableColumn<Book,String> column7 = new TableColumn<>("Supplier");
-    	TableColumn<Book,Integer> column8 = new TableColumn<>("Stock");
 
-    	column1.setCellValueFactory(new PropertyValueFactory<Book,String>("ISBN"));
-    	column2.setCellValueFactory(new PropertyValueFactory<Book,String>("title"));
-    	column3.setCellValueFactory(new PropertyValueFactory<Book,String>("category"));
-    	column4.setCellValueFactory(new PropertyValueFactory<Book,String>("author"));
-    	column5.setCellValueFactory(new PropertyValueFactory<Book,Double>("originalPrice"));
-    	column6.setCellValueFactory(new PropertyValueFactory<Book,Double>("sellingPrice"));
-    	column7.setCellValueFactory(new PropertyValueFactory<Book,String>("supplier"));
-    	column8.setCellValueFactory(new PropertyValueFactory<Book,Integer>("stock"));
+	public BorderPane checkStoragePage() {
 
-    	table.getColumns().add(column1);
-    	table.getColumns().add(column2);
-    	table.getColumns().add(column3);
-    	table.getColumns().add(column4);
-    	table.getColumns().add(column5);
-    	table.getColumns().add(column6);
-    	table.getColumns().add(column7);
-    	table.getColumns().add(column8);
+		BorderPane border = new BorderPane();
+		TableView table = new TableView();
+		TableColumn<Book,String> column1 = new TableColumn<>("ISBN");
+		TableColumn<Book,String> column2 = new TableColumn<>("Title");
+		TableColumn<Book,String> column3 = new TableColumn<>("Category");
+		TableColumn<Book,String> column4 = new TableColumn<>("Author");
+		TableColumn<Book,Double> column5 = new TableColumn<>("Original Price");
+		TableColumn<Book,Double> column6 = new TableColumn<>("Selling Price");
+		TableColumn<Book,String> column7 = new TableColumn<>("Supplier");
+		TableColumn<Book,Integer> column8 = new TableColumn<>("Stock");
 
-    	table.setItems(FXCollections.observableArrayList(BillNumber.getStockBooks()));
+		column1.setCellValueFactory(new PropertyValueFactory<Book,String>("ISBN"));
+		column2.setCellValueFactory(new PropertyValueFactory<Book,String>("title"));
+		column3.setCellValueFactory(new PropertyValueFactory<Book,String>("category"));
+		column4.setCellValueFactory(new PropertyValueFactory<Book,String>("author"));
+		column5.setCellValueFactory(new PropertyValueFactory<Book,Double>("originalPrice"));
+		column6.setCellValueFactory(new PropertyValueFactory<Book,Double>("sellingPrice"));
+		column7.setCellValueFactory(new PropertyValueFactory<Book,String>("supplier"));
+		column8.setCellValueFactory(new PropertyValueFactory<Book,Integer>("stock"));
 
-    	border.setCenter(table);
+		table.getColumns().add(column1);
+		table.getColumns().add(column2);
+		table.getColumns().add(column3);
+		table.getColumns().add(column4);
+		table.getColumns().add(column5);
+		table.getColumns().add(column6);
+		table.getColumns().add(column7);
+		table.getColumns().add(column8);
 
-    	Text text = new Text("Stock");
+		table.setItems(FXCollections.observableArrayList(BillNumber.getStockBooks()));
+
+		border.setCenter(table);
+
+		Text text = new Text("Stock");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -692,25 +692,25 @@ public BorderPane mainPage() {
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBack);
 		bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-               bttBack.getScene().setRoot( mangaerMainPage() );
-            }
-	    });
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot( mangaerMainPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(40, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
 		border.setTop(stack);
 
-    	return border;
+		return border;
 
-    }
+	}
 
 
-    public BorderPane ManagerSupplyCickPage() {
+	public BorderPane ManagerSupplyCickPage() {
 
-    	BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Add Stock or New Books");
+		Text text = new Text("Add Stock or New Books");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -727,26 +727,26 @@ public BorderPane mainPage() {
 		bttAddStock.setOnAction(this);
 		bttNewCategory.setOnAction(this);
 		bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-               bttBack.getScene().setRoot(mangaerMainPage());
-            }
-	    });
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot(mangaerMainPage());
+			}
+		});
 
 		supplyPageGrid.setAlignment(Pos.CENTER);
-        border.setCenter(supplyPageGrid);
+		border.setCenter(supplyPageGrid);
 
 
-    	return border;
-    }
+		return border;
+	}
 
-    public BorderPane chooseNewCategoryAddStock() {
+	public BorderPane chooseNewCategoryAddStock() {
 
-    	ChoiceBox menuNewCategory = new ChoiceBox(FXCollections.observableArrayList(Manager.getAllCategories()));
-    	ArrayList<Book> stockbooks = BillNumber.getStockBooks();
+		ChoiceBox menuNewCategory = new ChoiceBox(FXCollections.observableArrayList(Manager.getAllCategories()));
+		ArrayList<Book> stockbooks = BillNumber.getStockBooks();
 
-    	BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Add new Book Category");
+		Text text = new Text("Add new Book Category");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -761,66 +761,66 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textCategory, 0, 0);
-     	grid.add(menuNewCategory, 1, 0);
-     	grid.add(bttBack, 0, 5);
-     	grid.add(textSystem, 0, 4);
-     	grid.add(textAddCategoryWarning, 1, 4);
-     	grid.add(bttAddCategory, 2, 5);
-     	border.setCenter(grid);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textCategory, 0, 0);
+		grid.add(menuNewCategory, 1, 0);
+		grid.add(bttBack, 0, 5);
+		grid.add(textSystem, 0, 4);
+		grid.add(textAddCategoryWarning, 1, 4);
+		grid.add(bttAddCategory, 2, 5);
+		border.setCenter(grid);
 
-     	bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-            	bttBack.getScene().setRoot( ManagerSupplyCickPage()  );
-            }
-	    });
+		bttBack.setOnAction(event -> {
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot( ManagerSupplyCickPage()  );
+			}
+		});
 
-     	bttAddCategory.setOnAction(event -> {
+		bttAddCategory.setOnAction(event -> {
 
-     		if (event.getSource()==bttAddCategory) {
-
-
-
-     			if (menuNewCategory.getSelectionModel().getSelectedItem().toString().isEmpty()) {
-     				textAddCategoryWarning.setText("Failed, Empty field");
-     				return;
-     			}
-
-     			if (category.getCharacters().toString().matches("\\d{1,}")) {
-     				textAddCategoryWarning.setText("Failed, Invalid Category");
-     				return;
-     			}
-     			if (BillNumber.partOfCateogriesChecker(categ,menuNewCategory.getSelectionModel().getSelectedItem().toString())) {
-     				textAddCategoryWarning.setText("Failed, Not New");
-     				return;
-     			}
+			if (event.getSource()==bttAddCategory) {
 
 
 
-     			String bcateg = menuNewCategory.getSelectionModel().getSelectedItem().toString();
-     			categ.add(bcateg);
-     			textAddCategoryWarning.setText("Added!");
+				if (menuNewCategory.getSelectionModel().getSelectedItem().toString().isEmpty()) {
+					textAddCategoryWarning.setText("Failed, Empty field");
+					return;
+				}
+
+				if (category.getCharacters().toString().matches("\\d{1,}")) {
+					textAddCategoryWarning.setText("Failed, Invalid Category");
+					return;
+				}
+				if (BillNumber.partOfCateogriesChecker(categ,menuNewCategory.getSelectionModel().getSelectedItem().toString())) {
+					textAddCategoryWarning.setText("Failed, Not New");
+					return;
+				}
 
 
-     		}
+
+				String bcateg = menuNewCategory.getSelectionModel().getSelectedItem().toString();
+				categ.add(bcateg);
+				textAddCategoryWarning.setText("Added!");
 
 
-     	});
+			}
+
+
+		});
 
 
 
 		return border;
 
 
-    }
+	}
 
-    public BorderPane chooseAddCurretStock() {
+	public BorderPane chooseAddCurretStock() {
 
-    	BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Choose category to add");
+		Text text = new Text("Choose category to add");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -831,10 +831,10 @@ public BorderPane mainPage() {
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( ManagerSupplyCickPage() );
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( ManagerSupplyCickPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
@@ -842,72 +842,72 @@ public BorderPane mainPage() {
 		categ = BillNumber.removeDuplicates(categ);
 
 
-        GridPane grid = new GridPane();
-     	grid.setHgap(5);
-     	grid.setVgap(5);
-     	int j=0;
-     	int k=0;
+		GridPane grid = new GridPane();
+		grid.setHgap(5);
+		grid.setVgap(5);
+		int j=0;
+		int k=0;
 
-    	for (int i=0;i<categ.size();i++) {
-    		if (i%5==0) {
-    			k=0;
-    			j++;
-    		}
+		for (int i=0;i<categ.size();i++) {
+			if (i%5==0) {
+				k=0;
+				j++;
+			}
 
 
-    		Button button = createButton(categ.get(i));
+			Button button = createButton(categ.get(i));
 
 			grid.add(button,k++,j);
 
-    	}
+		}
 
 
 
-    	grid.setAlignment(Pos.CENTER);
-    	border.setCenter(grid);
+		grid.setAlignment(Pos.CENTER);
+		border.setCenter(grid);
 
 
-    	return border;
-    }
+		return border;
+	}
 
 
-    //----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 
-    private Button createButton(String text) {
-        Button button = new Button(text);
-        button.setOnAction(new ButtonHandler(button.getText()));
-        return button ;
-    }
+	private Button createButton(String text) {
+		Button button = new Button(text);
+		button.setOnAction(new ButtonHandler(button.getText()));
+		return button ;
+	}
 
-    class ButtonHandler implements EventHandler<ActionEvent> {
+	class ButtonHandler implements EventHandler<ActionEvent> {
 
-        private final String text;
+		private final String text;
 
-        ButtonHandler(String text) {
-            this.text = text ;
-        }
+		ButtonHandler(String text) {
+			this.text = text ;
+		}
 
-        @Override
-        public void handle(ActionEvent event) {
-        	Stage stage = new Stage();
-        	Scene scene = new Scene(categoryStock(text));
-        	//stage.getIcons().add(new Image("bookIcon.png"));
-        	stage.setWidth(465);
-        	stage.setHeight(465);
-        	stage.setScene(scene);
-        	stage.show();
+		@Override
+		public void handle(ActionEvent event) {
+			Stage stage = new Stage();
+			Scene scene = new Scene(categoryStock(text));
+			//stage.getIcons().add(new Image("bookIcon.png"));
+			stage.setWidth(465);
+			stage.setHeight(465);
+			stage.setScene(scene);
+			stage.show();
 
-        }
+		}
 
-    }
-    //-----------------------------------------------------------------------
+	}
+	//-----------------------------------------------------------------------
 
 
-    public BorderPane categoryStock(String category) {
+	public BorderPane categoryStock(String category) {
 
-    	BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Choose Book to add");
+		Text text = new Text("Choose Book to add");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -917,93 +917,93 @@ public BorderPane mainPage() {
 
 		ArrayList<Book> books = BillNumber.getBookFromCategory(category);
 		GridPane grid = new GridPane();
-     	grid.setHgap(5);
-     	grid.setVgap(5);
-     	int j=0;
-     	int k=0;
+		grid.setHgap(5);
+		grid.setVgap(5);
+		int j=0;
+		int k=0;
 
-     	if (books.isEmpty()) {
+		if (books.isEmpty()) {
 			System.out.println("Empty");
 		}
-     	else {
-     		for (int i=0;i<books.size();i++) {
-        		if (i%5==0) {
-        			k=0;
-        			j++;
-        		}
-        		Button button = createButton2(books.get(i));
+		else {
+			for (int i=0;i<books.size();i++) {
+				if (i%5==0) {
+					k=0;
+					j++;
+				}
+				Button button = createButton2(books.get(i));
 
-    			grid.add(button,k++,j);
+				grid.add(button,k++,j);
 
-        	}
-     	}
+			}
+		}
 
 		grid.add(bttNewBook, k, j);
 		grid.setAlignment(Pos.CENTER);
-    	border.setCenter(grid);
+		border.setCenter(grid);
 
-    	bttNewBook.setOnAction(event -> {
+		bttNewBook.setOnAction(event -> {
 
-            if(event.getSource()==bttNewBook) {
-            	bookISBN.clear();
-     		    title.clear();
-     		    supplier.clear();
-     		    originalPrice.clear();
-     		    sellingPrice.clear();
-     		    author.clear();
-     		    quantity.clear();
-
-
-            	bttNewBook.getScene().setRoot( stockCategoryNewBookPage(category) );
-            }
+			if(event.getSource()==bttNewBook) {
+				bookISBN.clear();
+				title.clear();
+				supplier.clear();
+				originalPrice.clear();
+				sellingPrice.clear();
+				author.clear();
+				quantity.clear();
 
 
- 	    });
+				bttNewBook.getScene().setRoot( stockCategoryNewBookPage(category) );
+			}
 
 
-    	return border;
+		});
 
 
-    }
-
-    //-------------------------------------------------------------------
-
-    private Button createButton2(Book book) {
-        Button button = new Button(book.getTitle());
-        button.setOnAction(new ButtonHandler2(book));
-        return button ;
-    }
-
-    class ButtonHandler2 implements EventHandler<ActionEvent> {
-
-    	private final Book book;
-
-        ButtonHandler2(Book book) {
-            this.book = book;
-        }
-
-        @Override
-        public void handle(ActionEvent event) {
-        	Stage stage = new Stage();
-        	Scene scene = new Scene(stockBookPage(book));
-        	//stage.getIcons().add(new Image("bookIcon.png"));
-        	stage.setWidth(465);
-        	stage.setHeight(465);
-        	stage.setScene(scene);
-        	stage.show();
-
-        }
-
-    }
-
-    //-------------------------------------------------------------------
+		return border;
 
 
-    public BorderPane stockBookPage(Book book) {
+	}
 
-    	BorderPane border = new BorderPane();
+	//-------------------------------------------------------------------
 
-    	Text text = new Text("Add \""+book.getTitle()+"\" To stock");
+	private Button createButton2(Book book) {
+		Button button = new Button(book.getTitle());
+		button.setOnAction(new ButtonHandler2(book));
+		return button ;
+	}
+
+	class ButtonHandler2 implements EventHandler<ActionEvent> {
+
+		private final Book book;
+
+		ButtonHandler2(Book book) {
+			this.book = book;
+		}
+
+		@Override
+		public void handle(ActionEvent event) {
+			Stage stage = new Stage();
+			Scene scene = new Scene(stockBookPage(book));
+			//stage.getIcons().add(new Image("bookIcon.png"));
+			stage.setWidth(465);
+			stage.setHeight(465);
+			stage.setScene(scene);
+			stage.show();
+
+		}
+
+	}
+
+	//-------------------------------------------------------------------
+
+
+	public BorderPane stockBookPage(Book book) {
+
+		BorderPane border = new BorderPane();
+
+		Text text = new Text("Add \""+book.getTitle()+"\" To stock");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1013,68 +1013,68 @@ public BorderPane mainPage() {
 
 
 		GridPane grid = new GridPane();
-     	grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textQuantity, 0, 0);
-     	grid.add(quantity, 1, 0);
-     	grid.add(bttAddBookToStock,2, 4);
-     	grid.add(addedOrNot, 1, 3);
-     	grid.add(textSystem, 0, 3);
-    	border.setCenter(grid);
+		grid.setHgap(5);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textQuantity, 0, 0);
+		grid.add(quantity, 1, 0);
+		grid.add(bttAddBookToStock,2, 4);
+		grid.add(addedOrNot, 1, 3);
+		grid.add(textSystem, 0, 3);
+		border.setCenter(grid);
 
 
-    	addedOrNot.setEditable(false);
+		addedOrNot.setEditable(false);
 		bttAddBookToStock.setOnAction(event -> {
 
-            if(event.getSource()==bttAddBookToStock) {
+			if(event.getSource()==bttAddBookToStock) {
 
-            	if(!quantity.getCharacters().toString().matches("\\d{1,}")){
-    				addedOrNot.setText("Failed, Invalid Quantity");
-    				return;
-    			}
+				if(!quantity.getCharacters().toString().matches("\\d{1,}")){
+					addedOrNot.setText("Failed, Invalid Quantity");
+					return;
+				}
 
-    			if (quantity.getCharacters().toString().isEmpty()) {
-    				addedOrNot.setText("Failed, Empty Quantity");
-    				return;
-    			}
+				if (quantity.getCharacters().toString().isEmpty()) {
+					addedOrNot.setText("Failed, Empty Quantity");
+					return;
+				}
 
-    		    ArrayList<Book> stockbooks = BillNumber.getStockBooks();
+				ArrayList<Book> stockbooks = BillNumber.getStockBooks();
 
-    		    for (int i=0;i<stockbooks.size();i++) {
-    		    	if (stockbooks.get(i).getISBN().equals(book.getISBN())) {
+				for (int i=0;i<stockbooks.size();i++) {
+					if (stockbooks.get(i).getISBN().equals(book.getISBN())) {
 
-    		    		stockbooks.get(i).AddStock(Integer.parseInt(quantity.getCharacters().toString()));
-    		    		stockbooks.get(i).addPurchasedDate(new Date());
-    		    		stockbooks.get(i).addQuantitiesPurchased(Integer.parseInt(quantity.getCharacters().toString()));
-    		    	}
-    		    }
+						stockbooks.get(i).AddStock(Integer.parseInt(quantity.getCharacters().toString()));
+						stockbooks.get(i).addPurchasedDate(new Date());
+						stockbooks.get(i).addQuantitiesPurchased(Integer.parseInt(quantity.getCharacters().toString()));
+					}
+				}
 
-    		    try {
+				try {
 					BillNumber.updateBooks(stockbooks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
-    		    quantity.clear();
-    		    addedOrNot.setText("Added");
-             }
+				quantity.clear();
+				addedOrNot.setText("Added");
+			}
 
- 	    });
-
-
-
-    	return border;
+		});
 
 
-    }
+
+		return border;
 
 
-    public BorderPane stockCategoryNewBookPage(String category) {
+	}
 
-    	BorderPane border = new BorderPane();
 
-    	Text text = new Text("Add book to "+category+" category");
+	public BorderPane stockCategoryNewBookPage(String category) {
+
+		BorderPane border = new BorderPane();
+
+		Text text = new Text("Add book to "+category+" category");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1084,138 +1084,138 @@ public BorderPane mainPage() {
 		GridPane gridSupplier = new GridPane();
 		ToggleGroup Supplier = new ToggleGroup();
 		RadioButton r1 = new RadioButton("Ingram Content Group, Inc");
-	    RadioButton r2 = new RadioButton("Baker & Taylor");
-        RadioButton r3 = new RadioButton("BCH Fulfillment & Distribution");
-        RadioButton r4 = new RadioButton("Cardinal Publishers Group");
-        RadioButton r5 = new RadioButton("Bella Distribution");
-        RadioButton r6 = new RadioButton("Publishers Group West");
-	    r1.setToggleGroup(Supplier);
-	    r2.setToggleGroup(Supplier);
-	    r3.setToggleGroup(Supplier);
-	    r4.setToggleGroup(Supplier);
-	    r5.setToggleGroup(Supplier);
-	    r6.setToggleGroup(Supplier);
-	    gridSupplier.add(r1, 0, 0);
-	    gridSupplier.add(r2, 1, 0);
-	    gridSupplier.add(r3, 1, 2);
-	    gridSupplier.add(r4, 0, 1);
-	    gridSupplier.add(r5, 0, 2);
-	    gridSupplier.add(r6, 1, 1);
-	    gridSupplier.setHgap(5);
-	    gridSupplier.setVgap(5);
+		RadioButton r2 = new RadioButton("Baker & Taylor");
+		RadioButton r3 = new RadioButton("BCH Fulfillment & Distribution");
+		RadioButton r4 = new RadioButton("Cardinal Publishers Group");
+		RadioButton r5 = new RadioButton("Bella Distribution");
+		RadioButton r6 = new RadioButton("Publishers Group West");
+		r1.setToggleGroup(Supplier);
+		r2.setToggleGroup(Supplier);
+		r3.setToggleGroup(Supplier);
+		r4.setToggleGroup(Supplier);
+		r5.setToggleGroup(Supplier);
+		r6.setToggleGroup(Supplier);
+		gridSupplier.add(r1, 0, 0);
+		gridSupplier.add(r2, 1, 0);
+		gridSupplier.add(r3, 1, 2);
+		gridSupplier.add(r4, 0, 1);
+		gridSupplier.add(r5, 0, 2);
+		gridSupplier.add(r6, 1, 1);
+		gridSupplier.setHgap(5);
+		gridSupplier.setVgap(5);
 
 
 
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textBookISBN, 0, 0);
-     	grid.add(bookISBN, 1, 0);
-     	grid.add(textTitle,0, 1);
-     	grid.add(title, 1, 1);
-     	grid.add(textSupplier, 0, 2);
-     	grid.add(gridSupplier, 1, 2);
-     	grid.add(textOriginalPrice, 0, 3);
-     	grid.add(originalPrice, 1, 3);
-     	grid.add(textSellingPrice,0,4);
-     	grid.add(sellingPrice, 1, 4);
-     	grid.add(textAuthor, 0, 5);
-     	grid.add(author, 1, 5);
-     	grid.add(textQuantity, 0, 6);
-     	grid.add(quantity, 1, 6);
-     	grid.add(textSystem, 0, 9);
-     	grid.add(addedOrNotStockCategory, 1, 9);
-     	grid.add(stockCategoryAddBook, 2, 10);
-     	grid.add(bttBack, 0, 10);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textBookISBN, 0, 0);
+		grid.add(bookISBN, 1, 0);
+		grid.add(textTitle,0, 1);
+		grid.add(title, 1, 1);
+		grid.add(textSupplier, 0, 2);
+		grid.add(gridSupplier, 1, 2);
+		grid.add(textOriginalPrice, 0, 3);
+		grid.add(originalPrice, 1, 3);
+		grid.add(textSellingPrice,0,4);
+		grid.add(sellingPrice, 1, 4);
+		grid.add(textAuthor, 0, 5);
+		grid.add(author, 1, 5);
+		grid.add(textQuantity, 0, 6);
+		grid.add(quantity, 1, 6);
+		grid.add(textSystem, 0, 9);
+		grid.add(addedOrNotStockCategory, 1, 9);
+		grid.add(stockCategoryAddBook, 2, 10);
+		grid.add(bttBack, 0, 10);
 
 
-     	addedOrNotStockCategory.setEditable(false);
-     	bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-            	bttBack.getScene().setRoot( categoryStock(category) );
-            }
+		addedOrNotStockCategory.setEditable(false);
+		bttBack.setOnAction(event -> {
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot( categoryStock(category) );
+			}
 
- 	    });
-     	stockCategoryAddBook.setOnAction(event -> {
-            if(event.getSource()==stockCategoryAddBook) {
+		});
+		stockCategoryAddBook.setOnAction(event -> {
+			if(event.getSource()==stockCategoryAddBook) {
 
-            	RadioButton chk = (RadioButton)Supplier.getSelectedToggle();
+				RadioButton chk = (RadioButton)Supplier.getSelectedToggle();
 
-    			if (bookISBN.getCharacters().toString().isEmpty() || title.getCharacters().toString().isEmpty() || Supplier.getSelectedToggle() == null
-    					|| originalPrice.getCharacters().toString().isEmpty() || sellingPrice.getCharacters().toString().isEmpty() || author.getCharacters().toString().isEmpty()
-    					|| quantity.getCharacters().toString().isEmpty()) {
-    				addedOrNotStockCategory.setText("Failed, Empty Fields");
-    				return;
-    			}
+				if (bookISBN.getCharacters().toString().isEmpty() || title.getCharacters().toString().isEmpty() || Supplier.getSelectedToggle() == null
+						|| originalPrice.getCharacters().toString().isEmpty() || sellingPrice.getCharacters().toString().isEmpty() || author.getCharacters().toString().isEmpty()
+						|| quantity.getCharacters().toString().isEmpty()) {
+					addedOrNotStockCategory.setText("Failed, Empty Fields");
+					return;
+				}
 
-    			if (!bookISBN.getCharacters().toString().matches("\\d{13}")) {
-    				addedOrNotStockCategory.setText("Failed, Invalid ISBN");
-    				return;
-    			}
+				if (!bookISBN.getCharacters().toString().matches("\\d{13}")) {
+					addedOrNotStockCategory.setText("Failed, Invalid ISBN");
+					return;
+				}
 
-    			if ( !(quantity.getCharacters().toString().matches("\\d{1,}")) || !(originalPrice.getCharacters().toString().matches("\\d{1,}"))
-    					|| !(sellingPrice.getCharacters().toString().matches("\\d{1,}")) ||  Integer.parseInt(sellingPrice.getCharacters().toString())==0
-    					|| Integer.parseInt(originalPrice.getCharacters().toString()) == 0 || Integer.parseInt(quantity.getCharacters().toString()) == 0) {
+				if ( !(quantity.getCharacters().toString().matches("\\d{1,}")) || !(originalPrice.getCharacters().toString().matches("\\d{1,}"))
+						|| !(sellingPrice.getCharacters().toString().matches("\\d{1,}")) ||  Integer.parseInt(sellingPrice.getCharacters().toString())==0
+						|| Integer.parseInt(originalPrice.getCharacters().toString()) == 0 || Integer.parseInt(quantity.getCharacters().toString()) == 0) {
 
-    				addedOrNotStockCategory.setText("Failed, Invalid Numbers");
-    				return;
-    			}
+					addedOrNotStockCategory.setText("Failed, Invalid Numbers");
+					return;
+				}
 
-    			if (BillNumber.isPartOfBooks(bookISBN.getCharacters().toString())){
-    				addedOrNotStockCategory.setText("Failed, Already In Stock");
-    				return;
+				if (BillNumber.isPartOfBooks(bookISBN.getCharacters().toString())){
+					addedOrNotStockCategory.setText("Failed, Already In Stock");
+					return;
 
-    			}
+				}
 
-    			String bIsbn = bookISBN.getCharacters().toString();
-    			String bTitle = title.getCharacters().toString();
-    			String bSupplier = chk.getText();
-    			int bSellingPrice = Integer.parseInt(sellingPrice.getCharacters().toString());
-    			int bOriginalPrice = Integer.parseInt(originalPrice.getCharacters().toString());
-    			String bAuthor = author.getCharacters().toString();
-    			int bStock = Integer.parseInt(quantity.getCharacters().toString());
+				String bIsbn = bookISBN.getCharacters().toString();
+				String bTitle = title.getCharacters().toString();
+				String bSupplier = chk.getText();
+				int bSellingPrice = Integer.parseInt(sellingPrice.getCharacters().toString());
+				int bOriginalPrice = Integer.parseInt(originalPrice.getCharacters().toString());
+				String bAuthor = author.getCharacters().toString();
+				int bStock = Integer.parseInt(quantity.getCharacters().toString());
 
-    		    Book book = new Book(bIsbn,bTitle,category,bSupplier,bOriginalPrice,bSellingPrice,bAuthor,bStock);
-    		    book.addQuantitiesPurchased(bStock);
-    		    date = new Date();
-    		    book.addPurchasedDate(date);
+				Book book = new Book(bIsbn,bTitle,category,bSupplier,bOriginalPrice,bSellingPrice,bAuthor,bStock);
+				book.addQuantitiesPurchased(bStock);
+				date = new Date();
+				book.addPurchasedDate(date);
 
 				//this adds the books to the stock and saves it to the file
 				BillNumber.addBookToStock(book);
 
 				bookISBN.clear();
-    		    title.clear();
-    		    Supplier.getSelectedToggle().setSelected(false);
-    		    originalPrice.clear();
-    		    sellingPrice.clear();
-    		    author.clear();
-    		    quantity.clear();
+				title.clear();
+				Supplier.getSelectedToggle().setSelected(false);
+				originalPrice.clear();
+				sellingPrice.clear();
+				author.clear();
+				quantity.clear();
 
 
-    		    addedOrNotStockCategory.setText("Added");
+				addedOrNotStockCategory.setText("Added");
 
-            }
+			}
 
- 	    });
+		});
 
-     	border.setCenter(grid);
-
-
-
-    	return border;
-    }
-
-    //------------------------------------------------------------------------Administrator--------------------------------------------------------------------------
+		border.setCenter(grid);
 
 
 
-    public BorderPane administratorMainPage() {
-    	BorderPane border = new BorderPane();
+		return border;
+	}
+
+	//------------------------------------------------------------------------Administrator--------------------------------------------------------------------------
 
 
-    	Text text = new Text("Manage Employees");
+
+	public BorderPane administratorMainPage() {
+		BorderPane border = new BorderPane();
+
+
+		Text text = new Text("Manage Employees");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1229,45 +1229,45 @@ public BorderPane mainPage() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(5);
-	    grid.setVgap(5);
-	    grid.add(bttManageLibrarians, 0, 0);
-	    grid.add(bttManageManager, 1, 0);
-	    grid.add(bttStats, 2, 0);
-	    grid.add(bttBack, 3, 0);
-	    border.setCenter(grid);
+		grid.setVgap(5);
+		grid.add(bttManageLibrarians, 0, 0);
+		grid.add(bttManageManager, 1, 0);
+		grid.add(bttStats, 2, 0);
+		grid.add(bttBack, 3, 0);
+		border.setCenter(grid);
 
 
-	    bttManageLibrarians.setOnAction(event ->{
-	    	if (event.getSource() == bttManageLibrarians) {
-	    		bttManageLibrarians.getScene().setRoot(administratorManageLibrariansPage());
-	    	}
-	    });
+		bttManageLibrarians.setOnAction(event ->{
+			if (event.getSource() == bttManageLibrarians) {
+				bttManageLibrarians.getScene().setRoot(administratorManageLibrariansPage());
+			}
+		});
 
-	    bttManageManager.setOnAction(event ->{
-	    	bttManageManager.getScene().setRoot(administratorManagerPage());
-	    });
+		bttManageManager.setOnAction(event ->{
+			bttManageManager.getScene().setRoot(administratorManagerPage());
+		});
 
-	    bttStats.setOnAction(event ->{
-	    	bttStats.getScene().setRoot(administratorStatPage());
-	    });
+		bttStats.setOnAction(event ->{
+			bttStats.getScene().setRoot(administratorStatPage());
+		});
 
-	    bttBack.setOnAction(event-> {
-	    	if (event.getSource() == bttBack) {
-	    		username.clear();
-	    		password.clear();
-	    		bttBack.getScene().setRoot(mainPage());
-	    	}
-	    });
+		bttBack.setOnAction(event-> {
+			if (event.getSource() == bttBack) {
+				username.clear();
+				password.clear();
+				bttBack.getScene().setRoot(mainPage());
+			}
+		});
 
 
-    	return border;
-    }
+		return border;
+	}
 
-    public BorderPane administratorManageLibrariansPage(){
+	public BorderPane administratorManageLibrariansPage(){
 
-        BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text textHeaderManager = new Text("Select Librarians");
+		Text textHeaderManager = new Text("Select Librarians");
 		StackPane stackHeader = new StackPane();
 		textHeaderManager.setFont(new Font(30));
 		stackHeader.getChildren().add(textHeaderManager);
@@ -1277,10 +1277,10 @@ public BorderPane mainPage() {
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBack);
 		bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-               bttBack.getScene().setRoot( administratorMainPage() );
-            }
-	    });
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot( administratorMainPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
@@ -1289,81 +1289,81 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	int k=0;
-     	int j=0;
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		int k=0;
+		int j=0;
 
 		for (int i=0;i<librarians.size();i++) {
-    		if (i%5==0) {
-    			k=0;
-    			j++;
-    		}
+			if (i%5==0) {
+				k=0;
+				j++;
+			}
 
 
-    		Button button = createButton4(librarians.get(i));
+			Button button = createButton4(librarians.get(i));
 
 			grid.add(button,k++,j);
 
-    	}
+		}
 		grid.add(bttAddNew, k, j);
-    	border.setCenter(grid);
+		border.setCenter(grid);
 
-    	bttAddNew.setOnAction(event-> {
-    		bttAddNew.getScene().setRoot(addLibrarian());
-    	});
-
-
-    	return border;
-    }
-
-    //-----------------------------------------------
-
-    private Button createButton4(Librarian lib) {
-    	Button button;
-
-    	if (lib.getName()==null)
-    		button = new Button(lib.getUsername());
-
-    	else
-    		button = new Button(lib.getName());
+		bttAddNew.setOnAction(event-> {
+			bttAddNew.getScene().setRoot(addLibrarian());
+		});
 
 
-        button.setOnAction(new ButtonHandler4(lib));
-        return button ;
-    }
+		return border;
+	}
 
-    class ButtonHandler4 implements EventHandler<ActionEvent> {
+	//-----------------------------------------------
 
-    	private final Librarian lib;
+	private Button createButton4(Librarian lib) {
+		Button button;
 
-        ButtonHandler4(Librarian lib) {
-            this.lib = lib;
-        }
+		if (lib.getName()==null)
+			button = new Button(lib.getUsername());
 
-        @Override
-        public void handle(ActionEvent event) {
-        	Stage stage = new Stage();
-        	Scene scene = new Scene(editLibrarianPage(lib));
-        	//
+		else
+			button = new Button(lib.getName());
+
+
+		button.setOnAction(new ButtonHandler4(lib));
+		return button ;
+	}
+
+	class ButtonHandler4 implements EventHandler<ActionEvent> {
+
+		private final Librarian lib;
+
+		ButtonHandler4(Librarian lib) {
+			this.lib = lib;
+		}
+
+		@Override
+		public void handle(ActionEvent event) {
+			Stage stage = new Stage();
+			Scene scene = new Scene(editLibrarianPage(lib));
+			//
 			// stage.getIcons().add(new Image("bookIcon.png"));
-        	stage.setWidth(465);
-        	stage.setHeight(465);
-        	stage.setScene(scene);
-        	stage.show();
+			stage.setWidth(465);
+			stage.setHeight(465);
+			stage.setScene(scene);
+			stage.show();
 
-        }
+		}
 
-    }
+	}
 
-    //-------------------------------------------------
+	//-------------------------------------------------
 
 
-    public BorderPane addLibrarian() {
+	public BorderPane addLibrarian() {
 
-        BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Add new Librarian");
+		Text text = new Text("Add new Librarian");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1388,97 +1388,97 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textName,0,0);
-	    grid.add(name,1,0);
-	    grid.add(textPassword,0,1);
-	    grid.add(password,1,1);
-	    grid.add(textUsername,0,2);
-	    grid.add(username, 1, 2);
-	    grid.add(textSalary, 0, 3);
-	    grid.add(salary, 1, 3);
-	    grid.add(textPhone, 0, 4);
-	    grid.add(phone, 1, 4);
-	    grid.add(textEmail, 0, 5);
-	    grid.add(email, 1, 5);
-	    grid.add(textSystem, 0, 8);
-	    grid.add(libWarningNew, 1, 8);
-	    grid.add(bttAdd, 3, 9);
-	    grid.add(bttBack, 0, 9);
-	    border.setCenter(grid);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textName,0,0);
+		grid.add(name,1,0);
+		grid.add(textPassword,0,1);
+		grid.add(password,1,1);
+		grid.add(textUsername,0,2);
+		grid.add(username, 1, 2);
+		grid.add(textSalary, 0, 3);
+		grid.add(salary, 1, 3);
+		grid.add(textPhone, 0, 4);
+		grid.add(phone, 1, 4);
+		grid.add(textEmail, 0, 5);
+		grid.add(email, 1, 5);
+		grid.add(textSystem, 0, 8);
+		grid.add(libWarningNew, 1, 8);
+		grid.add(bttAdd, 3, 9);
+		grid.add(bttBack, 0, 9);
+		border.setCenter(grid);
 
-	    bttBack.setOnAction(event -> {
-	    	bttBack.getScene().setRoot(administratorManageLibrariansPage());
-	    });
+		bttBack.setOnAction(event -> {
+			bttBack.getScene().setRoot(administratorManageLibrariansPage());
+		});
 
-	    bttAdd.setOnAction(event -> {
+		bttAdd.setOnAction(event -> {
 
-	    	if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty() || name.getCharacters().isEmpty()) {
-	    		libWarningNew.setText("Failed, Empty Fields!");
-	    		return;
-	    	}
+			if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty() || name.getCharacters().isEmpty()) {
+				libWarningNew.setText("Failed, Empty Fields!");
+				return;
+			}
 
-	    	if (!(Librarian.checkName(name.getCharacters().toString()))) {
-	    		libWarningNew.setText("Invalid Name");
-	    		name.clear();
-	    		return;
-	    	}
+			if (!(Librarian.checkName(name.getCharacters().toString()))) {
+				libWarningNew.setText("Invalid Name");
+				name.clear();
+				return;
+			}
 
-	    	if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
-	    		libWarningNew.setText("Invalid email");
-	    		email.clear();
-	    		return;
-	    	}
+			if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
+				libWarningNew.setText("Invalid email");
+				email.clear();
+				return;
+			}
 
-	    	if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
-	    		libWarningNew.setText("Invalid password");
-	    		password.clear();
-	    		return;
-	    	}
+			if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
+				libWarningNew.setText("Invalid password");
+				password.clear();
+				return;
+			}
 
-	    	if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
-	    		libWarningNew.setText("Invalid salary");
-	    		salary.clear();
-	    		return;
-	    	}
-	    	if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
-	    		libWarningNew.setText("Invalid phone");
-	    		phone.clear();
-	    		return;
-	    	}
-
-
-	    	librarian = new Librarian( username.getCharacters().toString(), password.getCharacters().toString(), name.getCharacters().toString(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
-	    			email.getCharacters().toString());
-
-	    	Manager.AddLibrarian(librarian);
-	    	libWarningNew.setText("Succes!");
+			if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
+				libWarningNew.setText("Invalid salary");
+				salary.clear();
+				return;
+			}
+			if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
+				libWarningNew.setText("Invalid phone");
+				phone.clear();
+				return;
+			}
 
 
-	    	username.clear();
-	    	name.clear();
-	    	password.clear();
-	    	salary.clear();
-	    	phone.clear();
-	    	email.clear();
+			librarian = new Librarian( username.getCharacters().toString(), password.getCharacters().toString(), name.getCharacters().toString(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
+					email.getCharacters().toString());
+
+			Manager.AddLibrarian(librarian);
+			libWarningNew.setText("Succes!");
 
 
-
-	    });
-
-
-	    return border;
+			username.clear();
+			name.clear();
+			password.clear();
+			salary.clear();
+			phone.clear();
+			email.clear();
 
 
 
-    }
+		});
 
-    public BorderPane editLibrarianPage(Librarian lib) {
 
-    	BorderPane border = new BorderPane();
+		return border;
 
-    	Text text = new Text("Edit Librarian");
+
+
+	}
+
+	public BorderPane editLibrarianPage(Librarian lib) {
+
+		BorderPane border = new BorderPane();
+
+		Text text = new Text("Edit Librarian");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1503,168 +1503,168 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textName,0,0);
-	    grid.add(name,1,0);
-	    grid.add(textPassword,0,1);
-	    grid.add(password,1,1);
-	    grid.add(textUsername,0,2);
-	    grid.add(username, 1, 2);
-	    grid.add(textSalary, 0, 3);
-	    grid.add(salary, 1, 3);
-	    grid.add(textPhone, 0, 4);
-	    grid.add(phone, 1, 4);
-	    grid.add(textEmail, 0, 5);
-	    grid.add(email, 1, 5);
-	    grid.add(textTotalNumberBillsLibrarian, 2, 0);
-	    grid.add(totalNumberBillsLibrarian, 3, 0);
-	    grid.add(textBooksSold, 2, 1);
-	    grid.add(booksSold, 3, 1);
-	    grid.add(textTotalMoneyDay, 2, 2);
-	    grid.add(totalAmountOfMoneyMadeInDay, 3, 2);
-	    grid.add(textTotalMoneyMonth, 2, 3);
-	    grid.add(totalAmountOfMoneyMadeInMonth, 3, 3);
-     	grid.add(textTotalMoneyYear, 2, 4);
-     	grid.add(totalAmountOfMoneyMadeInYear, 3, 4);
-     	grid.add(textSystem, 0, 8);
-     	grid.add(libLoginWarning, 1, 8);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textName,0,0);
+		grid.add(name,1,0);
+		grid.add(textPassword,0,1);
+		grid.add(password,1,1);
+		grid.add(textUsername,0,2);
+		grid.add(username, 1, 2);
+		grid.add(textSalary, 0, 3);
+		grid.add(salary, 1, 3);
+		grid.add(textPhone, 0, 4);
+		grid.add(phone, 1, 4);
+		grid.add(textEmail, 0, 5);
+		grid.add(email, 1, 5);
+		grid.add(textTotalNumberBillsLibrarian, 2, 0);
+		grid.add(totalNumberBillsLibrarian, 3, 0);
+		grid.add(textBooksSold, 2, 1);
+		grid.add(booksSold, 3, 1);
+		grid.add(textTotalMoneyDay, 2, 2);
+		grid.add(totalAmountOfMoneyMadeInDay, 3, 2);
+		grid.add(textTotalMoneyMonth, 2, 3);
+		grid.add(totalAmountOfMoneyMadeInMonth, 3, 3);
+		grid.add(textTotalMoneyYear, 2, 4);
+		grid.add(totalAmountOfMoneyMadeInYear, 3, 4);
+		grid.add(textSystem, 0, 8);
+		grid.add(libLoginWarning, 1, 8);
 
-     	HBox hbox = new HBox();
-     	hbox.getChildren().addAll(bttSubmit,bttDelete);
-     	hbox.setAlignment(Pos.CENTER);
-     	hbox.setSpacing(5);
-     	hbox.setPadding(new Insets(0,0,20,0));
-     	border.setBottom(hbox);
+		HBox hbox = new HBox();
+		hbox.getChildren().addAll(bttSubmit,bttDelete);
+		hbox.setAlignment(Pos.CENTER);
+		hbox.setSpacing(5);
+		hbox.setPadding(new Insets(0,0,20,0));
+		border.setBottom(hbox);
 
-     	totalNumberBillsLibrarian.setEditable(false);
-     	booksSold.setEditable(false);
-     	totalAmountOfMoneyMadeInDay.setEditable(false);
-     	totalAmountOfMoneyMadeInMonth.setEditable(false);
-     	totalAmountOfMoneyMadeInYear.setEditable(false);
-     	libLoginWarning.setEditable(false);
+		totalNumberBillsLibrarian.setEditable(false);
+		booksSold.setEditable(false);
+		totalAmountOfMoneyMadeInDay.setEditable(false);
+		totalAmountOfMoneyMadeInMonth.setEditable(false);
+		totalAmountOfMoneyMadeInYear.setEditable(false);
+		libLoginWarning.setEditable(false);
 
-     	totalNumberBillsLibrarian.setText(Integer.toString(lib.getNumberOfBills()));
-     	booksSold.setText(Integer.toString(lib.getBooksSold()));
-     	totalAmountOfMoneyMadeInDay.setText( Double.toString(lib.moneyMadeInDay()) );
-     	totalAmountOfMoneyMadeInMonth.setText( Double.toString(lib.moneyMadeInMonth()) );
-     	totalAmountOfMoneyMadeInYear.setText( Double.toString(lib.moneyMadeInYear()) );
+		totalNumberBillsLibrarian.setText(Integer.toString(lib.getNumberOfBills()));
+		booksSold.setText(Integer.toString(lib.getBooksSold()));
+		totalAmountOfMoneyMadeInDay.setText( Double.toString(lib.moneyMadeInDay()) );
+		totalAmountOfMoneyMadeInMonth.setText( Double.toString(lib.moneyMadeInMonth()) );
+		totalAmountOfMoneyMadeInYear.setText( Double.toString(lib.moneyMadeInYear()) );
 
-	    name.setEditable(false);
-	    name.setText(lib.getName());
-	    username.setText(lib.getUsername());
-	    password.setText(lib.getPassword());
-	    salary.setText(Double.toString(lib.getSalary()));
-	    email.setText(lib.getEmail());
-	    phone.setText(lib.getPhone());
+		name.setEditable(false);
+		name.setText(lib.getName());
+		username.setText(lib.getUsername());
+		password.setText(lib.getPassword());
+		salary.setText(Double.toString(lib.getSalary()));
+		email.setText(lib.getEmail());
+		phone.setText(lib.getPhone());
 
-	    bttDelete.setOnAction(event ->{
+		bttDelete.setOnAction(event ->{
 
-	    	if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
-	    		libLoginWarning.setText("Empty Fields");
-	    		return;
-	    	}
-
-
-	    	if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
-	    		email.clear();
-	    		libLoginWarning.setText("Invalid Email");
-	    		return;
-	    	}
-
-	    	if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
-	    		password.clear();
-	    		libLoginWarning.setText("Invalid Password");
-	    		return;
-	    	}
-
-	    	if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
-	    		phone.clear();
-	    		libLoginWarning.setText("Invalid Phone Number");
-	    		return;
-	    	}
-
-	    	if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
-	    		salary.clear();
-	    		libLoginWarning.setText("Invalid Salary");
-	    		return;
-	    	}
-
-	    	librarian = new Librarian( username.getCharacters().toString(), password.getCharacters().toString(), lib.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
-	    			email.getCharacters().toString());
-
-	    	Manager.deleteLibrarian(librarian);
-	    	username.clear();
-	    	name.clear();
-	    	password.clear();
-	    	salary.clear();
-	    	phone.clear();
-	    	email.clear();
-	    	totalNumberBillsLibrarian.clear();
-	    	booksSold.clear();
-	    	totalAmountOfMoneyMadeInDay.clear();
-	    	totalAmountOfMoneyMadeInMonth.clear();
-	    	totalAmountOfMoneyMadeInYear.clear();
-	    	libLoginWarning.setText("Deleted Succesfully!");
+			if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
+				libLoginWarning.setText("Empty Fields");
+				return;
+			}
 
 
+			if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
+				email.clear();
+				libLoginWarning.setText("Invalid Email");
+				return;
+			}
 
-	    });
+			if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
+				password.clear();
+				libLoginWarning.setText("Invalid Password");
+				return;
+			}
 
-	    bttSubmit.setOnAction(event ->{
+			if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
+				phone.clear();
+				libLoginWarning.setText("Invalid Phone Number");
+				return;
+			}
 
-	    	if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
-	    		libLoginWarning.setText("Empty Fields");
-	    		return;
-	    	}
+			if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
+				salary.clear();
+				libLoginWarning.setText("Invalid Salary");
+				return;
+			}
 
+			librarian = new Librarian( username.getCharacters().toString(), password.getCharacters().toString(), lib.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
+					email.getCharacters().toString());
 
-	    	if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
-	    		email.clear();
-	    		libLoginWarning.setText("Invalid Email");
-	    		return;
-	    	}
-
-	    	if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
-	    		password.clear();
-	    		libLoginWarning.setText("Invalid Password");
-	    		return;
-	    	}
-
-	    	if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
-	    		phone.clear();
-	    		libLoginWarning.setText("Invalid Phone Number");
-	    		return;
-	    	}
-
-	    	if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
-	    		salary.clear();
-	    		libLoginWarning.setText("Invalid Salary");
-	    		return;
-	    	}
-
-	    	librarian = new Librarian( username.getCharacters().toString(), password.getCharacters().toString(), lib.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
-	    			email.getCharacters().toString());
-
-
-	    	Manager.updateLibrarians(librarian);
-	    	libLoginWarning.setText("Success!");
-
-	    });
+			Manager.deleteLibrarian(librarian);
+			username.clear();
+			name.clear();
+			password.clear();
+			salary.clear();
+			phone.clear();
+			email.clear();
+			totalNumberBillsLibrarian.clear();
+			booksSold.clear();
+			totalAmountOfMoneyMadeInDay.clear();
+			totalAmountOfMoneyMadeInMonth.clear();
+			totalAmountOfMoneyMadeInYear.clear();
+			libLoginWarning.setText("Deleted Succesfully!");
 
 
 
-	    border.setCenter(grid);
+		});
 
-    	return border;
-    }
+		bttSubmit.setOnAction(event ->{
+
+			if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
+				libLoginWarning.setText("Empty Fields");
+				return;
+			}
 
 
-    public BorderPane administratorManagerPage() {
+			if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
+				email.clear();
+				libLoginWarning.setText("Invalid Email");
+				return;
+			}
 
-        BorderPane border = new BorderPane();
+			if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
+				password.clear();
+				libLoginWarning.setText("Invalid Password");
+				return;
+			}
 
-    	Text text = new Text("Select Manager");
+			if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
+				phone.clear();
+				libLoginWarning.setText("Invalid Phone Number");
+				return;
+			}
+
+			if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
+				salary.clear();
+				libLoginWarning.setText("Invalid Salary");
+				return;
+			}
+
+			librarian = new Librarian( username.getCharacters().toString(), password.getCharacters().toString(), lib.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
+					email.getCharacters().toString());
+
+
+			Manager.updateLibrarians(librarian);
+			libLoginWarning.setText("Success!");
+
+		});
+
+
+
+		border.setCenter(grid);
+
+		return border;
+	}
+
+
+	public BorderPane administratorManagerPage() {
+
+		BorderPane border = new BorderPane();
+
+		Text text = new Text("Select Manager");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1674,10 +1674,10 @@ public BorderPane mainPage() {
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBack);
 		bttBack.setOnAction(event -> {
-            if(event.getSource()==bttBack) {
-               bttBack.getScene().setRoot( administratorMainPage() );
-            }
-	    });
+			if(event.getSource()==bttBack) {
+				bttBack.getScene().setRoot( administratorMainPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
@@ -1686,81 +1686,81 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	int k=0;
-     	int j=0;
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		int k=0;
+		int j=0;
 
 		for (int i=0;i<managers.size();i++) {
-    		if (i%5==0) {
-    			k=0;
-    			j++;
-    		}
+			if (i%5==0) {
+				k=0;
+				j++;
+			}
 
 
-    		Button button = createButton5(managers.get(i));
+			Button button = createButton5(managers.get(i));
 
 			grid.add(button,k++,j);
 
-    	}
+		}
 		grid.add(bttAddNew, k, j);
-    	border.setCenter(grid);
+		border.setCenter(grid);
 
-    	bttAddNew.setOnAction(event-> {
-    		bttAddNew.getScene().setRoot(addManager());
-    	});
+		bttAddNew.setOnAction(event-> {
+			bttAddNew.getScene().setRoot(addManager());
+		});
 
 
 		return border;
 
-    }
+	}
 
 
-    //----------------------------------------------------------------------
+	//----------------------------------------------------------------------
 
 
-    private Button createButton5(Manager mag) {
-    	Button button;
+	private Button createButton5(Manager mag) {
+		Button button;
 
 
-   		button = new Button(mag.getName());
+		button = new Button(mag.getName());
 
 
-        button.setOnAction(new ButtonHandler5(mag));
-        return button ;
-    }
+		button.setOnAction(new ButtonHandler5(mag));
+		return button ;
+	}
 
-    class ButtonHandler5 implements EventHandler<ActionEvent> {
+	class ButtonHandler5 implements EventHandler<ActionEvent> {
 
-    	private final Manager mag;
+		private final Manager mag;
 
-        ButtonHandler5(Manager mag) {
-            this.mag = mag;
-        }
+		ButtonHandler5(Manager mag) {
+			this.mag = mag;
+		}
 
-        @Override
-        public void handle(ActionEvent event) {
-        	Stage stage = new Stage();
-        	Scene scene = new Scene( editManagerPage(mag) );
-        	//stage.getIcons().add(new Image("bookIcon.png"));
-        	stage.setWidth(465);
-        	stage.setHeight(465);
-        	stage.setScene(scene);
-        	stage.show();
+		@Override
+		public void handle(ActionEvent event) {
+			Stage stage = new Stage();
+			Scene scene = new Scene( editManagerPage(mag) );
+			//stage.getIcons().add(new Image("bookIcon.png"));
+			stage.setWidth(465);
+			stage.setHeight(465);
+			stage.setScene(scene);
+			stage.show();
 
-        }
+		}
 
-    }
+	}
 
-    //---------------------------------------------------------------------
-
-
-    public BorderPane addManager() {
+	//---------------------------------------------------------------------
 
 
-        BorderPane border = new BorderPane();
+	public BorderPane addManager() {
 
-    	Text text = new Text("Add new Manager");
+
+		BorderPane border = new BorderPane();
+
+		Text text = new Text("Add new Manager");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1785,95 +1785,95 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textName,0,0);
-	    grid.add(name,1,0);
-	    grid.add(textUsername,0,1);
-	    grid.add(username,1,1);
-	    grid.add(textPassword,0,2);
-	    grid.add(password, 1, 2);
-	    grid.add(textSalary, 0, 3);
-	    grid.add(salary, 1, 3);
-	    grid.add(textPhone, 0, 4);
-	    grid.add(phone, 1, 4);
-	    grid.add(textEmail, 0, 5);
-	    grid.add(email, 1, 5);
-	    grid.add(textSystem, 0, 8);
-	    grid.add(magWarningNew, 1, 8);
-	    grid.add(bttAdd, 3, 9);
-	    grid.add(bttBack, 0, 9);
-	    border.setCenter(grid);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textName,0,0);
+		grid.add(name,1,0);
+		grid.add(textUsername,0,1);
+		grid.add(username,1,1);
+		grid.add(textPassword,0,2);
+		grid.add(password, 1, 2);
+		grid.add(textSalary, 0, 3);
+		grid.add(salary, 1, 3);
+		grid.add(textPhone, 0, 4);
+		grid.add(phone, 1, 4);
+		grid.add(textEmail, 0, 5);
+		grid.add(email, 1, 5);
+		grid.add(textSystem, 0, 8);
+		grid.add(magWarningNew, 1, 8);
+		grid.add(bttAdd, 3, 9);
+		grid.add(bttBack, 0, 9);
+		border.setCenter(grid);
 
-	    bttBack.setOnAction(event -> {
-	    	bttBack.getScene().setRoot( administratorManagerPage());
-	    });
+		bttBack.setOnAction(event -> {
+			bttBack.getScene().setRoot( administratorManagerPage());
+		});
 
-	    bttAdd.setOnAction(event -> {
+		bttAdd.setOnAction(event -> {
 
-	    	if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty() || name.getCharacters().isEmpty()) {
-	    		magWarningNew.setText("Failed, Empty Fields!");
-	    		return;
-	    	}
+			if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty() || name.getCharacters().isEmpty()) {
+				magWarningNew.setText("Failed, Empty Fields!");
+				return;
+			}
 
-	    	if (!(Librarian.checkName(name.getCharacters().toString()))) {
-	    		magWarningNew.setText("Invalid Name");
-	    		name.clear();
-	    		return;
-	    	}
+			if (!(Librarian.checkName(name.getCharacters().toString()))) {
+				magWarningNew.setText("Invalid Name");
+				name.clear();
+				return;
+			}
 
-	    	if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
-	    		magWarningNew.setText("Invalid email");
-	    		email.clear();
-	    		return;
-	    	}
+			if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
+				magWarningNew.setText("Invalid email");
+				email.clear();
+				return;
+			}
 
-	    	if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
-	    		magWarningNew.setText("Invalid password");
-	    		password.clear();
-	    		return;
-	    	}
+			if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
+				magWarningNew.setText("Invalid password");
+				password.clear();
+				return;
+			}
 
-	    	if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
-	    		magWarningNew.setText("Invalid salary");
-	    		salary.clear();
-	    		return;
-	    	}
-	    	if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
-	    		magWarningNew.setText("Invalid phone");
-	    		phone.clear();
-	    		return;
-	    	}
-
-
-	    	manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), name.getCharacters().toString(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
-	    			email.getCharacters().toString());
-
-	    	Administrator.AddManager(manager);
-	    	magWarningNew.setText("Succes!");
-
-	    	username.clear();
-	    	name.clear();
-	    	password.clear();
-	    	salary.clear();
-	    	phone.clear();
-	    	email.clear();
-
-	    });
+			if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
+				magWarningNew.setText("Invalid salary");
+				salary.clear();
+				return;
+			}
+			if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
+				magWarningNew.setText("Invalid phone");
+				phone.clear();
+				return;
+			}
 
 
-	    return border;
+			manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), name.getCharacters().toString(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
+					email.getCharacters().toString());
+
+			Administrator.AddManager(manager);
+			magWarningNew.setText("Succes!");
+
+			username.clear();
+			name.clear();
+			password.clear();
+			salary.clear();
+			phone.clear();
+			email.clear();
+
+		});
+
+
+		return border;
 
 
 
-    }
+	}
 
 
-    public BorderPane editManagerPage(Manager mag) {
+	public BorderPane editManagerPage(Manager mag) {
 
-    	BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Edit Manager");
+		Text text = new Text("Edit Manager");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -1898,141 +1898,141 @@ public BorderPane mainPage() {
 
 		GridPane grid = new GridPane();
 		grid.setHgap(5);
-     	grid.setVgap(5);
-     	grid.setAlignment(Pos.CENTER);
-     	grid.add(textName,0,0);
-	    grid.add(name,1,0);
-	    grid.add(textPassword,0,1);
-	    grid.add(password,1,1);
-	    grid.add(textUsername,0,2);
-	    grid.add(username, 1, 2);
-	    grid.add(textSalary, 0, 3);
-	    grid.add(salary, 1, 3);
-	    grid.add(textPhone, 0, 4);
-	    grid.add(phone, 1, 4);
-	    grid.add(textEmail, 0, 5);
-	    grid.add(email, 1, 5);
-	    grid.add(textSystem, 0, 8);
-	    grid.add(magLoginWarning, 1, 8);
+		grid.setVgap(5);
+		grid.setAlignment(Pos.CENTER);
+		grid.add(textName,0,0);
+		grid.add(name,1,0);
+		grid.add(textPassword,0,1);
+		grid.add(password,1,1);
+		grid.add(textUsername,0,2);
+		grid.add(username, 1, 2);
+		grid.add(textSalary, 0, 3);
+		grid.add(salary, 1, 3);
+		grid.add(textPhone, 0, 4);
+		grid.add(phone, 1, 4);
+		grid.add(textEmail, 0, 5);
+		grid.add(email, 1, 5);
+		grid.add(textSystem, 0, 8);
+		grid.add(magLoginWarning, 1, 8);
 
-     	HBox hbox = new HBox();
-     	hbox.getChildren().addAll(bttSubmit,bttDelete);
-     	hbox.setAlignment(Pos.CENTER);
-     	hbox.setSpacing(5);
-     	hbox.setPadding(new Insets(0,0,20,0));
-     	border.setBottom(hbox);
-
-
-     	magLoginWarning.setEditable(false);
-	    name.setEditable(false);
-
-	    name.setText(mag.getName());
-	    username.setText(mag.getUsername());
-	    password.setText(mag.getPassword());
-	    salary.setText(Double.toString(mag.getSalary()));
-	    email.setText(mag.getEmail());
-	    phone.setText(mag.getPhone());
-
-	    bttDelete.setOnAction(event ->{
-
-	    	if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
-	    		magLoginWarning.setText("Empty Fields");
-	    		return;
-	    	}
+		HBox hbox = new HBox();
+		hbox.getChildren().addAll(bttSubmit,bttDelete);
+		hbox.setAlignment(Pos.CENTER);
+		hbox.setSpacing(5);
+		hbox.setPadding(new Insets(0,0,20,0));
+		border.setBottom(hbox);
 
 
-	    	if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
-	    		email.clear();
-	    		magLoginWarning.setText("Invalid Email");
-	    		return;
-	    	}
+		magLoginWarning.setEditable(false);
+		name.setEditable(false);
 
-	    	if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
-	    		password.clear();
-	    		magLoginWarning.setText("Invalid Password");
-	    		return;
-	    	}
+		name.setText(mag.getName());
+		username.setText(mag.getUsername());
+		password.setText(mag.getPassword());
+		salary.setText(Double.toString(mag.getSalary()));
+		email.setText(mag.getEmail());
+		phone.setText(mag.getPhone());
 
-	    	if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
-	    		phone.clear();
-	    		magLoginWarning.setText("Invalid Phone Number");
-	    		return;
-	    	}
+		bttDelete.setOnAction(event ->{
 
-	    	if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
-	    		salary.clear();
-	    		magLoginWarning.setText("Invalid Salary");
-	    		return;
-	    	}
-
-	    	manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), mag.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
-	    			email.getCharacters().toString());
-
-	    	Administrator.deleteManager(manager);
-	    	username.clear();
-	    	name.clear();
-	    	password.clear();
-	    	salary.clear();
-	    	phone.clear();
-	    	email.clear();
-	    	magLoginWarning.setText("Deleted Succesfully!");
-	    });
-
-	    bttSubmit.setOnAction(event ->{
-
-	    	if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
-	    		magLoginWarning.setText("Empty Fields");
-	    		return;
-	    	}
+			if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
+				magLoginWarning.setText("Empty Fields");
+				return;
+			}
 
 
-	    	if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
-	    		email.clear();
-	    		magLoginWarning.setText("Invalid Email");
-	    		return;
-	    	}
+			if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
+				email.clear();
+				magLoginWarning.setText("Invalid Email");
+				return;
+			}
 
-	    	if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
-	    		password.clear();
-	    		magLoginWarning.setText("Invalid Password");
-	    		return;
-	    	}
+			if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
+				password.clear();
+				magLoginWarning.setText("Invalid Password");
+				return;
+			}
 
-	    	if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
-	    		phone.clear();
-	    		magLoginWarning.setText("Invalid Phone Number");
-	    		return;
-	    	}
+			if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
+				phone.clear();
+				magLoginWarning.setText("Invalid Phone Number");
+				return;
+			}
 
-	    	if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
-	    		salary.clear();
-	    		magLoginWarning.setText("Invalid Salary");
-	    		return;
-	    	}
+			if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
+				salary.clear();
+				magLoginWarning.setText("Invalid Salary");
+				return;
+			}
 
-	    	manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), mag.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
-	    			email.getCharacters().toString());
+			manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), mag.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
+					email.getCharacters().toString());
+
+			Administrator.deleteManager(manager);
+			username.clear();
+			name.clear();
+			password.clear();
+			salary.clear();
+			phone.clear();
+			email.clear();
+			magLoginWarning.setText("Deleted Succesfully!");
+		});
+
+		bttSubmit.setOnAction(event ->{
+
+			if (password.getCharacters().isEmpty() || username.getCharacters().isEmpty() || salary.getCharacters().isEmpty() || phone.getCharacters().isEmpty() || email.getCharacters().isEmpty()) {
+				magLoginWarning.setText("Empty Fields");
+				return;
+			}
 
 
-	    	Administrator.updateManagers(manager);
-	    	magLoginWarning.setText("Success!");
+			if (!(Librarian.checkEmail(email.getCharacters().toString()))) {
+				email.clear();
+				magLoginWarning.setText("Invalid Email");
+				return;
+			}
 
-	    });
+			if (!(Librarian.checkPassword(password.getCharacters().toString()))) {
+				password.clear();
+				magLoginWarning.setText("Invalid Password");
+				return;
+			}
 
-	    border.setCenter(grid);
+			if (!(Librarian.checkPhone(phone.getCharacters().toString()))) {
+				phone.clear();
+				magLoginWarning.setText("Invalid Phone Number");
+				return;
+			}
 
-    	return border;
+			if (!(Librarian.checkSalary(salary.getCharacters().toString()))) {
+				salary.clear();
+				magLoginWarning.setText("Invalid Salary");
+				return;
+			}
 
-    }
+			manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), mag.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
+					email.getCharacters().toString());
+
+
+			Administrator.updateManagers(manager);
+			magLoginWarning.setText("Success!");
+
+		});
+
+		border.setCenter(grid);
+
+		return border;
+
+	}
 
 
 
 
-    public BorderPane administratorStatPage() {
+	public BorderPane administratorStatPage() {
 
-        BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-    	Text text = new Text("Book Statistics");
+		Text text = new Text("Book Statistics");
 		StackPane stack = new StackPane();
 		text.setFont(new Font(30));
 		stack.getChildren().add(text);
@@ -2041,8 +2041,8 @@ public BorderPane mainPage() {
 
 		Button bttSold = new Button("Sold");
 		Button bttBought = new Button("Bought");
-        Button bttIncome = new Button("Income");
-        Button bttCost = new Button("Cost");
+		Button bttIncome = new Button("Income");
+		Button bttCost = new Button("Cost");
 
 
 		GridPane grid = new GridPane();
@@ -2076,45 +2076,45 @@ public BorderPane mainPage() {
 		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( administratorMainPage() );
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( administratorMainPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
 		return border;
-    }
+	}
 
-    public BorderPane administratorIncomePage() {
+	public BorderPane administratorIncomePage() {
 
-        BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-     	Text text = new Text("Income throughout day/month/year");
- 		StackPane stack = new StackPane();
- 		text.setFont(new Font(30));
- 		stack.getChildren().add(text);
- 		stack.setPadding(new Insets(20));
- 		border.setTop(stack);
+		Text text = new Text("Income throughout day/month/year");
+		StackPane stack = new StackPane();
+		text.setFont(new Font(30));
+		stack.getChildren().add(text);
+		stack.setPadding(new Insets(20));
+		border.setTop(stack);
 
- 		TextField totalBooksDay = new TextField();
- 		Text textTotalBooksDay = new Text("Total Books Today");
- 		TextField totalIncomeDay = new TextField();
- 		Text textIncomeDay = new Text("Total Income Today");
+		TextField totalBooksDay = new TextField();
+		Text textTotalBooksDay = new Text("Total Books Today");
+		TextField totalIncomeDay = new TextField();
+		Text textIncomeDay = new Text("Total Income Today");
 
- 		TextField totalBooksMonth = new TextField();
- 		Text textTotalBooksMonth = new Text("Total Books in a Month");
- 		TextField totalIncomeMonth = new TextField();
- 		Text textIncomeMonth = new Text("Total Income in a Month");
+		TextField totalBooksMonth = new TextField();
+		Text textTotalBooksMonth = new Text("Total Books in a Month");
+		TextField totalIncomeMonth = new TextField();
+		Text textIncomeMonth = new Text("Total Income in a Month");
 
- 		TextField totalBooksYearly = new TextField();
- 		Text textTotalBooksYearly = new Text("Total Books in a Year");
- 		TextField totalIncomeYearly = new TextField();
- 		Text textIncomeYearly = new Text("Total Income in a Year");
+		TextField totalBooksYearly = new TextField();
+		Text textTotalBooksYearly = new Text("Total Books in a Year");
+		TextField totalIncomeYearly = new TextField();
+		Text textIncomeYearly = new Text("Total Income in a Year");
 
 
-  		GridPane grid = new GridPane();
- 		grid.setAlignment(Pos.CENTER);
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(5);
 		grid.setVgap(5);
 		grid.add(textTotalBooksDay, 0, 0);
@@ -2142,58 +2142,58 @@ public BorderPane mainPage() {
 		totalBooksDay.setText( Integer.toString( BillNumber.getIntBooksSoldDay() ) );
 		totalIncomeDay.setText( Double.toString( BillNumber.getIncomeDay()) );
 		totalBooksMonth.setText( Integer.toString( BillNumber.getIntBooksSoldMonth() )  );
-	    totalIncomeMonth.setText( Double.toString( BillNumber.getIncomeMonth())  );
-	    totalBooksYearly.setText( Integer.toString( BillNumber.getIntBooksSoldYear() ));
-	    totalIncomeYearly.setText( Double.toString( BillNumber.getIncomeYear() ));
+		totalIncomeMonth.setText( Double.toString( BillNumber.getIncomeMonth())  );
+		totalBooksYearly.setText( Integer.toString( BillNumber.getIntBooksSoldYear() ));
+		totalIncomeYearly.setText( Double.toString( BillNumber.getIncomeYear() ));
 
- 		StackPane stackBackButton = new StackPane();
+		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( administratorStatPage() );
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( administratorStatPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
- 		return border;
+		return border;
 
-    }
+	}
 
-    public BorderPane administratorCostPage() {
+	public BorderPane administratorCostPage() {
 
-        BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-     	Text text = new Text("Bought books throughout day/month/year");
- 		StackPane stack = new StackPane();
- 		text.setFont(new Font(30));
- 		stack.getChildren().add(text);
- 		stack.setPadding(new Insets(20));
- 		border.setTop(stack);
-
-
- 		TextField totalBooksDay = new TextField();
- 		Text textTotalBooksDay = new Text("Total Books Today");
- 		TextField totalIncomeDay = new TextField();
- 		Text textIncomeDay = new Text("Total Cost Today");
-
- 		TextField totalBooksMonth = new TextField();
- 		Text textTotalBooksMonth = new Text("Total Books in a Month");
- 		TextField totalIncomeMonth = new TextField();
- 		TextField salaryMonth = new TextField();
- 		Text textSalaryMonth = new Text("Salary Total This Month");
- 		Text textIncomeMonth = new Text("Total Cost in a Month");
-
- 		TextField totalBooksYearly = new TextField();
- 		Text textTotalBooksYearly = new Text("Total Books in a Year");
- 		TextField totalIncomeYearly = new TextField();
- 		TextField salaryYear = new TextField();
- 		Text textSalaryYear = new Text("Salary Total In a  Year");
- 		Text textIncomeYearly = new Text("Total Cost in a Year");
+		Text text = new Text("Bought books throughout day/month/year");
+		StackPane stack = new StackPane();
+		text.setFont(new Font(30));
+		stack.getChildren().add(text);
+		stack.setPadding(new Insets(20));
+		border.setTop(stack);
 
 
-  		GridPane grid = new GridPane();
- 		grid.setAlignment(Pos.CENTER);
+		TextField totalBooksDay = new TextField();
+		Text textTotalBooksDay = new Text("Total Books Today");
+		TextField totalIncomeDay = new TextField();
+		Text textIncomeDay = new Text("Total Cost Today");
+
+		TextField totalBooksMonth = new TextField();
+		Text textTotalBooksMonth = new Text("Total Books in a Month");
+		TextField totalIncomeMonth = new TextField();
+		TextField salaryMonth = new TextField();
+		Text textSalaryMonth = new Text("Salary Total This Month");
+		Text textIncomeMonth = new Text("Total Cost in a Month");
+
+		TextField totalBooksYearly = new TextField();
+		Text textTotalBooksYearly = new Text("Total Books in a Year");
+		TextField totalIncomeYearly = new TextField();
+		TextField salaryYear = new TextField();
+		Text textSalaryYear = new Text("Salary Total In a  Year");
+		Text textIncomeYearly = new Text("Total Cost in a Year");
+
+
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(5);
 		grid.setVgap(5);
 		grid.add(textTotalBooksDay, 0, 0);
@@ -2232,60 +2232,60 @@ public BorderPane mainPage() {
 		totalIncomeDay.setText( Double.toString( BillNumber.getCostDay()) );
 
 		totalBooksMonth.setText( Integer.toString( BillNumber.getTotalBoughtBooksMonth() )  );
-	    totalIncomeMonth.setText( Double.toString( BillNumber.getCostMonth())  );
-	    salaryMonth.setText( Double.toString(Administrator.getSalaries()) );
+		totalIncomeMonth.setText( Double.toString( BillNumber.getCostMonth())  );
+		salaryMonth.setText( Double.toString(Administrator.getSalaries()) );
 
-	    totalBooksYearly.setText( Integer.toString( BillNumber.getTotalBoughtBooksYear() ));
-	    totalIncomeYearly.setText( Double.toString( BillNumber.getCostYear() ));
-	    salaryYear.setText( Double.toString(Administrator.getSalaries()*12) );
+		totalBooksYearly.setText( Integer.toString( BillNumber.getTotalBoughtBooksYear() ));
+		totalIncomeYearly.setText( Double.toString( BillNumber.getCostYear() ));
+		salaryYear.setText( Double.toString(Administrator.getSalaries()*12) );
 
- 		StackPane stackBackButton = new StackPane();
+		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( administratorStatPage() );
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( administratorStatPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
- 		return border;
+		return border;
 
-    }
+	}
 
-    public BorderPane administratorSoldPage() {
+	public BorderPane administratorSoldPage() {
 
-        BorderPane border = new BorderPane();
+		BorderPane border = new BorderPane();
 
-        PieChart pieChart = new PieChart();
-        ArrayList<Book> stockBooks = BillNumber.getStockBooks();
-        for(int i=0;i<stockBooks.size();i++) {
-        	if (stockBooks.get(i).getPurchasedAmount()>0) {
-        		titlesSold.add(stockBooks.get(i).getTitle());
-        		quantitiesSold.add(stockBooks.get(i).getPurchasedAmount());
-        	}
-        }
-        BillNumber.removeDuplicatesSoldTitles(titlesSold,quantitiesSold);
+		PieChart pieChart = new PieChart();
+		ArrayList<Book> stockBooks = BillNumber.getStockBooks();
+		for(int i=0;i<stockBooks.size();i++) {
+			if (stockBooks.get(i).getPurchasedAmount()>0) {
+				titlesSold.add(stockBooks.get(i).getTitle());
+				quantitiesSold.add(stockBooks.get(i).getPurchasedAmount());
+			}
+		}
+		BillNumber.removeDuplicatesSoldTitles(titlesSold,quantitiesSold);
 
-    	for (int i=0;i<titlesSold.size();i++) {
-    		Data test = new Data(titlesSold.get(i), quantitiesSold.get(i));
-    		pieChart.getData().add(test);
-    	}
+		for (int i=0;i<titlesSold.size();i++) {
+			Data test = new Data(titlesSold.get(i), quantitiesSold.get(i));
+			pieChart.getData().add(test);
+		}
 
-     	Text text = new Text("Bought books throughout day/month/year/total");
- 		StackPane stack = new StackPane();
- 		text.setFont(new Font(30));
- 		stack.getChildren().add(text);
- 		stack.setPadding(new Insets(20));
- 		border.setTop(stack);
+		Text text = new Text("Bought books throughout day/month/year/total");
+		StackPane stack = new StackPane();
+		text.setFont(new Font(30));
+		stack.getChildren().add(text);
+		stack.setPadding(new Insets(20));
+		border.setTop(stack);
 
- 		Text text1 = new Text(BillNumber.getBooksSoldDay());
- 		Text text2 = new Text(BillNumber.getBooksSoldMonth());
- 		Text text3 = new Text(BillNumber.getBooksSoldYear());
- 		Text text4 = new Text( BillNumber.getBooksSoldTotal());
+		Text text1 = new Text(BillNumber.getBooksSoldDay());
+		Text text2 = new Text(BillNumber.getBooksSoldMonth());
+		Text text3 = new Text(BillNumber.getBooksSoldYear());
+		Text text4 = new Text( BillNumber.getBooksSoldTotal());
 
- 		GridPane grid = new GridPane();
- 		grid.add(text1, 0, 0);
+		GridPane grid = new GridPane();
+		grid.add(text1, 0, 0);
 		grid.add(text2, 1, 0);
 		grid.add(text3, 2, 0);
 		grid.add(pieChart, 1, 1);
@@ -2295,55 +2295,55 @@ public BorderPane mainPage() {
 		border.setCenter(grid);
 
 
- 		StackPane stackBackButton = new StackPane();
+		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( administratorStatPage() );
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( administratorStatPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
- 		return border;
-    }
+		return border;
+	}
 
-    public BorderPane administratorBoughtPage() {
-
-
-        BorderPane border = new BorderPane();
-
-        ArrayList<Book> stockBooks = BillNumber.getStockBooks();
-        for(int i=0;i<stockBooks.size();i++) {
-        	if (stockBooks.get(i).getQuantitiesPurchased()>0) {
-        		titlesBought.add(stockBooks.get(i).getTitle());
-        		quantitiesBought.add(stockBooks.get(i).getQuantitiesPurchased());
-        	}
-        }
+	public BorderPane administratorBoughtPage() {
 
 
-   	    PieChart pieChart = new PieChart();
-        BillNumber.removeDuplicatesSoldTitles(titlesBought,quantitiesBought);
+		BorderPane border = new BorderPane();
 
-    	for (int i=0;i<titlesBought.size();i++) {
-    		Data test = new Data(titlesBought.get(i), quantitiesBought.get(i));
-    		pieChart.getData().add(test);
-    	}
+		ArrayList<Book> stockBooks = BillNumber.getStockBooks();
+		for(int i=0;i<stockBooks.size();i++) {
+			if (stockBooks.get(i).getQuantitiesPurchased()>0) {
+				titlesBought.add(stockBooks.get(i).getTitle());
+				quantitiesBought.add(stockBooks.get(i).getQuantitiesPurchased());
+			}
+		}
 
-     	Text text = new Text("Bought books throughout day/month/year/total");
- 		StackPane stack = new StackPane();
- 		text.setFont(new Font(30));
- 		stack.getChildren().add(text);
- 		stack.setPadding(new Insets(20));
- 		border.setTop(stack);
 
- 		Text text1 = new Text(BillNumber.getBooksBoughtDay());
- 		Text text2 = new Text(BillNumber.getBooksBoughtMonth());
- 		Text text3 = new Text(BillNumber.getBooksBoughtYear());
- 		Text text4 = new Text(BillNumber.getBooksBoughtTotal());
+		PieChart pieChart = new PieChart();
+		BillNumber.removeDuplicatesSoldTitles(titlesBought,quantitiesBought);
 
- 		GridPane grid = new GridPane();
- 		grid.add(text1, 0, 0);
+		for (int i=0;i<titlesBought.size();i++) {
+			Data test = new Data(titlesBought.get(i), quantitiesBought.get(i));
+			pieChart.getData().add(test);
+		}
+
+		Text text = new Text("Bought books throughout day/month/year/total");
+		StackPane stack = new StackPane();
+		text.setFont(new Font(30));
+		stack.getChildren().add(text);
+		stack.setPadding(new Insets(20));
+		border.setTop(stack);
+
+		Text text1 = new Text(BillNumber.getBooksBoughtDay());
+		Text text2 = new Text(BillNumber.getBooksBoughtMonth());
+		Text text3 = new Text(BillNumber.getBooksBoughtYear());
+		Text text4 = new Text(BillNumber.getBooksBoughtTotal());
+
+		GridPane grid = new GridPane();
+		grid.add(text1, 0, 0);
 		grid.add(text2, 1, 0);
 		grid.add(text3, 2, 0);
 		grid.add(pieChart, 1, 1);
@@ -2353,20 +2353,20 @@ public BorderPane mainPage() {
 		border.setCenter(grid);
 
 
- 		StackPane stackBackButton = new StackPane();
+		StackPane stackBackButton = new StackPane();
 		stackBackButton.getChildren().add(bttBackManager);
 		bttBackManager.setOnAction(event -> {
-            if(event.getSource()==bttBackManager) {
-            	bttBackManager.getScene().setRoot( administratorStatPage() );
-            }
-	    });
+			if(event.getSource()==bttBackManager) {
+				bttBackManager.getScene().setRoot( administratorStatPage() );
+			}
+		});
 		stackBackButton.setPadding(new Insets(0, 0, 40, 0));
 		border.setBottom(stackBackButton);
 
- 		return border;
+		return border;
 
 
-    }
+	}
 
 
 
@@ -2425,7 +2425,7 @@ public BorderPane mainPage() {
 				username.clear();
 				password.clear();
 				bttSubmit.getScene().setRoot(administratorMainPage());
- 			}
+			}
 			else {
 				mainLoginWarning.setText("Wrong Information");
 				username.clear();
@@ -2448,7 +2448,7 @@ public BorderPane mainPage() {
 
 
 		if (e.getSource()==bttAdd) {
-			 
+
 			if (comboBoxLibrarian.getValue() == null && quantity.getCharacters().toString().isEmpty()) {
 				warningsLibrarian.setText("Failed, Empty fields");
 				return;
@@ -2461,28 +2461,28 @@ public BorderPane mainPage() {
 				warningsLibrarian.setText("Failed, Empty Quantity");
 				return;
 			}
-			
+
 			else if(!quantity.getCharacters().toString().matches("\\d{1,}") || Integer.parseInt(quantity.getCharacters().toString()) == 0) {
 				warningsLibrarian.setText("Failed, Invalid Quantity");
 				return;
 			}
-			
-			
+
+
 			if (!Librarian.EnoughStock(comboBoxLibrarian.getValue().toString().substring(0,13), Integer.parseInt(quantity.getCharacters().toString())) ) {
 				warningsLibrarian.setText("Failed,not enough stock");
 				return;
 			}
-			
+
 			String isbn = comboBoxLibrarian.getValue().toString().substring(0,13);
 			int quan = Integer.parseInt(quantity.getCharacters().toString());
 
 			String Title = comboBoxLibrarian.getValue().toString().substring(16);
 			date = new Date();
-			
+
 			ArrayList<Book> stockbooks = BillNumber.getStockBooks();
 			for (int i=0;i<stockbooks.size();i++) {
 				if (stockbooks.get(i).getISBN().equals(isbn)) {
-					
+
 					stockbooks.get(i).RemoveStock(quan);
 				}
 			}
@@ -2492,33 +2492,33 @@ public BorderPane mainPage() {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 			Book book = new Book(isbn);
-			
+
 			books.add(book);
 			bookQuantities.add(quan);
-		    booksSoldTitles.add(Title);
+			booksSoldTitles.add(Title);
 			bookISBN.clear();
 			quantity.clear();
 			warningsLibrarian.setText("Added");
-		
+
 		}
-		
+
 		if (e.getSource()==bttBill)  {
-			
-			
+
+
 			if (books.isEmpty() || bookQuantities.isEmpty()) {
 				warningsLibrarian.setText("Failed, No Books to add");
 				return;
 			}
-			
+
 			try {
 				librarian.checkOutBooks(books, bookQuantities);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
-			
+
+
 			bookISBN.clear();
 			booksSoldTitles.clear();
 			quantity.clear();
@@ -2526,24 +2526,24 @@ public BorderPane mainPage() {
 			bookQuantities.clear();
 			warningsLibrarian.setText("Bill File Created!");
 		}
-		
-		
+
+
 		if (e.getSource()==bttSupply) {
 			bttSupply.getScene().setRoot(ManagerSupplyCickPage());
-			
+
 		}
-		
+
 		if (e.getSource()==bttAddStock) {
 			bttAddStock.getScene().setRoot(chooseAddCurretStock());
 		}
-		
+
 		if (e.getSource()==bttCheckStock) {
 			bttCheckStock.getScene().setRoot(checkStoragePage());
 		}
 		if (e.getSource()==bttNewCategory) {
 			bttNewCategory.getScene().setRoot(chooseNewCategoryAddStock());
 		}
-		
+
 		if (e.getSource()==bttManageLibrarians) {
 			bttManageLibrarians.getScene().setRoot( administratorManageLibrariansPage() );
 		}

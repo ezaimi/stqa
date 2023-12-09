@@ -123,17 +123,17 @@ public class Book implements Serializable{
 
 	public int getPurchasedAmount(){
 		int sum=0;
-	    for (int i=0;i<purchasedAmount.size();i++) {
-	    	sum+=purchasedAmount.get(i);
-	    }
-	    return sum;
+		for (int i=0;i<purchasedAmount.size();i++) {
+			sum+=purchasedAmount.get(i);
+		}
+		return sum;
 	}
 	public int getQuantitiesPurchased(){
 		int sum=0;
-	    for (int i=0;i<quantitiesPurchased.size();i++) {
-	    	sum+=quantitiesPurchased.get(i);
-	    }
-	    return sum;
+		for (int i=0;i<quantitiesPurchased.size();i++) {
+			sum+=quantitiesPurchased.get(i);
+		}
+		return sum;
 	}
 
 
@@ -143,7 +143,7 @@ public class Book implements Serializable{
 
 	public String getSoldDatesQuantitiesTotal() {
 
-        String ans = "For \"" + this.title +"\" We have sold:\n";
+		String ans = "For \"" + this.title +"\" We have sold:\n";
 
 		if (dates.isEmpty()) {
 			return this.getTitle()+" has had no purchases\n";
@@ -180,7 +180,7 @@ public class Book implements Serializable{
 
 	}
 
-     public String getSoldDatesQuantitiesMonth(){
+	public String getSoldDatesQuantitiesMonth(){
 
 		String ans = "For \"" + this.title +"\" We have sold in a month:\n";
 
@@ -198,146 +198,146 @@ public class Book implements Serializable{
 		return ans;
 	}
 
-     public String getSoldDatesQuantitiesYear(){
+	public String getSoldDatesQuantitiesYear(){
 
- 		String ans = "For \"" + this.title +"\" We have sold in a year:\n";
+		String ans = "For \"" + this.title +"\" We have sold in a year:\n";
 
- 		if (dates.isEmpty()) {
- 			return this.getTitle()+" has had no purchases\n";
- 		}
+		if (dates.isEmpty()) {
+			return this.getTitle()+" has had no purchases\n";
+		}
 
- 		Date today = new Date();
+		Date today = new Date();
 
- 		for (int i=0;i<dates.size();i++) {
- 			if (dates.get(i).getYear() == today.getYear()) {
- 				ans = ans.concat(purchasedAmount.get(i) +" at "+dates.get(i)+"\n");
- 			}
- 		}
- 		return ans;
-
-
- 	}
+		for (int i=0;i<dates.size();i++) {
+			if (dates.get(i).getYear() == today.getYear()) {
+				ans = ans.concat(purchasedAmount.get(i) +" at "+dates.get(i)+"\n");
+			}
+		}
+		return ans;
 
 
-     public String getBoughtDatesQuantitiesTotal() {
+	}
 
-    	 String ans = "For \"" + this.title +"\" We have bought in a day:\n";
 
-  		if (purchasedDates.isEmpty()) {
-  			return "We have made no purchases on \""+this.getTitle()+"\"\n";
-  		}
+	public String getBoughtDatesQuantitiesTotal() {
 
-  		Date today = new Date();
+		String ans = "For \"" + this.title +"\" We have bought in a day:\n";
 
-  		for (int i=0;i<purchasedDates.size();i++) {
-  			ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
-  		}
+		if (purchasedDates.isEmpty()) {
+			return "We have made no purchases on \""+this.getTitle()+"\"\n";
+		}
 
-  		return ans;
+		Date today = new Date();
 
-     }
+		for (int i=0;i<purchasedDates.size();i++) {
+			ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
+		}
 
-     public String getBoughtDatesQuantitiesDay(){
+		return ans;
 
- 		String ans = "For \"" + this.title +"\" We have bought in a day:\n";
+	}
 
- 		if (purchasedDates.isEmpty()) {
- 			return "We have made no purchases on \""+this.getTitle()+"\"\n";
- 		}
+	public String getBoughtDatesQuantitiesDay(){
 
- 		Date today = new Date();
+		String ans = "For \"" + this.title +"\" We have bought in a day:\n";
 
- 		for (int i=0;i<purchasedDates.size();i++) {
- 			if (purchasedDates.get(i).getYear() == today.getYear() && purchasedDates.get(i).getMonth() == today.getMonth() && purchasedDates.get(i).getDay() == today.getDay()) {
- 				ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
- 			}
- 		}
- 		return ans;
- 	}
+		if (purchasedDates.isEmpty()) {
+			return "We have made no purchases on \""+this.getTitle()+"\"\n";
+		}
 
-     public String getBoughtDatesQuantitiesMonth(){
+		Date today = new Date();
 
-  		String ans = "For \"" + this.title +"\" We have bought in a month:\n";
+		for (int i=0;i<purchasedDates.size();i++) {
+			if (purchasedDates.get(i).getYear() == today.getYear() && purchasedDates.get(i).getMonth() == today.getMonth() && purchasedDates.get(i).getDay() == today.getDay()) {
+				ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
+			}
+		}
+		return ans;
+	}
 
-  		if (purchasedDates.isEmpty()) {
-  			return "We have made no purchases on \""+this.getTitle()+"\"\n";
-  		}
+	public String getBoughtDatesQuantitiesMonth(){
 
-  		Date today = new Date();
+		String ans = "For \"" + this.title +"\" We have bought in a month:\n";
 
-  		for (int i=0;i<purchasedDates.size();i++) {
-  			if (purchasedDates.get(i).getYear() == today.getYear() && purchasedDates.get(i).getMonth() == today.getMonth()) {
-  				ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
-  			}
-  		}
-  		return ans;
-  	}
+		if (purchasedDates.isEmpty()) {
+			return "We have made no purchases on \""+this.getTitle()+"\"\n";
+		}
 
-     public String getBoughtDatesQuantitiesYear(){
+		Date today = new Date();
 
-  		String ans = "For \"" + this.title +"\" We have bought in a year:\n";
+		for (int i=0;i<purchasedDates.size();i++) {
+			if (purchasedDates.get(i).getYear() == today.getYear() && purchasedDates.get(i).getMonth() == today.getMonth()) {
+				ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
+			}
+		}
+		return ans;
+	}
 
-  		if (purchasedDates.isEmpty()) {
-  			return "We have made no purchases on \""+this.getTitle()+"\"\n";
-  		}
+	public String getBoughtDatesQuantitiesYear(){
 
-  		Date today = new Date();
+		String ans = "For \"" + this.title +"\" We have bought in a year:\n";
 
-  		for (int i=0;i<purchasedDates.size();i++) {
-  			if (purchasedDates.get(i).getYear() == today.getYear()) {
-  				ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
-  			}
-  		}
-  		return ans;
-  	}
+		if (purchasedDates.isEmpty()) {
+			return "We have made no purchases on \""+this.getTitle()+"\"\n";
+		}
 
-     public int getTotalBooksSoldDay() {
+		Date today = new Date();
 
-    	 if (dates.isEmpty()) {
-  			return 0;
-  		}
+		for (int i=0;i<purchasedDates.size();i++) {
+			if (purchasedDates.get(i).getYear() == today.getYear()) {
+				ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
+			}
+		}
+		return ans;
+	}
 
-    	 int ans = 0;
+	public int getTotalBooksSoldDay() {
 
- 		Date today = new Date();
-
- 		for (int i=0;i<dates.size();i++) {
-
- 			if (dates.get(i).getYear() == today.getYear() && dates.get(i).getMonth() == today.getMonth() && dates.get(i).getDay() == today.getDay()) {
- 				ans+=purchasedAmount.get(i);
- 			}
- 		}
- 		return ans;
-
-     }
-
- public int getTotalBooksSoldMonth() {
-
-    	 if (dates.isEmpty()) {
-  			return 0;
-  		}
-
-    	 int ans = 0;
-
- 		Date today = new Date();
-
- 		for (int i=0;i<dates.size();i++) {
-
- 			if (dates.get(i).getYear() == today.getYear() && dates.get(i).getMonth() == today.getMonth()) {
- 				ans+=purchasedAmount.get(i);
- 			}
- 		}
- 		return ans;
-
-     }
-
-   public int getTotalBooksSoldYear() {
-
-	 if (dates.isEmpty()) {
+		if (dates.isEmpty()) {
 			return 0;
 		}
 
-	 int ans = 0;
+		int ans = 0;
+
+		Date today = new Date();
+
+		for (int i=0;i<dates.size();i++) {
+
+			if (dates.get(i).getYear() == today.getYear() && dates.get(i).getMonth() == today.getMonth() && dates.get(i).getDay() == today.getDay()) {
+				ans+=purchasedAmount.get(i);
+			}
+		}
+		return ans;
+
+	}
+
+	public int getTotalBooksSoldMonth() {
+
+		if (dates.isEmpty()) {
+			return 0;
+		}
+
+		int ans = 0;
+
+		Date today = new Date();
+
+		for (int i=0;i<dates.size();i++) {
+
+			if (dates.get(i).getYear() == today.getYear() && dates.get(i).getMonth() == today.getMonth()) {
+				ans+=purchasedAmount.get(i);
+			}
+		}
+		return ans;
+
+	}
+
+	public int getTotalBooksSoldYear() {
+
+		if (dates.isEmpty()) {
+			return 0;
+		}
+
+		int ans = 0;
 
 		Date today = new Date();
 
@@ -349,15 +349,15 @@ public class Book implements Serializable{
 		}
 		return ans;
 
- }
+	}
 
-   public int getTotalBooksBoughtDay() {
+	public int getTotalBooksBoughtDay() {
 
-	   if (purchasedDates.isEmpty()) {
+		if (purchasedDates.isEmpty()) {
 			return 0;
 		}
 
-	 int ans = 0;
+		int ans = 0;
 
 		Date today = new Date();
 
@@ -368,15 +368,15 @@ public class Book implements Serializable{
 			}
 		}
 		return ans;
-   }
+	}
 
-public int getTotalBooksBoughtMonth() {
+	public int getTotalBooksBoughtMonth() {
 
-	   if (purchasedDates.isEmpty()) {
+		if (purchasedDates.isEmpty()) {
 			return 0;
 		}
 
-	 int ans = 0;
+		int ans = 0;
 
 		Date today = new Date();
 
@@ -387,59 +387,59 @@ public int getTotalBooksBoughtMonth() {
 			}
 		}
 		return ans;
-   }
-
-public int getTotalBooksBoughtYear() {
-
-	if (purchasedDates.isEmpty()) {
-		return 0;
 	}
 
- int ans = 0;
+	public int getTotalBooksBoughtYear() {
 
-	Date today = new Date();
+		if (purchasedDates.isEmpty()) {
+			return 0;
+		}
 
-	for (int i=0;i<purchasedDates.size();i++) {
+		int ans = 0;
 
-		if (purchasedDates.get(i).getYear() == today.getYear()) {
+		Date today = new Date();
+
+		for (int i=0;i<purchasedDates.size();i++) {
+
+			if (purchasedDates.get(i).getYear() == today.getYear()) {
+				ans+=quantitiesPurchased.get(i);
+			}
+		}
+		return ans;
+
+	}
+
+	public int getTotalBooksSold() {
+
+
+		if (dates.isEmpty()) {
+			return 0;
+		}
+
+		int ans=0;
+
+		for (int i=0;i<dates.size();i++) {
+			ans+=purchasedAmount.get(i);
+		}
+
+		return ans;
+	}
+
+	public int getTotalBooksBought() {
+
+
+		if (purchasedDates.isEmpty()) {
+			return 0;
+		}
+
+		int ans=0;
+
+		for (int i=0;i<purchasedDates.size();i++) {
 			ans+=quantitiesPurchased.get(i);
 		}
+
+		return ans;
 	}
-	return ans;
-
-}
-
-public int getTotalBooksSold() {
-
-
-	if (dates.isEmpty()) {
-		return 0;
-	}
-
-	int ans=0;
-
-	for (int i=0;i<dates.size();i++) {
-		ans+=purchasedAmount.get(i);
-	}
-
-	return ans;
-}
-
-public int getTotalBooksBought() {
-
-
-	if (purchasedDates.isEmpty()) {
-		return 0;
-	}
-
-	int ans=0;
-
-	for (int i=0;i<purchasedDates.size();i++) {
-		ans+=quantitiesPurchased.get(i);
-	}
-
-	return ans;
-}
 
 	@Override
 	public String toString() {
@@ -462,5 +462,5 @@ public int getTotalBooksBought() {
 	public int hashCode() {
 		return Objects.hash(ISBN);
 	}
-	
+
 }
