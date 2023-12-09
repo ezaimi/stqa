@@ -580,7 +580,7 @@ public BorderPane mainPage() {
         public void handle(ActionEvent event) {
         	Stage stage = new Stage();
         	Scene scene = new Scene(selectLibrarianPage(lib));
-        	stage.getIcons().add(new Image("bookIcon.png"));
+        	//stage.getIcons().add(new Image("bookIcon.png"));
         	stage.setWidth(465);
         	stage.setHeight(465);
         	stage.setScene(scene);
@@ -891,7 +891,7 @@ public BorderPane mainPage() {
         public void handle(ActionEvent event) {
         	Stage stage = new Stage();
         	Scene scene = new Scene(categoryStock(text));
-        	stage.getIcons().add(new Image("bookIcon.png"));
+        	//stage.getIcons().add(new Image("bookIcon.png"));
         	stage.setWidth(465);
         	stage.setHeight(465);
         	stage.setScene(scene);
@@ -986,7 +986,7 @@ public BorderPane mainPage() {
         public void handle(ActionEvent event) {
         	Stage stage = new Stage();
         	Scene scene = new Scene(stockBookPage(book));
-        	stage.getIcons().add(new Image("bookIcon.png"));
+        	//stage.getIcons().add(new Image("bookIcon.png"));
         	stage.setWidth(465);
         	stage.setHeight(465);
         	stage.setScene(scene);
@@ -1181,14 +1181,11 @@ public BorderPane mainPage() {
     		    book.addQuantitiesPurchased(bStock);
     		    date = new Date();
     		    book.addPurchasedDate(date);
-            	
-    		    ArrayList<Book> stockbooks = BillNumber.getStockBooks();
-    		    stockbooks.add(book);
-    		    try {
-					BillNumber.updateBooks(stockbooks);
-				} catch (IOException e) {e.printStackTrace();}
-    		    
-    		    bookISBN.clear();
+
+				//this adds the books to the stock and saves it to the file
+				BillNumber.addBookToStock(book);
+
+				bookISBN.clear();
     		    title.clear();
     		    Supplier.getSelectedToggle().setSelected(false);
     		    originalPrice.clear();
@@ -1348,7 +1345,8 @@ public BorderPane mainPage() {
         public void handle(ActionEvent event) {
         	Stage stage = new Stage();
         	Scene scene = new Scene(editLibrarianPage(lib));
-        	stage.getIcons().add(new Image("bookIcon.png"));
+        	//
+			// stage.getIcons().add(new Image("bookIcon.png"));
         	stage.setWidth(465);
         	stage.setHeight(465);
         	stage.setScene(scene);
@@ -1744,7 +1742,7 @@ public BorderPane mainPage() {
         public void handle(ActionEvent event) {
         	Stage stage = new Stage();
         	Scene scene = new Scene( editManagerPage(mag) );
-        	stage.getIcons().add(new Image("bookIcon.png"));
+        	//stage.getIcons().add(new Image("bookIcon.png"));
         	stage.setWidth(465);
         	stage.setHeight(465);
         	stage.setScene(scene);
@@ -2447,6 +2445,8 @@ public BorderPane mainPage() {
 			bttBack.getScene().setRoot(mainPage());
 			mainLoginWarning.clear();
 		}
+
+
 		if (e.getSource()==bttAdd) {
 			 
 			if (comboBoxLibrarian.getValue() == null && quantity.getCharacters().toString().isEmpty()) {
