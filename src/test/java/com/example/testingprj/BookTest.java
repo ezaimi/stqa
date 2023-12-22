@@ -10,9 +10,12 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,10 +67,10 @@ public class BookTest {
         return books;
     }
 
-    @AfterEach
-    public void tearDown() {
-        deleteTemporaryFile();
-    }
+//    @AfterEach
+//    public void tearDown() {
+//        deleteTemporaryFile();
+//    }
 
     private void deleteTemporaryFile() {
         try {
@@ -325,8 +328,110 @@ public class BookTest {
 
 
 
+ /**************************************************************************************/
+
+    @Test
+    void testFindBookInStock() {
+        // Arrange
+        ArrayList<Book> stockBooks = new ArrayList<>();
+        Book book1 = new Book("ISBN1", "Book 1", "Category 1", "Supplier 1", 20.0, 25.0, "Author 1", 10);
+        Book book2 = new Book("ISBN2", "Book 2", "Category 2", "Supplier 2", 15.0, 18.0, "Author 2", 5);
+        stockBooks.add(book1);
+        stockBooks.add(book2);
+
+        String isbnToFind = "ISBN2";
+
+        // Act
+        Book foundBook = Book.findBookInStock(stockBooks, isbnToFind);
+
+        // Assert
+        assertNotNull(foundBook);
+        assertEquals(isbnToFind, foundBook.getISBN());
+    }
+
+    @Test
+    void testFindBookInStockBookNotFound() {
+        // Arrange
+        ArrayList<Book> stockBooks = new ArrayList<>();
+        stockBooks.add(new Book("ISBN123"));
+        stockBooks.add(new Book("ISBN456"));
+
+        String isbnToFind = "ISBN789"; // A non-existent ISBN
+
+        // Act
+        Book foundBook = Book.findBookInStock(stockBooks, isbnToFind);
+
+        // Assert
+        assertNull(foundBook);
+    }
+
+    @Test
+    void testRemoveStock_EnoughQuantity() {
+
+        int initialStock = 20;
+        int quantityToRemove = 5;
+        Book book = new Book();
+        book.setStock(initialStock);
+
+        book.removeStock(quantityToRemove);
+
+        assertEquals(initialStock - quantityToRemove, book.getStock());
+    }
+
+    @Test
+    void testRemoveStock_InsufficientQuantity() {
+        int initialStock = 5;
+        int quantityToRemove = 10;
+        Book book = new Book();
+        book.setStock(initialStock);
+
+        book.removeStock(quantityToRemove);
+        assertEquals(initialStock, book.getStock());
+    }
+
+    @Test
+    void testRemoveStock() {
+        int initialStock = 20;
+        int stockToRemove = 5;
+        Book book = new Book();
+        book.setStock(initialStock);
+
+        book.RemoveStock(stockToRemove);
+
+        assertEquals(initialStock - stockToRemove, book.getStock());
+    }
+
+
+    @Test
+    void testGetSupplier() {
+        String expectedSupplier = "ABC Supplier";
+        Book book = new Book();
+        book.setSupplier(expectedSupplier);
+
+        String actualSupplier = book.getSupplier();
+
+        assertEquals(expectedSupplier, actualSupplier);
+    }
+
 
     //////////////////////Klea //////////////////////
+
+    @Test
+    void testAddPurchasedDate() {
+        Book book = createTestBook();
+        Date testDate = new Date();
+
+        book.addPurchasedDate(testDate);
+        ArrayList<Date> purchasedDates = book.getPurchasedDates();
+        assertTrue(purchasedDates.contains(testDate));
+    }
+
+    @Test
+    void testAddQuantity() {
+        Book book = createTestBook();
+        book.addQuantity(5);
+        assertEquals(5, book.getPurchasedAmount());
+    }
 
     @Test
     public void testGetPurchasedAmount() {
@@ -423,7 +528,7 @@ public class BookTest {
 
 
 
-
+    ///////////Ardisa/////////////
 
     @Test
     public void testGetTotalBooksBoughtDay() {
