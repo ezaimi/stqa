@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,6 +87,18 @@ public class ManagerTest {
 
     }
 
+    @Test
+    void testNoBooksInStock() {
+        // Simulate an empty stock
+        BillNumber.getStockBooks().clear();
+
+        ArrayList<Book> lowStockBooks = Manager.getLowStock();
+
+        assertEquals(0, lowStockBooks.size(), "No books should be in low stock");
+    }
+
+
+
 
     private ArrayList<Book> createTestBooks() {
         ArrayList<Book> testBooks = new ArrayList<>();
@@ -122,43 +135,49 @@ public class ManagerTest {
         assertEquals(1200, Manager.librarians.get(1).getSalary(), 0.001);
     }
 
+    @Test
+    void testUpdateNonExistingLibrarian() {
+        ArrayList<Librarian> initialLibrarians = new ArrayList<>();
+        initialLibrarians.add(new Librarian("username1", "password1", "Librarian1", 1000, "(123) 456-7890", "librarian1@example.com"));
+        Manager.librarians = initialLibrarians;
+
+        Librarian updatedLibrarian = new Librarian("username3", "newPassword", "NewLibrarian", 1500, "(111) 222-3333", "newlibrarian@example.com");
+        Manager.updateLibrarians(updatedLibrarian);
+        assertEquals(1, Manager.librarians.size()); // Ensure size remains the same
+        assertEquals("Librarian1", Manager.librarians.get(0).getName()); // Ensure existing librarian is unchanged
+    }
+
+
+
+
 
     ////////////////////Klea////////////////////
     @Test
     void testGetBackLibrarian() {
-        // Assuming you have instantiated some librarians
         Librarian testLibrarian = new Librarian("Alfie123", "SSU6umwt", "Alfie", 500, "(912) 921-2728", "aflie@librarian.com");
         Manager.InstantiateLibrarians();
 
-        // Get the librarian by username
         Librarian resultLibrarian = Manager.getBackLibrarian(testLibrarian);
 
-        // Check if the result is not null and has the expected username
         assertNotNull(resultLibrarian);
         assertEquals(testLibrarian.getUsername(), resultLibrarian.getUsername());
 
     }
     @Test
     void testGetBackLibrarianNonExistent() {
-        // Assuming you have instantiated some librarians
         Manager.InstantiateLibrarians();
 
-        // Create a Librarian that is not in the librarians list
         Librarian nonExistentLibrarian = new Librarian("NonExistent", "Password", "John", 500, "(123) 456-7890", "john@example.com");
 
-        // Get the librarian by the non-existent librarian
         Librarian resultLibrarian = Manager.getBackLibrarian(nonExistentLibrarian);
 
-        // Check if the result is null
         assertNull(resultLibrarian);
     }
 
     @Test
     public void testGetAllCategories() {
-        // Call the actual method
         ArrayList<String> actualCategories = Manager.getAllCategories();
 
-        // Create the expected list of categories
         ArrayList<String> expectedCategories = new ArrayList<>();
         expectedCategories.add("Modernist");
         expectedCategories.add("Fiction");
@@ -179,21 +198,17 @@ public class ManagerTest {
         expectedCategories.add("Romance");
         expectedCategories.add("Thriller");
 
-        // Assert that the actual result matches the expected result
         assertEquals(expectedCategories, actualCategories);
     }
 
 
     @Test
     public void testAddLibrarian() {
-        // Arrange
         Manager.InstantiateLibrarians();
         Librarian librarian = new Librarian("NewLibrarian", "password", "New", 500, "(912) 987-6543", "new@email.com");
 
-        // Act
         Manager.AddLibrarian(librarian);
 
-        // Assert
         assertTrue(Manager.getLibrarians().contains(librarian));
     }
     @Test
@@ -232,31 +247,26 @@ public class ManagerTest {
 
         Librarian firstLibrarian = librarians.get(0);
         assertEquals("Alfie123", firstLibrarian.getUsername());
-        // Add more assertions for other properties as needed
     }
 
     @Test
     public void testLibrarianChecker() {
-        // Arrange
         List<Librarian> librarians = new ArrayList<>();
         Manager manager=new Manager("1","2");
         manager.InstantiateLibrarians();
 
-        // Act & Assert
         assertTrue(manager.LibrarianChecker(new Librarian("Alfie123", "SSU6umwt", null, 0, null, null)));
         assertTrue(manager.LibrarianChecker(new Librarian("@Leo", "TyFzN8we", null, 0, null, null)));
         assertTrue(manager.LibrarianChecker(new Librarian("Julie?!", "NDt8f6xL", null, 0, null, null)));
         assertTrue(manager.LibrarianChecker(new Librarian("MargiE", "vGtM6beC", null, 0, null, null)));
         assertTrue(manager.LibrarianChecker(new Librarian("1", "1", null, 0, null, null)));
 
-        // Test with invalid credentials
         assertFalse(manager.LibrarianChecker(new Librarian("InvalidUsername", "InvalidPassword", null, 0, null, null)));
     }
 
 
     @Test
     public void testDeleteLibrarian() {
-        // Scenario 1: Librarian to be deleted is present in the list
         ArrayList<Librarian> librarians = new ArrayList<>();
         Manager.librarians = librarians;
 
@@ -269,7 +279,6 @@ public class ManagerTest {
         assertEquals(initialSize - 1, librarians.size());
         assertFalse(librarians.contains(librarianToDelete));
 
-        // Scenario 2: Librarian to be deleted is not present in the list
         Librarian nonExistentLibrarian = new Librarian("NonExistentLibrarian", "password", "Non Existent", 500, "(987) 654-3210", "nonexistent@example.com");
         int sizeAfterNonExistent = librarians.size();
 
@@ -277,7 +286,6 @@ public class ManagerTest {
 
         assertEquals(sizeAfterNonExistent, librarians.size()); // Size should remain unchanged
 
-        // Scenario 3: Deleting from an empty list
         ArrayList<Librarian> emptyList = new ArrayList<>();
         Manager.librarians = emptyList; // Setting the librarians list to an empty list
 

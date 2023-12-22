@@ -532,15 +532,12 @@ public class BookTest {
 
     @Test
     public void testGetTotalBooksBoughtDay() {
-        // Arrange
         Book book = createTestBook();
 
-        // Mock data for testing
         Date today = new Date();
         book.addPurchasedDate(today);
         book.addQuantitiesPurchased(5);
 
-        // Add an entry for yesterday (should be ignored)
         Calendar yesterdayCalendar = Calendar.getInstance();
         yesterdayCalendar.setTime(today);
         yesterdayCalendar.add(Calendar.DATE, -1);
@@ -548,24 +545,19 @@ public class BookTest {
         book.addPurchasedDate(yesterday);
         book.addQuantity(10);
 
-        // Act
         int result = book.getTotalBooksBoughtDay();
 
-        // Assert
         assertEquals(5, result); // Only consider purchases on the specified day
     }
 
     @Test
     public void testGetTotalBooksBoughtMonth() {
-        // Arrange
         Book book = createTestBook();
 
-        // Mock data for testing
         Date today = new Date();
         book.addPurchasedDate(today);
         book.addQuantitiesPurchased(5);
 
-        // Add an entry for last month (should be ignored)
         Calendar lastMonthCalendar = Calendar.getInstance();
         lastMonthCalendar.setTime(today);
         lastMonthCalendar.add(Calendar.MONTH, -1);
@@ -573,24 +565,19 @@ public class BookTest {
         book.addPurchasedDate(lastMonth);
         book.addQuantity(10);
 
-        // Act
         int result = book.getTotalBooksBoughtMonth();
 
-        // Assert
-        assertEquals(5, result); // Only consider purchases in the current month
+        assertEquals(5, result);
     }
 
     @Test
     public void testGetTotalBooksBoughtYear() {
-        // Arrange
         Book book = createTestBook();
 
-        // Mock data for testing
         Date today = new Date();
         book.addPurchasedDate(today);
         book.addQuantitiesPurchased(5);
 
-        // Add an entry for last year (should be ignored)
         Calendar lastYearCalendar = Calendar.getInstance();
         lastYearCalendar.setTime(today);
         lastYearCalendar.add(Calendar.YEAR, -1);
@@ -598,68 +585,51 @@ public class BookTest {
         book.addPurchasedDate(lastYear);
         book.addQuantity(10);
 
-        // Act
         int result = book.getTotalBooksBoughtYear();
 
-        // Assert
         assertEquals(5, result); // Only consider purchases in the current year
     }
     @Test
     public void testGetTotalBooksBoughtYearWhenPurchasedDatesEmpty() {
-        // Arrange
         Book book = createTestBook();
 
-        // Act
         int result = book.getTotalBooksBoughtYear();
 
-        // Assert
         assertEquals(0, result); // The result should be 0 when purchasedDates list is empty
     }
     @Test
     public void testGetTotalBooksBoughtMonthWhenPurchasedDatesEmpty() {
-        // Arrange
         Book book = createTestBook();
 
-        // Act
         int result = book.getTotalBooksBoughtMonth();
 
-        // Assert
         assertEquals(0, result); // The result should be 0 when purchasedDates list is empty
     }
     @Test
     public void testGetTotalBooksBoughtDayWhenPurchasedDatesEmpty() {
-        // Arrange
         Book book = createTestBook();
 
-        // Act
         int result = book.getTotalBooksBoughtDay();
 
-        // Assert
         assertEquals(0, result); // The result should be 0 when purchasedDates list is empty
     }
 
     @Test
     public void testToString() {
-        // Arrange
         Book book = createTestBookss();
 
-        // Set the time zone explicitly for the date
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         dateFormat.setTimeZone(TimeZone.getTimeZone("CET"));
 
-        // Expected string representation with GMT time zone
         String expectedString = "Book [ISBN=123456789, title=TestBook, category=Fiction, supplier=SupplierA, " +
                 "sellingPrice=19.99, originalPrice=24.99, author=John Doe, stock=90, dates=[" +
                 dateFormat.format(new Date(0)) + "]]";
 
-        // Act
         String result = book.toString();
 
-        // Assert
         assertEquals(expectedString, result);
     }
 
-    // Helper method to create a test instance of Book
     private Book createTestBookss() {
         Book book = createTestBook();
         book.setISBN("123456789");
@@ -671,9 +641,8 @@ public class BookTest {
         book.setAuthor("John Doe");
         book.AddStock(80);
 
-        // Adding a date for testing
         ArrayList<Date> dates = new ArrayList<>();
-        dates.add(new Date(0)); // Thu Jan 01 00:00:00 GMT 1970
+        dates.add(new Date(0));
         book.setDates(dates);
 
         return book;
@@ -701,20 +670,15 @@ public class BookTest {
 
     @Test
     public void testAddPurchase() {
-        // Arrange
         Book book = createTestBook();
         Date purchaseDate = new Date();
 
-        // Act
         book.addPurchase(purchaseDate);
 
-        // Assert
-        // Check that purchasedDates is initialized and contains the added date
         assertNotNull(book.getPurchasedDates());
         assertEquals(1, book.getPurchasedDates().size());
         assertEquals(purchaseDate, book.getPurchasedDates().get(0));
 
-        // Check that quantitiesPurchased is initialized and contains the correct quantity (1)
         assertNotNull(book.getQuantitiesPurchased());
         assertEquals(1, book.getQuantitiesPurchased());
         assertEquals(Integer.valueOf(1), book.getQuantitiesPurchased());
@@ -728,10 +692,8 @@ public class BookTest {
 
     @Test
     public void testInitializeListsIfNull() {
-        // Arrange
         Book book = createTestBook();
 
-        // Act (simulate the behavior of your provided code snippet)
         if (book.getPurchasedDates() == null) {
             book.addPurchasedDate(new Date());
         }
@@ -744,31 +706,23 @@ public class BookTest {
 
         }
 
-        // Assert
-        // Check that purchasedDates is initialized to an empty list
         assertNotNull(book.getPurchasedDates());
         assertEquals(0, book.getPurchasedDates().size());
 
-        // Check that quantitiesPurchased is initialized to an empty list
         assertNotNull(book.getQuantitiesPurchased());
         assertEquals(0, book.getQuantitiesPurchased());
 
     }
     @Test
     public void testEquals() {
-        // Arrange
         Book instance1 = createTestBook();
         Book instance2 = createTestBook();
         Book instance3=new Book(null);
-        // Act & Assert
-        // Test reflexivity: an object should equal itself
         assertTrue(instance1.equals(instance1));
 
-        // Test symmetry: if A equals B, then B should equal A
         assertTrue(instance1.equals(instance2));
         assertTrue(instance2.equals(instance1));
 
-        // Test with null object
         assertFalse(instance3.equals(null));
 
 

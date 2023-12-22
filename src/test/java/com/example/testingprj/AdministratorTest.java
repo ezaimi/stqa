@@ -80,6 +80,7 @@ public class AdministratorTest {
 
     }
 
+
     @Test
     public void testManagerChecker() {
         Administrator administrator = new Administrator("adminUsername", "adminPassword");
@@ -112,8 +113,29 @@ public class AdministratorTest {
         assertFalse(Administrator.checker("invalidUser", "&zsX6QVZ"));
     }
 
+    @Test
+    void testCheckerWithValidCredentials() {
+        Administrator.InstantiateManagers();
+
+        assertTrue(Administrator.checker("J0sh", "&zsX6QVZ"));
+        assertTrue(Administrator.checker("1", "3"));
+    }
+
+    @Test
+    void testCheckerWithInvalidCredentials() {
+        Administrator.InstantiateManagers();
+
+        assertFalse(Administrator.checker("invalidUser", "invalidPassword"));
+        assertFalse(Administrator.checker("J0sh", "invalidPassword"));
+        assertFalse(Administrator.checker("invalidUser", "&zsX6QVZ"));
+    }
+
+
+
 
     ///////////////////Klea///////////////////
+
+
     @Test
     public void testGetSalaries() {
         Manager.InstantiateLibrarians();
