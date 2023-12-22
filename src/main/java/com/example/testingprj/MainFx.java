@@ -44,7 +44,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
 public class MainFx extends Application implements EventHandler<ActionEvent> {
+
+	ArrayList<Manager> magList = new ArrayList<>();
 
 	//entry buttons
 	Button bttLibrarian = new Button("Librarian");
@@ -415,7 +418,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 		Text text1 = new Text(BillNumber.getBooksBoughtDay());
 		Text text2 = new Text(BillNumber.getBooksBoughtMonth());
 		Text text3 = new Text(BillNumber.getBooksBoughtYear());
-		Text text4 = new Text(BillNumber.getBooksBoughtTotal());
+		//Text text4 = new Text(BillNumber.getBooksBoughtTotal());
 
 		GridPane grid = new GridPane();
 		grid.add(text1, 0, 0);
@@ -471,7 +474,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 		Text text1 = new Text(BillNumber.getBooksSoldDay());
 		Text text2 = new Text(BillNumber.getBooksSoldMonth());
 		Text text3 = new Text(BillNumber.getBooksSoldYear());
-		Text text4 = new Text( BillNumber.getBooksSoldTotal());
+		//Text text4 = new Text( BillNumber.getBooksSoldTotal());
 
 		GridPane grid = new GridPane();
 
@@ -1163,7 +1166,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 					return;
 				}
 
-				if (BillNumber.isPartOfBooks(bookISBN.getCharacters().toString())){
+				if (BillNumber.isPartOfBooks((bookISBN.getCharacters().toString()))){
 					addedOrNotStockCategory.setText("Failed, Already In Stock");
 					return;
 
@@ -1968,7 +1971,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 			manager = new Manager( username.getCharacters().toString(), password.getCharacters().toString(), mag.getName(), Double.parseDouble(salary.getCharacters().toString()), phone.getCharacters().toString(),
 					email.getCharacters().toString());
 
-			Administrator.deleteManager(manager);
+			Administrator.deleteManager(manager,magList);
 			username.clear();
 			name.clear();
 			password.clear();
@@ -2014,7 +2017,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 					email.getCharacters().toString());
 
 
-			Administrator.updateManagers(manager);
+			Administrator.updateManagers(manager,magList);
 			magLoginWarning.setText("Success!");
 
 		});
@@ -2282,7 +2285,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 		Text text1 = new Text(BillNumber.getBooksSoldDay());
 		Text text2 = new Text(BillNumber.getBooksSoldMonth());
 		Text text3 = new Text(BillNumber.getBooksSoldYear());
-		Text text4 = new Text( BillNumber.getBooksSoldTotal());
+		//Text text4 = new Text( BillNumber.getBooksSoldTotal());
 
 		GridPane grid = new GridPane();
 		grid.add(text1, 0, 0);
@@ -2340,7 +2343,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 		Text text1 = new Text(BillNumber.getBooksBoughtDay());
 		Text text2 = new Text(BillNumber.getBooksBoughtMonth());
 		Text text3 = new Text(BillNumber.getBooksBoughtYear());
-		Text text4 = new Text(BillNumber.getBooksBoughtTotal());
+		//Text text4 = new Text(BillNumber.getBooksBoughtTotal());
 
 		GridPane grid = new GridPane();
 		grid.add(text1, 0, 0);
@@ -2407,7 +2410,7 @@ public class MainFx extends Application implements EventHandler<ActionEvent> {
 
 				username.clear();
 				password.clear();
-				manager = Administrator.getBackManager(manager);
+				manager = Administrator.getBackManager(manager,magList);
 				// Assuming manager is an instance of some class with the getName() method
 				if (manager != null) {
 					usernamePage = manager.getName();
