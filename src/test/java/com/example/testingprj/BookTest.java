@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -326,6 +327,99 @@ public class BookTest {
 
 
     //////////////////////Klea //////////////////////
+
+    @Test
+    public void testGetPurchasedAmount() {
+        Book book = new Book();
+
+        book.addSale(new Date(), 5);
+        book.addSale(new Date(), 3);
+
+        int totalPurchased = book.getPurchasedAmount();
+
+        int expectedTotal = 5 + 3;
+        assertEquals(expectedTotal, totalPurchased);
+    }
+
+
+    @Test
+    public void testGetQuantitiesPurchased() {
+        Book book = new Book();
+
+        book.addPurchase(new Date());
+        book.addPurchase(new Date());
+
+        int totalQuantitiesPurchased = book.getQuantitiesPurchased();
+
+        int expectedTotal = 1 + 1;
+        assertEquals(expectedTotal, totalQuantitiesPurchased);
+    }
+
+
+    @Test
+    public void testGetSoldDatesQuantitiesDay_WithPurchases() {
+
+        Book book = new Book();
+        book.setTitle("Test Book");
+
+        Date saleDate = new Date();
+        book.addSale(saleDate, 3);
+
+        String soldDatesQuantitiesToday = book.getSoldDatesQuantitiesDay();
+
+        LocalDate today = LocalDate.now();
+
+        StringBuilder expected = new StringBuilder("For \"Test Book\" We have sold in a day:\n");
+        expected.append("3 at ").append(saleDate).append("\n");
+
+        assertEquals(expected.toString(), soldDatesQuantitiesToday);
+    }
+
+    @Test
+    public void testGetSoldDatesQuantitiesDay_NoPurchases() {
+        Book testBook = createTestBook();
+
+
+        testBook.setDates(null);
+        testBook.setPurchasedAmount(null);
+
+        String expected = "Test Book has had no purchases\n";
+        String actual = testBook.getSoldDatesQuantitiesDay();
+
+        assertEquals(expected, actual);
+    }
+
+
+
+    @Test
+    public void testGetSoldDatesQuantitiesMonth_WithPurchases() {
+        Book book = new Book();
+        book.setTitle("Test Book");
+
+        Date saleDate = new Date();
+        book.addSale(saleDate, 3);
+
+        String soldDatesQuantitiesToday = book.getSoldDatesQuantitiesMonth();
+
+        LocalDate today = LocalDate.now();
+
+        StringBuilder expected = new StringBuilder("For \"Test Book\" We have sold in a month:\n");
+        expected.append("3 at ").append(saleDate).append("\n");
+        assertEquals(expected.toString(), soldDatesQuantitiesToday);
+    }
+
+    @Test
+    public void testGetSoldDatesQuantitiesMonth_NoPurchases() {
+        Book testBook = createTestBook();
+
+        testBook.setDates(null);
+        testBook.setPurchasedAmount(null);
+
+        String expected = "Test Book has had no purchases\n";
+        String actual = testBook.getSoldDatesQuantitiesMonth();
+
+        assertEquals(expected, actual);
+    }
 
 
 

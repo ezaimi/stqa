@@ -114,4 +114,80 @@ public class AdministratorTest {
 
 
     ///////////////////Klea///////////////////
+    @Test
+    public void testGetSalaries() {
+        Manager.InstantiateLibrarians();
+        Administrator.InstantiateManagers();
+        Administrator.InstantiateAdmins();
+
+        double expected = 0;
+
+        for (Librarian librarian : Manager.getLibrarians()) {
+            expected += librarian.getSalary();
+        }
+
+        for (Manager manager : Administrator.getManagers()) {
+            expected += manager.getSalary();
+        }
+
+        for (Administrator admin : Administrator.getAdmins()) {
+            expected += admin.getSalary();
+        }
+
+        double actual = Administrator.getSalaries();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testInstantiateManagers() {
+        Administrator.getManagers().clear();
+        Administrator.InstantiateManagers();
+        ArrayList<Manager> managers = Administrator.getManagers();
+
+
+        assertNotNull(managers);
+        assertEquals(3, managers.size());
+
+
+        Manager firstManager = managers.get(0);
+        assertEquals("Calv1n", firstManager.getUsername());
+        assertEquals("PQ532Ayba", firstManager.getPassword());
+        assertEquals("Calvin", firstManager.getName());
+        assertEquals(900, firstManager.getSalary());
+        assertEquals("(912) 561-2628", firstManager.getPhone());
+        assertEquals("calvl@manager.com", firstManager.getEmail());
+
+    }
+
+
+    @Test
+    public void testInstantiateAdmins() {
+        Administrator.getAdmins().clear();
+        Administrator.InstantiateAdmins();
+        ArrayList<Administrator> admins = Administrator.getAdmins();
+
+
+        assertNotNull(admins);
+        assertEquals(2, admins.size());
+
+        Administrator firstAdmin = admins.get(0);
+        assertEquals("J0sh", firstAdmin.getUsername());
+        assertEquals("&zsX6QVZ", firstAdmin.getPassword());
+        assertEquals("Josh", firstAdmin.getName());
+        assertEquals(1500, firstAdmin.getSalary());
+        assertEquals("(912) 561-2328", firstAdmin.getPhone());
+        assertEquals("josh@administrator.com", firstAdmin.getEmail());
+
+
+    }
+
+    @Test
+    void testGetAdmins() {
+        Administrator.InstantiateAdmins();
+        ArrayList<Administrator> admins = Administrator.getAdmins();
+        assertNotNull(admins);
+        assertEquals(4, admins.size());
+    }
+
+
 }

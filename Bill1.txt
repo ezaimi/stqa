@@ -1,3 +1,3 @@
 Title: "Test Book", Quantities: 2, OriginalPrice 25.0, Price: 50.0
 
-Total price: 50.0 Date: Fri Dec 22 15:42:00 CET 2023
+Total price: 50.0 Date: Fri Dec 22 16:17:07 CET 2023

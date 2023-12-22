@@ -67,10 +67,10 @@ public class BillNumberTest {
         return books;
     }
 
-    @AfterEach
-    public void tearDown() {
-        deleteTemporaryFile();
-    }
+//    @AfterEach
+//    public void tearDown() {
+//        deleteTemporaryFile();
+//    }
 
     private void deleteTemporaryFile() {
         try {
@@ -212,79 +212,6 @@ public class BillNumberTest {
 
         return testBook;
     }
-
-    @Test
-    public void testGetBooksSoldDay_WithSales() {
-        ArrayList<Book> booksWithSales = new ArrayList<>();
-        Book bookWithSales = createTestBook();
-
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
-//        Date saleDate = calendar.getTime();
-
-        Date saleDate = new Date();
-
-        bookWithSales.addSale(saleDate, 3); // Adding sales for a specific dat
-        //bookWithSales.addQuantity(1);
-        booksWithSales.add(bookWithSales);
-
-//        ArrayList<Book> books2 = saveBooksToTemporaryFile(booksWithSales);
-//        Book book3 = books2.get(0);
-//        book3.addDate(new Date());
-//        book3.addQuantity(3);
-//        System.out.println("BOOOK");
-//        System.out.println(book3);
-
-        saveBooksToTemporaryFile(booksWithSales);
-        //BillNumber.updateBooks(bookWithSales);
-
-        String expected = "For Books Sold Today We Have:\n\n" +
-                "For \"" + bookWithSales.getTitle() + "\" We have sold in a day:\n" +
-                "3 at " + saleDate.toString() + "\n";
-
-        System.out.println("Excpected"+"\n"+expected);
-        //System.out.println(BillNumber.getBooksSoldDay());
-        System.out.println(BillNumber.getBooksSoldDay());
-
-        assertEquals(expected, BillNumber.getBooksSoldDay());
-    }
-
-
-    @Test
-    public void testGetBooksSoldMonth_WithSales() {
-        ArrayList<Book> booksWithSales = new ArrayList<>();
-        Book bookWithSales = createTestBook();
-
-        Date saleDate = new Date();
-
-        bookWithSales.addSale(saleDate, 3);
-        booksWithSales.add(bookWithSales);
-
-        String expected = "For Books Sold In A Month We Have\n\n" +
-                "For \"" + bookWithSales.getTitle() + "\" We have sold in a month:\n" +
-                "3 at " + saleDate.toString() + "\n";
-
-        saveBooksToTemporaryFile(booksWithSales);
-        assertEquals(expected, BillNumber.getBooksSoldMonth());
-    }
-
-    @Test
-    public void testGetBooksSoldYear_WithSales() {
-        ArrayList<Book> booksWithSales = new ArrayList<>();
-        Book bookWithSales = createTestBook();
-
-        Date saleDate = new Date();
-        bookWithSales.addSale(saleDate, 3);
-        booksWithSales.add(bookWithSales);
-
-        String expected = "For Books Sold In A Year We Have\n\n" +
-                "For \"" + bookWithSales.getTitle() + "\" We have sold in a year:\n" +
-                "3 at " + saleDate.toString() + "\n";
-
-        saveBooksToTemporaryFile(booksWithSales);
-        assertEquals(expected, BillNumber.getBooksSoldYear());
-    }
-
 
 
 
@@ -464,6 +391,191 @@ public class BillNumberTest {
 
 
     ////////////////////Klea////////////////////
+
+    @Test
+    public void testShowStock() {
+        // Create a sample book
+        Book book = new Book("1234567890", "Test Book", "Test Category", "Test Publisher", 10.0, 15.0, "Test Author", 20);
+
+        // Save the book to the temporary file
+        ArrayList<Book> books = new ArrayList<>();
+        books.add(book);
+        saveBooksToTemporaryFile(books);
+
+        // Redirect System.out to capture printed output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Call the method that prints the stock
+        BillNumber.showStock();
+
+        // Reset System.out to the default PrintStream
+        System.setOut(System.out);
+
+        // Check if the printed output contains the book details
+        String printedOutput = outContent.toString();
+        assertTrue(printedOutput.contains(book.toString()));
+    }
+    @Test
+    public void testGetBooksSoldDay_WithSales() {
+        ArrayList<Book> booksWithSales = new ArrayList<>();
+        Book bookWithSales = createTestBook();
+
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+//        Date saleDate = calendar.getTime();
+
+        Date saleDate = new Date();
+
+        bookWithSales.addSale(saleDate, 3); // Adding sales for a specific dat
+        //bookWithSales.addQuantity(1);
+        booksWithSales.add(bookWithSales);
+
+//        ArrayList<Book> books2 = saveBooksToTemporaryFile(booksWithSales);
+//        Book book3 = books2.get(0);
+//        book3.addDate(new Date());
+//        book3.addQuantity(3);
+//        System.out.println("BOOOK");
+//        System.out.println(book3);
+
+        saveBooksToTemporaryFile(booksWithSales);
+        //BillNumber.updateBooks(bookWithSales);
+
+        String expected = "For Books Sold Today We Have:\n\n" +
+                "For \"" + bookWithSales.getTitle() + "\" We have sold in a day:\n" +
+                "3 at " + saleDate.toString() + "\n";
+
+        System.out.println("Excpected"+"\n"+expected);
+        //System.out.println(BillNumber.getBooksSoldDay());
+        System.out.println(BillNumber.getBooksSoldDay());
+
+        assertEquals(expected, BillNumber.getBooksSoldDay());
+    }
+
+
+    @Test
+    public void testGetBooksSoldMonth_WithSales() {
+        ArrayList<Book> booksWithSales = new ArrayList<>();
+        Book bookWithSales = createTestBook();
+
+        Date saleDate = new Date();
+
+        bookWithSales.addSale(saleDate, 3);
+        booksWithSales.add(bookWithSales);
+
+        String expected = "For Books Sold In A Month We Have\n\n" +
+                "For \"" + bookWithSales.getTitle() + "\" We have sold in a month:\n" +
+                "3 at " + saleDate.toString() + "\n";
+
+        saveBooksToTemporaryFile(booksWithSales);
+        assertEquals(expected, BillNumber.getBooksSoldMonth());
+    }
+
+    @Test
+    public void testGetBooksSoldYear_WithSales() {
+        ArrayList<Book> booksWithSales = new ArrayList<>();
+        Book bookWithSales = createTestBook();
+
+        Date saleDate = new Date();
+        bookWithSales.addSale(saleDate, 3);
+        booksWithSales.add(bookWithSales);
+
+        String expected = "For Books Sold In A Year We Have\n\n" +
+                "For \"" + bookWithSales.getTitle() + "\" We have sold in a year:\n" +
+                "3 at " + saleDate.toString() + "\n";
+
+        saveBooksToTemporaryFile(booksWithSales);
+        assertEquals(expected, BillNumber.getBooksSoldYear());
+    }
+    @Test
+    public void testGetIntBooksSoldDay() {
+        // Creating test books with sales
+        Book testBook1 = createTestBook();
+        testBook1.addSale(new Date(123, 11, 10), 5); // Sale on a specific date
+
+        Book testBook2 = createTestBook();
+        testBook2.addSale(new Date(123, 11, 10), 3); // Sale on the same date
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook1);
+        booksToSave.add(testBook2);
+
+        // Saving the test books to the temporary file
+        saveBooksToTemporaryFile(booksToSave);
+
+        // Getting the total number of books sold in a day and asserting the result
+        int expectedBooksSold = testBook1.getTotalBooksSoldDay() + testBook2.getTotalBooksSoldDay();
+        int actualBooksSold = BillNumber.getIntBooksSoldDay();
+        assertEquals(expectedBooksSold, actualBooksSold);
+    }
+
+    @Test
+    public void testGetIntBooksSoldMonth() {
+        // Creating test books with sales
+        Book testBook1 = createTestBook();
+        testBook1.addSale(new Date(123, 11, 10), 5); // Sale on a specific date
+
+        Book testBook2 = createTestBook();
+        testBook2.addSale(new Date(123, 11, 10), 3); // Sale on the same date
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook1);
+        booksToSave.add(testBook2);
+
+        // Saving the test books to the temporary file
+        saveBooksToTemporaryFile(booksToSave);
+
+        // Getting the total number of books sold in a day and asserting the result
+        int expectedBooksSold = testBook1.getTotalBooksSoldMonth() + testBook2.getTotalBooksSoldMonth();
+        int actualBooksSold = BillNumber.getIntBooksSoldMonth();
+        assertEquals(expectedBooksSold, actualBooksSold);
+    }
+
+    @Test
+    public void testGetIntBooksSoldYear() {
+        // Creating test books with sales
+        Book testBook1 = createTestBook();
+        testBook1.addSale(new Date(123, 11, 10), 5); // Sale on a specific date
+
+        Book testBook2 = createTestBook();
+        testBook2.addSale(new Date(123, 11, 10), 3); // Sale on the same date
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook1);
+        booksToSave.add(testBook2);
+
+        // Saving the test books to the temporary file
+        saveBooksToTemporaryFile(booksToSave);
+
+        // Getting the total number of books sold in a day and asserting the result
+        int expectedBooksSold = testBook1.getTotalBooksSoldYear() + testBook2.getTotalBooksSoldYear();
+        int actualBooksSold = BillNumber.getIntBooksSoldYear();
+        assertEquals(expectedBooksSold, actualBooksSold);
+    }
+
+    @Test
+    public void testGetISBNName_WithBooks() {
+        // Creating test books
+        Book testBook1 = createTestBook();
+        Book testBook2 = new Book("9876543210987", "Another Book", "Category2", "Another Publisher", 15.00, 18.00, "Another Author", 5);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook1);
+        booksToSave.add(testBook2);
+
+        // Saving the test books to the temporary file
+        saveBooksToTemporaryFile(booksToSave);
+
+        // Getting ISBNs and names and asserting the result
+        ArrayList<String> expectedISBNName = new ArrayList<>();
+        expectedISBNName.add(testBook1.getISBN() + " - " + testBook1.getTitle());
+        expectedISBNName.add(testBook2.getISBN() + " - " + testBook2.getTitle());
+
+        ArrayList<String> actualISBNName = BillNumber.getISBNName();
+        assertEquals(expectedISBNName, actualISBNName);
+    }
+
+
 
 }
 

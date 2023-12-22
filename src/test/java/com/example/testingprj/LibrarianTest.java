@@ -8,8 +8,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LibrarianTest {
 
@@ -305,5 +304,99 @@ public class LibrarianTest {
 
 
     ////////////////////Klea////////////////////
+
+    @Test
+    public void testEnoughStockWithValidISBNAndEnoughStock() throws IOException {
+
+        ArrayList<Book> stockBooks = new ArrayList<>();
+        stockBooks.add(createTestBook());
+        stockBooks.add(new Book("123456789", "Book2", "Category2", "Supplier2", 15.0, 25.0, "Author2", 5));
+        BillNumber.updateBooks(stockBooks);
+        assertTrue(Librarian.EnoughStock("123456789", 5));
+    }
+
+    @Test
+    public void testEnoughStockWithValidISBNAndInsufficientStock() throws IOException {
+
+        ArrayList<Book> stockBooks = new ArrayList<>();
+        stockBooks.add(createTestBook());
+        stockBooks.add(createTestBook());
+        BillNumber.updateBooks(stockBooks);
+        assertFalse(Librarian.EnoughStock("123456789", 15));
+    }
+
+
+
+    @Test
+    public void testEnoughStockWithInvalidISBN() {
+        assertFalse(Librarian.EnoughStock("999999999", 5));
+    }
+
+    @Test
+    public void testEnoughStockWithValidISBNAndExactStock() throws IOException {
+
+        ArrayList<Book> stockBooks = new ArrayList<>();
+        stockBooks.add(createTestBook());
+        BillNumber.updateBooks(stockBooks);
+        assertTrue(Librarian.EnoughStock(TEST_ISBN, 10));
+    }
+
+
+
+
+    @Test
+    public void testCheckPasswordWithValidPassword() {
+        assertTrue(Librarian.checkPassword("securePW1"));
+    }
+
+    @Test
+    public void testCheckPasswordWithInvalidShortPassword() {
+        assertFalse(Librarian.checkPassword("shortPW"));
+    }
+
+
+    @Test
+    public void testCheckPhoneWithValidPhone() {
+        assertTrue(Librarian.checkPhone("(912) 123-4567"));
+    }
+
+    @Test
+    public void testCheckPhoneWithInvalidPhoneFormat() {
+        assertFalse(Librarian.checkPhone("123-456-7890"));
+    }
+
+    @Test
+    public void testCheckEmailWithValidEmail() {
+        assertTrue(Librarian.checkEmail("calvl@manager.com"));
+
+    }
+
+    @Test
+    public void testCheckEmailWithInvalidEmailFormat() {
+        assertFalse(Librarian.checkEmail("invalid-email"));
+    }
+
+    @Test
+    public void testCheckSalaryWithValidSalary() {
+        assertTrue(Librarian.checkSalary("50000.00"));
+    }
+
+    @Test
+    public void testCheckSalaryWithInvalidSalaryFormat() {
+        assertFalse(Librarian.checkSalary("invalid-salary"));
+    }
+
+    @Test
+    public void testCheckNameWithValidName() {
+        assertTrue(Librarian.checkName("John"));
+    }
+
+    @Test
+    public void testCheckNameWithInvalidNameFormat() {
+        assertFalse(Librarian.checkName("123"));
+    }
+
+
+
 
 }

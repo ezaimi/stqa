@@ -9,7 +9,8 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ManagerTest {
 
@@ -122,4 +123,90 @@ public class ManagerTest {
 
 
     ////////////////////Klea////////////////////
+    @Test
+    void testGetBackLibrarian() {
+        // Assuming you have instantiated some librarians
+        Librarian testLibrarian = new Librarian("Alfie123", "SSU6umwt", "Alfie", 500, "(912) 921-2728", "aflie@librarian.com");
+        Manager.InstantiateLibrarians();
+
+        // Get the librarian by username
+        Librarian resultLibrarian = Manager.getBackLibrarian(testLibrarian);
+
+        // Check if the result is not null and has the expected username
+        assertNotNull(resultLibrarian);
+        assertEquals(testLibrarian.getUsername(), resultLibrarian.getUsername());
+
+    }
+    @Test
+    void testGetBackLibrarianNonExistent() {
+        // Assuming you have instantiated some librarians
+        Manager.InstantiateLibrarians();
+
+        // Create a Librarian that is not in the librarians list
+        Librarian nonExistentLibrarian = new Librarian("NonExistent", "Password", "John", 500, "(123) 456-7890", "john@example.com");
+
+        // Get the librarian by the non-existent librarian
+        Librarian resultLibrarian = Manager.getBackLibrarian(nonExistentLibrarian);
+
+        // Check if the result is null
+        assertNull(resultLibrarian);
+    }
+
+    @Test
+    public void testGetAllCategories() {
+        // Call the actual method
+        ArrayList<String> actualCategories = Manager.getAllCategories();
+
+        // Create the expected list of categories
+        ArrayList<String> expectedCategories = new ArrayList<>();
+        expectedCategories.add("Modernist");
+        expectedCategories.add("Fiction");
+        expectedCategories.add("Novel");
+        expectedCategories.add("Magic Realism");
+        expectedCategories.add("Tragedy");
+        expectedCategories.add("Adventure Fiction");
+        expectedCategories.add("Historical Novel");
+        expectedCategories.add("Epic");
+        expectedCategories.add("War");
+        expectedCategories.add("Autobiography and memoir");
+        expectedCategories.add("Biography");
+        expectedCategories.add("Non-fiction novel");
+        expectedCategories.add("Self-help");
+        expectedCategories.add("Short stories");
+        expectedCategories.add("Horror");
+        expectedCategories.add("Mystery");
+        expectedCategories.add("Romance");
+        expectedCategories.add("Thriller");
+
+        // Assert that the actual result matches the expected result
+        assertEquals(expectedCategories, actualCategories);
+    }
+
+
+    @Test
+    public void testAddLibrarian() {
+        // Arrange
+        Manager.InstantiateLibrarians();
+        Librarian librarian = new Librarian("NewLibrarian", "password", "New", 500, "(912) 987-6543", "new@email.com");
+
+        // Act
+        Manager.AddLibrarian(librarian);
+
+        // Assert
+        assertTrue(Manager.getLibrarians().contains(librarian));
+    }
+    @Test
+    public void testGetLibrarians() {
+        Manager.InstantiateLibrarians();
+
+        ArrayList<Librarian> result = Manager.getLibrarians();
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+    }
+
+
+
+
+
 }
