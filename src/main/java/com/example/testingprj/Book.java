@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -47,6 +49,14 @@ public class Book implements Serializable{
 		this.setISBN(ISBN);
 	}
 
+	public Book() {
+
+	}
+
+	public ArrayList<Date>getPurchasedDates(){
+		return purchasedDates;
+	}
+
 
 	public String getISBN() {
 		return ISBN;
@@ -78,9 +88,9 @@ public class Book implements Serializable{
 	public void setOriginalPrice(double originalPrice) {
 		this.originalPrice = originalPrice;
 	}
-	public String getAuthor() {
-		return author;
-	}
+	//	public String getAuthor() {
+//		return author;
+//	}
 	public void setAuthor(String author) {
 		this.author = author;
 	}
@@ -139,44 +149,46 @@ public class Book implements Serializable{
 
 
 
-
-
-	public String getSoldDatesQuantitiesTotal() {
-
-		String ans = "For \"" + this.title +"\" We have sold:\n";
-
-		if (dates.isEmpty()) {
-			return this.getTitle()+" has had no purchases\n";
-		}
-
-		Date today = new Date();
-
-		for (int i=0;i<dates.size();i++) {
-			ans = ans.concat(purchasedAmount.get(i) +" at "+dates.get(i)+"\n");
-		}
-		return ans;
-
-	}
+//
+//
+//	public String getSoldDatesQuantitiesTotal() {
+//
+//		String ans = "For \"" + this.title +"\" We have sold:\n";
+//
+//		if (dates.isEmpty()) {
+//			return this.getTitle()+" has had no purchases\n";
+//		}
+//
+//		Date today = new Date();
+//
+//		for (int i=0;i<dates.size();i++) {
+//			ans = ans.concat(purchasedAmount.get(i) +" at "+dates.get(i)+"\n");
+//		}
+//		return ans;
+//
+//	}
 
 
 	public String getSoldDatesQuantitiesDay(){
+		StringBuilder ans = new StringBuilder("For \"" + this.title + "\" We have sold in a day:\n");
 
-		String ans = "For \"" + this.title +"\" We have sold in a day:\n";
-
-		if (dates.isEmpty()) {
-			return this.getTitle()+" has had no purchases\n";
+		if (dates == null) {
+			return this.getTitle() + " has had no purchases\n";
 		}
 
-		Date today = new Date();
+		LocalDate today = LocalDate.now();
 
-		for (int i=0;i<dates.size();i++) {
+		for (int i = 0; i < dates.size(); i++) {
+			if(dates.get(i) !=null) {
+				LocalDate saleDate = dates.get(i).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-			if (dates.get(i).getYear() == today.getYear() && dates.get(i).getMonth() == today.getMonth() && dates.get(i).getDay() == today.getDay()) {
-				ans = ans.concat(purchasedAmount.get(i) +" at "+dates.get(i)+"\n");
+				if (saleDate.equals(today)) {
+					ans.append(purchasedAmount.get(i)).append(" at ").append(dates.get(i)).append("\n");
+				}
 			}
 		}
-		return ans;
-
+		//System.out.println("TEK BOOK"+"\n"+ans.toString());
+		return ans.toString();
 
 	}
 
@@ -184,7 +196,7 @@ public class Book implements Serializable{
 
 		String ans = "For \"" + this.title +"\" We have sold in a month:\n";
 
-		if (dates.isEmpty()) {
+		if (dates== null) {
 			return this.getTitle()+" has had no purchases\n";
 		}
 
@@ -218,24 +230,24 @@ public class Book implements Serializable{
 
 	}
 
-
-	public String getBoughtDatesQuantitiesTotal() {
-
-		String ans = "For \"" + this.title +"\" We have bought in a day:\n";
-
-		if (purchasedDates.isEmpty()) {
-			return "We have made no purchases on \""+this.getTitle()+"\"\n";
-		}
-
-		Date today = new Date();
-
-		for (int i=0;i<purchasedDates.size();i++) {
-			ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
-		}
-
-		return ans;
-
-	}
+//
+//	public String getBoughtDatesQuantitiesTotal() {
+//
+//		String ans = "For \"" + this.title +"\" We have bought in a day:\n";
+//
+//		if (purchasedDates.isEmpty()) {
+//			return "We have made no purchases on \""+this.getTitle()+"\"\n";
+//		}
+//
+//		Date today = new Date();
+//
+//		for (int i=0;i<purchasedDates.size();i++) {
+//			ans = ans.concat(quantitiesPurchased.get(i) +" at "+purchasedDates.get(i)+"\n");
+//		}
+//
+//		return ans;
+//
+//	}
 
 	public String getBoughtDatesQuantitiesDay(){
 
@@ -293,7 +305,7 @@ public class Book implements Serializable{
 
 	public int getTotalBooksSoldDay() {
 
-		if (dates.isEmpty()) {
+		if (dates == null) {
 			return 0;
 		}
 
@@ -313,7 +325,7 @@ public class Book implements Serializable{
 
 	public int getTotalBooksSoldMonth() {
 
-		if (dates.isEmpty()) {
+		if (dates == null) {
 			return 0;
 		}
 
@@ -333,7 +345,7 @@ public class Book implements Serializable{
 
 	public int getTotalBooksSoldYear() {
 
-		if (dates.isEmpty()) {
+		if (dates == null) {
 			return 0;
 		}
 
@@ -409,58 +421,122 @@ public class Book implements Serializable{
 
 	}
 
-	public int getTotalBooksSold() {
+//	public int getTotalBooksSold() {
+//
+//
+//		if (dates.isEmpty()) {
+//			return 0;
+//		}
+//
+//		int ans=0;
+//
+//		for (int i=0;i<dates.size();i++) {
+//			ans+=purchasedAmount.get(i);
+//		}
+//
+//		return ans;
+//	}
 
-
-		if (dates.isEmpty()) {
-			return 0;
-		}
-
-		int ans=0;
-
-		for (int i=0;i<dates.size();i++) {
-			ans+=purchasedAmount.get(i);
-		}
-
-		return ans;
-	}
-
-	public int getTotalBooksBought() {
-
-
-		if (purchasedDates.isEmpty()) {
-			return 0;
-		}
-
-		int ans=0;
-
-		for (int i=0;i<purchasedDates.size();i++) {
-			ans+=quantitiesPurchased.get(i);
-		}
-
-		return ans;
-	}
+//	public int getTotalBooksBought() {
+//
+//
+//		if (purchasedDates.isEmpty()) {
+//			return 0;
+//		}
+//
+//
+//		int ans=0;
+//
+//		for (int i=0;i<purchasedDates.size();i++) {
+//			ans+=quantitiesPurchased.get(i);
+//		}
+//
+//		return ans;
+//	}
 
 	@Override
 	public String toString() {
 		return "Book [ISBN=" + ISBN + ", title=" + title + ", category=" + category + ", supplier=" + supplier
-				+ ", sellingPrice=" + sellingPrice
-				+ ", originalPrice=" + originalPrice + ", author=" + author + ", stock=" + stock + "]";
+				+ ", sellingPrice=" + sellingPrice + ", originalPrice=" + originalPrice + ", author=" + author
+				+ ", stock=" + stock + ", dates=" + dates + "]"; // Include the dates in the output
+	}
+//	public String toString() {
+//		return "Book [ISBN=" + ISBN + ", title=" + title + ", category=" + category + ", supplier=" + supplier
+//				+ ", sellingPrice=" + sellingPrice
+//				+ ", originalPrice=" + originalPrice + ", author=" + author + ", stock=" + stock + "]";
+//	}
+
+	public void addPurchase(Date date) {
+		// Ensure the ArrayLists are initialized
+		if (purchasedDates == null) {
+			purchasedDates = new ArrayList<>();
+		}
+		if (quantitiesPurchased == null) {
+			quantitiesPurchased = new ArrayList<>();
+		}
+
+		// Add the purchase date to the list of purchased dates
+		purchasedDates.add(date);
+
+		// For simplicity, assume each purchase is for one quantity; adjust accordingly if needed
+		quantitiesPurchased.add(1);
+	}
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		return true;
+	}
+
+	public void addSale(Date date, int quantity) {
+		if (dates == null) {
+			dates = new ArrayList<>();
+			purchasedAmount = new ArrayList<>();
+		}
+		dates.add(date);
+		purchasedAmount.add(quantity);
+	}
+
+//	public Date getBoughtDate() {
+//		if (!purchasedDates.isEmpty()) {
+//			// Assuming you want to get the most recent bought date
+//			return purchasedDates.get(purchasedDates.size() - 1);
+//		}
+//		return null; // or throw an exception, depending on your error handling strategy
+//	}
+
+	public void setPurchasedAmount(ArrayList<Integer> purchasedAmount) {
+		this.purchasedAmount = purchasedAmount;
 	}
 
 
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj) return true;
-//		if (obj == null || getClass() != obj.getClass()) return false;
-//		Book book = (Book) obj;
-//		return Objects.equals(ISBN, book.ISBN);
-//	}
-//
-//	@Override
-//	public int hashCode() {
-//		return Objects.hash(ISBN);
-//	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
+
+
+
+	public static Book findBookInStock(ArrayList<Book> stockBooks, String ISBN) {
+		for (Book stockBook : stockBooks) {
+			if (ISBN.equals(stockBook.getISBN())) {
+				return stockBook;
+			}
+		}
+		return null;
+	}
+
+	public void removeStock(int quantity) {
+		if (this.stock >= quantity) {
+			this.stock -= quantity;
+		} else {
+			System.out.println("Insufficient stock!");
+		}
+	}
+
 
 }
