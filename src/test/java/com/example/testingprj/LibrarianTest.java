@@ -396,6 +396,131 @@ public class LibrarianTest {
         assertFalse(Librarian.checkName("123"));
     }
 
+ @Test
+    public void testMoneyMadeInDayNoSales() {
+        Librarian librarian = new Librarian("1", "1"); // Instantiate your Librarian class
+        librarian.datesSold = null; // Set datesSold to null explicitly
+        double moneyMade = librarian.moneyMadeInDay();
+        assertEquals(0, moneyMade, 0); // Assuming a negligible error    }
+    }
+    @Test
+    public void testMoneyMadeInDayWithSales() throws IOException {
+        Librarian librarian = new Librarian("1","1"); // Instantiate your Librarian class
+
+        // Add some sales to datesSold and moneyMadeDates
+        ArrayList<Date> datesSold = new ArrayList<>();
+        ArrayList<Double> moneyMadeDates = new ArrayList<>();
+        datesSold.add(new Date()); // Add today's date
+        moneyMadeDates.add(1.0); // Add some money made for today
+
+        // Set the datesSold and moneyMadeDates in librarian
+        Book  b1=createTestBook();
+        Book b2=createTestBook();
+
+        ArrayList<Book>arrayList=new ArrayList<>();
+        arrayList.add(b1);
+        arrayList.add(b2);
+
+        int x=b1.getPurchasedAmount();
+        int y=b2.getPurchasedAmount();
+        System.out.println("x");
+        System.out.println(x);
+        ArrayList<Integer>quantities=new ArrayList<>();
+        quantities.add(x);
+        quantities.add(y);
+        librarian.checkOutBooks(arrayList,quantities);
+
+
+        double moneyMade = librarian.moneyMadeInDay();
+        assertEquals(1.0, moneyMade, 1.0); // Adjust the expected value based on your test data
+    }
+    @Test
+    public void testMoneyMadeInMonthNoSales() {
+        Librarian librarian = new Librarian("1", "1"); // Instantiate your Librarian class
+        librarian.datesSold = null; // Set datesSold to null explicitly
+        double moneyMade = librarian.moneyMadeInMonth();
+        assertEquals(0, moneyMade, 0); // Assuming a negligible error    }
+    }
+    @Test
+    public void testMoneyMadeInMonthWithSales() throws IOException {
+        Librarian librarian = new Librarian("1","1"); // Instantiate your Librarian class
+
+        // Add some sales to datesSold and moneyMadeDates
+        ArrayList<Date> datesSold = new ArrayList<>();
+        ArrayList<Double> moneyMadeDates = new ArrayList<>();
+        datesSold.add(new Date()); // Add today's date
+        moneyMadeDates.add(1.0); // Add some money made for today
+
+        // Set the datesSold and moneyMadeDates in librarian
+        Book  b1=createTestBook();
+        Book b2=createTestBook();
+
+        ArrayList<Book>arrayList=new ArrayList<>();
+        arrayList.add(b1);
+        arrayList.add(b2);
+
+        int x=b1.getPurchasedAmount();
+        int y=b2.getPurchasedAmount();
+        System.out.println("x");
+        System.out.println(x);
+        ArrayList<Integer>quantities=new ArrayList<>();
+        quantities.add(x);
+        quantities.add(y);
+        librarian.checkOutBooks(arrayList,quantities);
+
+
+        double moneyMade = librarian.moneyMadeInMonth();
+        assertEquals(1.0, moneyMade, 1.0); // Adjust the expected value based on your test data
+    }
+    @Test
+    public void testMoneyMadeInYearNoSales() {
+        Librarian librarian = new Librarian("1", "1"); // Instantiate your Librarian class
+        librarian.datesSold = null; // Set datesSold to null explicitly
+        double moneyMade = librarian.moneyMadeInYear();
+        assertEquals(0, moneyMade, 0); // Assuming a negligible error    }
+    }
+    @Test
+    public void testMoneyMadeInYearWithSales() throws IOException {
+        Librarian librarian = new Librarian("1","1"); // Instantiate your Librarian class
+
+        // Add some sales to datesSold and moneyMadeDates
+        ArrayList<Date> datesSold = new ArrayList<>();
+        ArrayList<Double> moneyMadeDates = new ArrayList<>();
+        datesSold.add(new Date()); // Add today's date
+        moneyMadeDates.add(1.0); // Add some money made for today
+
+        // Set the datesSold and moneyMadeDates in librarian
+        Book  b1=createTestBook();
+        Book b2=createTestBook();
+
+        ArrayList<Book>arrayList=new ArrayList<>();
+        arrayList.add(b1);
+        arrayList.add(b2);
+
+        int x=b1.getPurchasedAmount();
+        int y=b2.getPurchasedAmount();
+        System.out.println("x");
+        System.out.println(x);
+        ArrayList<Integer>quantities=new ArrayList<>();
+        quantities.add(x);
+        quantities.add(y);
+        librarian.checkOutBooks(arrayList,quantities);
+
+
+        double moneyMade = librarian.moneyMadeInYear();
+        assertEquals(1.0, moneyMade, 1.0); // Adjust the expected value based on your test data
+    }
+    @Test
+    public void testToStringLib() {
+        // Create a Librarian object with some sample data
+        Librarian librarian = new Librarian("sampleUsername", "samplePassword", "John Doe", 50000.0, "123456789", "john.doe@example.com");
+
+        // Define the expected result based on the sample data
+        String expectedToString = "Librarian [username=sampleUsername, password=samplePassword, name=John Doe, salary=50000.0, phone=123456789, email=john.doe@example.com]";
+
+        // Call the toString method and compare the result with the expected string
+        assertEquals(expectedToString, librarian.toString());
+    }
 
 
 

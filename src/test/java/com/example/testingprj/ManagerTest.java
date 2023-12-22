@@ -206,6 +206,89 @@ public class ManagerTest {
     }
 
 
+ @Test
+    public void testInstantiateLibrarians() {
+        List<Librarian> librarians = new ArrayList<>();
+        Librarian lib = new Librarian("Alfie123","SSU6umwt","Alfie",500,"(912) 921-2728","aflie@librarian.com") ;
+        librarians.add(lib);
+
+        lib = new Librarian("@Leo","TyFzN8we","Leo",500,"(912) 152-7493","leo@librarian.com");
+        librarians.add(lib);
+
+        lib = new Librarian("Julie?!","NDt8f6xL","Julie",500,"(912) 742-7832","julie@librarian.com");
+        librarians.add(lib);
+
+        lib = new Librarian("MargiE","vGtM6beC","Margie",500,"(912) 253-6939","margie@librarian.com");
+        librarians.add(lib);
+
+        lib = new Librarian("1","1","TestLibrarian",500,"(912) 632-6353","TestEmail@librarian.com");
+        librarians.add(lib);
+        Manager manager=new Manager("1","2");
+        manager.InstantiateLibrarians();
+
+        assertNotNull(librarians);
+        assertEquals(5, librarians.size());
+
+        Librarian firstLibrarian = librarians.get(0);
+        assertEquals("Alfie123", firstLibrarian.getUsername());
+        // Add more assertions for other properties as needed
+    }
+
+    @Test
+    public void testLibrarianChecker() {
+        // Arrange
+        List<Librarian> librarians = new ArrayList<>();
+        Manager manager=new Manager("1","2");
+        manager.InstantiateLibrarians();
+
+        // Act & Assert
+        assertTrue(manager.LibrarianChecker(new Librarian("Alfie123", "SSU6umwt", null, 0, null, null)));
+        assertTrue(manager.LibrarianChecker(new Librarian("@Leo", "TyFzN8we", null, 0, null, null)));
+        assertTrue(manager.LibrarianChecker(new Librarian("Julie?!", "NDt8f6xL", null, 0, null, null)));
+        assertTrue(manager.LibrarianChecker(new Librarian("MargiE", "vGtM6beC", null, 0, null, null)));
+        assertTrue(manager.LibrarianChecker(new Librarian("1", "1", null, 0, null, null)));
+
+        // Test with invalid credentials
+        assertFalse(manager.LibrarianChecker(new Librarian("InvalidUsername", "InvalidPassword", null, 0, null, null)));
+    }
+
+
+    @Test
+    public void testDeleteLibrarian() {
+        // Scenario 1: Librarian to be deleted is present in the list
+        ArrayList<Librarian> librarians = new ArrayList<>();
+        Manager.librarians = librarians;
+
+        Librarian librarianToDelete = new Librarian("TestLibrarian", "password", "Test Name", 500, "(123) 456-7890", "test@example.com");
+        librarians.add(librarianToDelete);
+        int initialSize = librarians.size();
+
+        Manager.deleteLibrarian(librarianToDelete);
+
+        assertEquals(initialSize - 1, librarians.size());
+        assertFalse(librarians.contains(librarianToDelete));
+
+        // Scenario 2: Librarian to be deleted is not present in the list
+        Librarian nonExistentLibrarian = new Librarian("NonExistentLibrarian", "password", "Non Existent", 500, "(987) 654-3210", "nonexistent@example.com");
+        int sizeAfterNonExistent = librarians.size();
+
+        Manager.deleteLibrarian(nonExistentLibrarian);
+
+        assertEquals(sizeAfterNonExistent, librarians.size()); // Size should remain unchanged
+
+        // Scenario 3: Deleting from an empty list
+        ArrayList<Librarian> emptyList = new ArrayList<>();
+        Manager.librarians = emptyList; // Setting the librarians list to an empty list
+
+        Librarian emptyListLibrarian = new Librarian("EmptyListLibrarian", "password", "Empty List", 500, "(111) 222-3333", "empty@example.com");
+        int sizeBeforeEmptyList = librarians.size();
+
+        Manager.deleteLibrarian(emptyListLibrarian);
+
+        assertEquals(sizeBeforeEmptyList, librarians.size()); // Size should remain unchanged
+    }
+
+
 
 
 
