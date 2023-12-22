@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.example.testingprj.BillNumber;
@@ -13,31 +14,12 @@ import com.example.testingprj.Book;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.example.testingprj.BillNumber;
 import com.example.testingprj.Book;
 import org.junit.jupiter.api.Test;
-
-//import static org.mockito.Mockito.*;
-
-//public class BillNumberTest {
-//
-//    @Test
-//    public void testAddBookToStock() {
-//        // Create a test book
-//        Book testBook = new Book("1234567890123", "Test Book", "Test Category", "Test Publisher", 20.00, 25.00, "Test Author", 10);
-//
-//        // Mock the behavior of getStockBooks() to return a specific ArrayList<Book>
-//        ArrayList<Book> mockedStockBooks = new ArrayList<>();
-//        when(BillNumber.getStockBooks()).thenReturn(mockedStockBooks);
-//
-//        // Call the method you want to test
-//        BillNumber.addBookToStock(testBook);
-//
-//        // Verify that the test book was added to the mocked stock books
-//        verify(mockedStockBooks).add(testBook);
-//    }
-//}
 
 
 public class BillNumberTest {
@@ -57,20 +39,17 @@ public class BillNumberTest {
     }
 
     private Book createTestBook() {
-        return new Book(TEST_ISBN, TEST_TITLE, "Test Category", "Test Publisher", 20.00, 25.00, "Test Author", 10);
+        return new Book(TEST_ISBN, TEST_TITLE, "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 10);
     }
 
     @BeforeEach
     public void setUp() {
         BillNumberTest.setStockFilePath(TEMP_STOCK_FILE_PATH);
-        // Create a temporary file for testing
         createTemporaryFile();
     }
 
     private void createTemporaryFile() {
         try (ObjectOutputStream objout = new ObjectOutputStream(new FileOutputStream(TEMP_STOCK_FILE_PATH))) {
-            // Write initial data to the temporary file if needed for setup
-            // For instance:
             Book book = createTestBook();
             objout.writeObject(book);
         } catch (IOException e) {
@@ -78,9 +57,18 @@ public class BillNumberTest {
         }
     }
 
+    private ArrayList<Book> saveBooksToTemporaryFile(ArrayList<Book> books) {
+        try (ObjectOutputStream objout = new ObjectOutputStream(new FileOutputStream(TEMP_STOCK_FILE_PATH))) {
+            objout.writeObject(books);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
+
     @AfterEach
     public void tearDown() {
-        // Clean up the temporary file after each test
         deleteTemporaryFile();
     }
 
@@ -92,26 +80,391 @@ public class BillNumberTest {
         }
     }
 
+
+
+
+    /////////////////////Era//////////////////////////
+
+    @Test
+    public void testGetIncomeDay() {
+        // Sale date
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date saleDate = calendar.getTime();
+
+        Book testBook = createTestBook();
+        testBook.addSale(saleDate, 5);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook);
+
+        saveBooksToTemporaryFile(booksToSave);
+
+        double expectedIncome = testBook.getTotalBooksSoldDay() * testBook.getSellingPrice();
+        double actualIncome = BillNumber.getIncomeDay();
+        assertEquals(expectedIncome, actualIncome);
+    }
+
+    @Test
+    public void testGetIncomeMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date saleDate = calendar.getTime();
+
+        Book testBook = createTestBook();
+        testBook.addSale(saleDate, 5);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook);
+
+        saveBooksToTemporaryFile(booksToSave);
+
+        double expectedIncome = testBook.getTotalBooksSoldMonth() * testBook.getSellingPrice();
+        double actualIncome = BillNumber.getIncomeMonth();
+        assertEquals(expectedIncome, actualIncome);
+    }
+
+    @Test
+    public void testGetIncomeYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date saleDate = calendar.getTime();
+
+        Book testBook = createTestBook();
+        testBook.addSale(saleDate, 5);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook);
+        saveBooksToTemporaryFile(booksToSave);
+
+        double expectedIncome = testBook.getTotalBooksSoldYear() * testBook.getSellingPrice();
+        double actualIncome = BillNumber.getIncomeYear();
+        assertEquals(expectedIncome, actualIncome);
+    }
+
+    @Test
+    public void testGetCostDay() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date purchaseDate = calendar.getTime();
+
+        Book testBook = createTestBook();
+        testBook.addPurchase(purchaseDate);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook);
+
+        saveBooksToTemporaryFile(booksToSave);
+
+        double expectedCost = testBook.getTotalBooksBoughtDay() * testBook.getOriginalPrice();
+        double actualCost = BillNumber.getCostDay();
+        assertEquals(expectedCost, actualCost);
+    }
+
+    @Test
+    public void testGetCostMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date purchaseDate = calendar.getTime();
+
+        Book testBook = createTestBook();
+        testBook.addPurchase(purchaseDate);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook);
+
+        saveBooksToTemporaryFile(booksToSave);
+
+        double expectedCost = testBook.getTotalBooksBoughtMonth() * testBook.getOriginalPrice();
+        double actualCost = BillNumber.getCostMonth();
+        assertEquals(expectedCost, actualCost);
+    }
+
+    @Test
+    public void testGetCostYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date purchaseDate = calendar.getTime();
+
+        Book testBook = createTestBook();
+        testBook.addPurchase(purchaseDate);
+
+        ArrayList<Book> booksToSave = new ArrayList<>();
+        booksToSave.add(testBook);
+
+        saveBooksToTemporaryFile(booksToSave);
+
+        double expectedCost = testBook.getTotalBooksBoughtYear() * testBook.getOriginalPrice();
+        double actualCost = BillNumber.getCostYear();
+        assertEquals(expectedCost, actualCost);
+    }
+
+
+    private Book createTestBookWithSale() {
+        Book testBook = new Book(TEST_ISBN, TEST_TITLE, "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 10);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+        Date saleDate = calendar.getTime();
+
+        int quantitySold = 3;
+        testBook.addSale(saleDate, quantitySold);
+
+        return testBook;
+    }
+
+    @Test
+    public void testGetBooksSoldDay_WithSales() {
+        ArrayList<Book> booksWithSales = new ArrayList<>();
+        Book bookWithSales = createTestBook();
+
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(2023, Calendar.DECEMBER, 10); // Year, Month (0-based index), Day
+//        Date saleDate = calendar.getTime();
+
+        Date saleDate = new Date();
+
+        bookWithSales.addSale(saleDate, 3); // Adding sales for a specific dat
+        //bookWithSales.addQuantity(1);
+        booksWithSales.add(bookWithSales);
+
+//        ArrayList<Book> books2 = saveBooksToTemporaryFile(booksWithSales);
+//        Book book3 = books2.get(0);
+//        book3.addDate(new Date());
+//        book3.addQuantity(3);
+//        System.out.println("BOOOK");
+//        System.out.println(book3);
+
+        saveBooksToTemporaryFile(booksWithSales);
+        //BillNumber.updateBooks(bookWithSales);
+
+        String expected = "For Books Sold Today We Have:\n\n" +
+                "For \"" + bookWithSales.getTitle() + "\" We have sold in a day:\n" +
+                "3 at " + saleDate.toString() + "\n";
+
+        System.out.println("Excpected"+"\n"+expected);
+        //System.out.println(BillNumber.getBooksSoldDay());
+        System.out.println(BillNumber.getBooksSoldDay());
+
+        assertEquals(expected, BillNumber.getBooksSoldDay());
+    }
+
+
+    @Test
+    public void testGetBooksSoldMonth_WithSales() {
+        ArrayList<Book> booksWithSales = new ArrayList<>();
+        Book bookWithSales = createTestBook();
+
+        Date saleDate = new Date();
+
+        bookWithSales.addSale(saleDate, 3);
+        booksWithSales.add(bookWithSales);
+
+        String expected = "For Books Sold In A Month We Have\n\n" +
+                "For \"" + bookWithSales.getTitle() + "\" We have sold in a month:\n" +
+                "3 at " + saleDate.toString() + "\n";
+
+        saveBooksToTemporaryFile(booksWithSales);
+        assertEquals(expected, BillNumber.getBooksSoldMonth());
+    }
+
+    @Test
+    public void testGetBooksSoldYear_WithSales() {
+        ArrayList<Book> booksWithSales = new ArrayList<>();
+        Book bookWithSales = createTestBook();
+
+        Date saleDate = new Date();
+        bookWithSales.addSale(saleDate, 3);
+        booksWithSales.add(bookWithSales);
+
+        String expected = "For Books Sold In A Year We Have\n\n" +
+                "For \"" + bookWithSales.getTitle() + "\" We have sold in a year:\n" +
+                "3 at " + saleDate.toString() + "\n";
+
+        saveBooksToTemporaryFile(booksWithSales);
+        assertEquals(expected, BillNumber.getBooksSoldYear());
+    }
+
+
+
+
+
+
+    @Test
+    void testRemoveDuplicates() {
+        ArrayList<String> originalList = new ArrayList<>();
+        originalList.add("Science");
+        originalList.add("Fiction");
+        originalList.add("Science");
+        originalList.add("Comedy");
+        originalList.add("Fiction");
+
+        ArrayList<String> expectedList = new ArrayList<>();
+        expectedList.add("Science");
+        expectedList.add("Fiction");
+        expectedList.add("Comedy");
+
+        ArrayList<String> result = BillNumber.removeDuplicates(originalList);
+        assertEquals(expectedList, result, "Duplicates not removed properly");
+    }
+    //
+//    @Test
+//    void testIsPartOfBooks() {
+//        ArrayList<Book> bookList = BillNumber.getInitialStock();
+//
+//        Book testBook = new Book("1234567890123", "Test Book", "Test Genre", "Test Publisher", 10.00, 15.00, "Test Author", 5);
+//        bookList.add(testBook);
+//
+//        try {
+//            BillNumber.updateBooks(bookList);
+//
+//            assertTrue(BillNumber.isPartOfBooks("1234567890123"), "Book not found in the stock");
+//            assertFalse(BillNumber.isPartOfBooks("9999999999999"), "Non-existent book found in the stock");
+//
+//        } catch (IOException e) {
+//            fail("Exception occurred: " + e.getMessage());
+//        }
+//    }
+    @Test
+    public void testPrintBookDates() {
+        ArrayList<Book> emptyList = new ArrayList<>();
+        assertDoesNotThrow(() -> BillNumber.printBookDates(emptyList));
+
+        // test case 2: Books without Dates
+        Book bookWithoutDate = new Book("ISBN1", "Book1", "Category1", "Publisher1", 20.00, 25.00, "Author1", 10);
+        ArrayList<Book> booksWithoutDates = new ArrayList<>();
+        booksWithoutDates.add(bookWithoutDate);
+        assertDoesNotThrow(() -> BillNumber.printBookDates(booksWithoutDates)); //"empty" to be printed
+
+        // test case 3: Books with Single Date
+        Book bookWithSingleDate = new Book("ISBN2", "Book2", "Category2", "Publisher2", 20.00, 25.00, "Author2", 10);
+        bookWithSingleDate.addDate(new Date());
+        ArrayList<Book> booksWithSingleDate = new ArrayList<>();
+        booksWithSingleDate.add(bookWithSingleDate);
+        assertDoesNotThrow(() -> BillNumber.printBookDates(booksWithSingleDate)); // single date to be printed
+
+        // test case 4: Books with Multiple Dates
+        Book bookWithMultipleDates = new Book("ISBN3", "Book3", "Category3", "Publisher3", 20.00, 25.00, "Author3", 10);
+        bookWithMultipleDates.addDate(new Date());
+        bookWithMultipleDates.addDate(new Date());
+        ArrayList<Book> booksWithMultipleDates = new ArrayList<>();
+        booksWithMultipleDates.add(bookWithMultipleDates);
+        assertDoesNotThrow(() -> BillNumber.printBookDates(booksWithMultipleDates)); //multiple dates to be printed
+
+        //3 dates will be printed, one for test case 3 and 2 for test case 4
+    }
+
+    @Test
+    public void testGetSoldDatesQuantitiesDay() {
+        Book book = createTestBook();
+        Date today = new Date();
+        book.addDate(today);
+        book.addQuantity(5);
+
+        String result = book.getSoldDatesQuantitiesDay();
+
+        String expected = "For \"" + book.getTitle() + "\" We have sold in a day:\n5 at " + today + "\n";
+
+        assertEquals(expected, result);
+    }
+
+
+
+
+
+
+//
+//    @Test
+//    public void testAddBookToStock() {
+//        // Create a test book
+//        Book testBook = createTestBook();
+//
+//        // Add the test book to stock
+//        BillNumber.addBookToStock(testBook);
+//
+//        // Retrieve the stock books from the temporary file
+//        ArrayList<Book> stockBooks = BillNumber.getStockBooks();
+//
+//        for (Book book : stockBooks) {
+//            System.out.println(book);
+//        }
+//        System.out.println("\n");
+//        System.out.println(testBook);
+//
+//        // Assert that the test book was added to the stock
+//        assertTrue(stockBooks.contains(testBook));
+//    }
+
+
+    @Test
+    public void testGetBoughtDatesQuantitiesDay_NoPurchases() {
+        Book testBook = new Book("1234567890123", "Test Book", "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 1);
+        String result = testBook.getBoughtDatesQuantitiesDay();
+        String expected = "We have made no purchases on \"Test Book\"\n";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetBoughtDatesQuantitiesDay_WithPurchases() {
+        Book testBook = new Book("1234567890123", "Test Book", "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 1);
+
+        testBook.addPurchase(new Date());
+        String result = testBook.getBoughtDatesQuantitiesDay();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        String currentDateFormatted = dateFormat.format(new Date());
+
+
+        String expected = "For \"Test Book\" We have bought in a day:\n1 at " + currentDateFormatted + "\n";
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetBoughtDatesQuantitiesDay_MultiplePurchases() {
+         Book testBook = new Book("1234567890123", "Test Book", "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 1);
+
+         testBook.addPurchase(getYesterday());
+         testBook.addPurchase(new Date());
+
+
+        String result = testBook.getBoughtDatesQuantitiesDay();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        String currentDateFormatted = dateFormat.format(new Date());
+
+        String expected = "For \"Test Book\" We have bought in a day:\n1 at " + currentDateFormatted + "\n";
+        assertEquals(expected, result);
+    }
+
+    // helper method to get yesterday's date
+    private Date getYesterday() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
+    }
+
+
     @Test
     public void testAddBookToStock() {
-        // Create a test book
+
         Book testBook = createTestBook();
 
-        // Add the test book to stock
         BillNumber.addBookToStock(testBook);
-
-        // Retrieve the stock books from the temporary file
         ArrayList<Book> stockBooks = BillNumber.getStockBooks();
 
-        for (Book book : stockBooks) {
-            System.out.println(book);
-        }
-        System.out.println("\n");
-        System.out.println(testBook);
-
-        // Assert that the test book was added to the stock
         assertTrue(stockBooks.contains(testBook));
+
+        File testFile = new File(TEMP_STOCK_FILE_PATH);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
     }
+
+
+
+    ////////////////////Klea////////////////////
+
 }
 
 
@@ -123,182 +476,3 @@ public class BillNumberTest {
 
 
 
-
-
-
-
-
-
-
-
-//package com.example.testingprj;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.io.TempDir;
-//
-//import java.io.File;
-//import java.io.FileOutputStream;
-//import java.io.IOException;
-//import java.io.ObjectOutputStream;
-//import java.nio.file.Path;
-//import java.util.ArrayList;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//
-//public class BillNumberTest {
-//
-//    @TempDir
-//    static Path tempDir;
-//
-//    private static final String TEMP_STOCK_FILE_PATH = "tempStockFile.bin";
-//
-//    @BeforeEach
-//    public void setUp() {
-//        // Create a temporary file with initial data for testing
-//        createTemporaryFile();
-//    }
-//
-//    private void createTemporaryFile() {
-//        try (ObjectOutputStream objout = new ObjectOutputStream(new FileOutputStream(new File(tempDir.toFile(), TEMP_STOCK_FILE_PATH)))) {
-//            // Write initial data to the temporary file
-//            // For instance:
-//            Book book = new Book("1234567890123", "Test Book 1", "Test Category", "Test Publisher", 20.00, 25.00, "Test Author 1", 10);
-//            objout.writeObject(book);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//
-//    @Test
-//    public void yourTestMethod() {
-//        // Your test method
-//    }
-//
-//
-//
-//
-////
-////class BookOperationsTest {
-////
-////    FileOutputStream out;
-////    ObjectOutputStream objOut;
-////
-////    private static final String FILE_PATH = "Books.bin";
-////    private static final String TEST_FILE_PATH = "BookTesting.txt";
-////
-////    @BeforeAll
-////    public static void setUp() throws IOException{
-////        createTestFile();
-////    }
-////
-////    @AfterAll
-////    public static void tearDown(){
-////        //cleaning the test file after running tests (if it is needed)
-////        File testFile = new File(TEST_FILE_PATH);
-////        if(testFile.exists()){
-////            testFile.delete();
-////        }
-////    }
-////
-////    private static void createTestFile() throws IOException{
-////        ArrayList<Book> testBooks = new ArrayList<>();
-////
-////        //populating the array with test book data
-////        testBooks.add(new Book("1234567890123", "Test Book 1", "Test Category", "Test Publisher", 20.00, 25.00, "Test Author 1", 10));
-////        testBooks.add(new Book("2345678901234", "Test Book 2", "Another Category", "Another Publisher", 15.00, 18.00, "Test Author 2", 5));
-////
-////
-////        FileOutputStream fileOutputStream = new FileOutputStream(TEST_FILE_PATH);
-////        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-////        //writing the test books from the testBooks array in the TEST_FILE_PATH
-////        for(Book book : testBooks){
-////            objectOutputStream.writeObject(book);
-////        }
-////        objectOutputStream.close();
-////        fileOutputStream.close();
-////    }
-//
-//
-//
-////
-////    @Test
-////    void test_setInitialStock() {
-////        //this method tests if the data is written successfully into a file and
-////        // to ensure the data is retrieved correctly
-////        try{
-//////            //calling the method that creates the test file
-//////            setUp();
-////            //the setInitialStock method reads from the test file
-////            BillNumber.setInitialStock(TEST_FILE_PATH);
-////            //reading the test data from the file
-////            FileInputStream in = new FileInputStream(TEST_FILE_PATH);
-////            ObjectInputStream objIn = new ObjectInputStream(in);
-////
-////            ArrayList<Book> bookArrayList = new ArrayList<>();
-////            //populating the array with the expected list from the test file
-////            ArrayList<Book> expected_list = BillNumber.getInitialStock();
-////
-////            while (true){
-////                try{
-////                    bookArrayList.add((Book) objIn.readObject());
-////                } catch (EOFException e){
-////                    break;
-////                }
-////            }
-////            // 1 - bookArrayList has the books read from the test file
-////            // 2 - expected_list contains the books that are retrieved from using the getInitialStock function
-////            for (int i=0;i<bookArrayList.size();i++){
-////                assertEquals(bookArrayList.get(i).getISBN(), expected_list.get(i).getISBN());
-////                assertEquals(bookArrayList.get(i).getStock(), expected_list.get(i).getStock());
-////            }
-////
-////        } catch (IOException | ClassNotFoundException e){
-////            fail("Exception: " + e.getMessage());
-////        }
-////    }
-//
-//
-//
-//    @Test
-//    void testRemoveDuplicates() {
-//        ArrayList<String> originalList = new ArrayList<>();
-//        originalList.add("Science");
-//        originalList.add("Fiction");
-//        originalList.add("Science");
-//        originalList.add("Comedy");
-//        originalList.add("Fiction");
-//
-//        ArrayList<String> expectedList = new ArrayList<>();
-//        expectedList.add("Science");
-//        expectedList.add("Fiction");
-//        expectedList.add("Comedy");
-//
-//        ArrayList<String> result = BillNumber.removeDuplicates(originalList);
-//        assertEquals(expectedList, result, "Duplicates not removed properly");
-//    }
-//
-//}
-////    @Test
-////    void testIsPartOfBooks() {
-////        ArrayList<Book> bookList = BillNumber.getInitialStock();
-////
-////        // Adding a book to the stock
-////        Book testBook = new Book("1234567890123", "Test Book", "Test Genre", "Test Publisher", 10.00, 15.00, "Test Author", 5);
-////        bookList.add(testBook);
-////
-////        try {
-////            BillNumber.updateBooks(bookList);
-////
-////            assertTrue(BillNumber.isPartOfBooks("1234567890123"), "Book not found in the stock");
-////            assertFalse(BillNumber.isPartOfBooks("9999999999999"), "Non-existent book found in the stock");
-////
-////        } catch (IOException e) {
-////            fail("Exception occurred: " + e.getMessage());
-////        }
-////    }
-//
-//
-//

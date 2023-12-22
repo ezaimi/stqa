@@ -1,3 +1,3 @@
-Title: "Don Quixote", Quantities: 1, OriginalPrice 6.59, Price: 6.59
+Title: "Test Book", Quantities: 2, OriginalPrice 25.0, Price: 50.0
 
-Total price: 6.59 Date: Wed Dec 06 20:43:17 CET 2023
+Total price: 50.0 Date: Fri Dec 22 15:42:00 CET 2023
