@@ -189,5 +189,81 @@ public class AdministratorTest {
         assertEquals(4, admins.size());
     }
 
+    @Test
+    public void testGetBackManager() {
+        ArrayList<Manager> managerList = new ArrayList<>();
+        ArrayList<Manager>emptyList=new ArrayList<>();
+
+        Manager mag1 = new Manager("Calv1n", "PQ532Ayba", "Calvin", 900, "(912) 561-2628", "calvl@manager.com");
+        managerList.add(mag1);
+        Manager mag2 = new Manager("Lui54", "y@.3FYrn", "Lui", 900, "(912) 218-2594", "lu@manager.com");
+        managerList.add(mag2);
+        Manager mag3 = new Manager("1", "2", "TestManager", 900, "(912) 623-5353", "TestEmail@librarian.com");
+        managerList.add(mag3);
+        assertEquals(managerList.size(),3);
+
+        Administrator administrator = new Administrator("1", "3");
+
+        Manager foundManager = administrator.getBackManager(mag2,managerList);
+
+
+        assertEquals("Lui54", foundManager.getUsername());
+        assertEquals("y@.3FYrn", foundManager.getPassword());
+        assertNull(administrator.getBackManager(mag1,emptyList));
+        // Add more assertions for other properties as needed
+    }
+    @Test
+    public void testGetManagers() {
+
+        Administrator administrator = new Administrator("1", "3");
+
+        ArrayList<Manager> returnedManagers = administrator.getManagers();
+    }
+    @Test
+    public void testDeleteManager() {
+        // Arrange
+        ArrayList<Manager> managerList = new ArrayList<>();
+        Manager mag1 = new Manager("Calv1n", "PQ532Ayba", "Calvin", 900, "(912) 561-2628", "calvl@manager.com");
+        managerList.add(mag1);
+        Manager mag2 = new Manager("Lui54", "y@.3FYrn", "Lui", 900, "(912) 218-2594", "lu@manager.com");
+        managerList.add(mag2);
+        Manager mag3 = new Manager("1", "2", "TestManager", 900, "(912) 623-5353", "TestEmail@librarian.com");
+        managerList.add(mag3);
+
+        Administrator administrator = new Administrator("1", "3");
+
+        // Act
+        administrator.deleteManager(mag2,managerList);
+
+        // Assert
+        assertEquals(2,managerList.size());
+        assertFalse(administrator.getManagers().contains(mag2));
+    }
+    @Test
+    public void testUpdateManagers() {
+        // Arrange
+        ArrayList<Manager> managerList = new ArrayList<>();
+        Manager mag1 = new Manager("Calv1n", "PQ532Ayba", "Calvin", 900, "(912) 561-2628", "calvl@manager.com");
+        managerList.add(mag1);
+        Manager mag2 = new Manager("Lui54", "y@.3FYrn", "Lui", 900, "(912) 218-2594", "lu@manager.com");
+        managerList.add(mag2);
+        Manager mag3 = new Manager("1", "2", "TestManager", 900, "(912) 623-5353", "TestEmail@librarian.com");
+        managerList.add(mag3);
+
+        Administrator administrator = new Administrator("1", "3");
+
+        Manager updatedManager = new Manager("Lui54", "updatedPassword", "UpdatedLui", 1000, "(912) 999-9999", "updatedlu@manager.com");
+
+        // Act
+        administrator.updateManagers(updatedManager, managerList);
+
+        // Assert
+        assertEquals("updatedPassword", mag2.getPassword());
+        assertEquals(1000, mag2.getSalary());
+        assertEquals("(912) 999-9999", mag2.getPhone());
+        assertEquals("updatedlu@manager.com", mag2.getEmail());
+    }
+
+
 
 }
