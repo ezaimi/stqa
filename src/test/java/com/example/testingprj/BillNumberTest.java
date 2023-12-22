@@ -575,6 +575,95 @@ public class BillNumberTest {
         assertEquals(expectedISBNName, actualISBNName);
     }
 
+@Test
+public void testGetBoughtDatesQuantitiesDay_NoPurchases() {
+    // Create a sample Book with no purchases
+    Book testBook = new Book("1234567890123", "Test Book", "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 1);
+
+    // Invoke the method
+    String result = testBook.getBoughtDatesQuantitiesDay();
+
+    // Define the expected result for no purchases
+    String expected = "We have made no purchases on \"Test Book\"\n";
+
+    // Assert the equality of the expected and actual results
+    assertEquals(expected, result);
+}
+
+    @Test
+    public void testGetBoughtDatesQuantitiesDay_WithPurchases() {
+        // Create a sample Book with purchases on the current day
+        Book testBook = new Book("1234567890123", "Test Book", "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 1);
+
+        // Set the purchased date for the test book to today
+        testBook.addPurchase(new Date());
+
+        // Invoke the method
+        String result = testBook.getBoughtDatesQuantitiesDay();
+
+        // Define the expected result for purchases on the current day
+        // Customize the expected result based on your test data
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        String currentDateFormatted = dateFormat.format(new Date());
+
+        // Define the expected result for purchases on the current day
+        String expected = "For \"Test Book\" We have bought in a day:\n1 at " + currentDateFormatted + "\n";
+        // Assert the equality of the expected and actual results
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testGetBoughtDatesQuantitiesDay_MultiplePurchases() {
+        // Create a sample Book with purchases on different days
+        Book testBook = new Book("1234567890123", "Test Book", "Category1", "Test Publisher", 20.00, 25.00, "Test Author", 1);
+
+        // Set the purchased date for the test book to yesterday and today
+        testBook.addPurchase(getYesterday());
+        testBook.addPurchase(new Date());
+
+        // Invoke the method
+        String result = testBook.getBoughtDatesQuantitiesDay();
+
+        // Define the expected result for purchases on the current day
+        // Customize the expected result based on your test data
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        String currentDateFormatted = dateFormat.format(new Date());
+
+        // Define the expected result for purchases on the current day
+        String expected = "For \"Test Book\" We have bought in a day:\n1 at " + currentDateFormatted + "\n";
+        // Assert the equality of the expected and actual results
+        assertEquals(expected, result);
+    }
+
+    // Helper method to get yesterday's date
+    private Date getYesterday() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
+    }
+
+
+    @Test
+    public void testAddBookToStock() {
+        // Arrange
+        Book testBook = createTestBook();
+
+        // Act
+        BillNumber.addBookToStock(testBook);
+
+        // Assert
+        ArrayList<Book> stockBooks = BillNumber.getStockBooks();
+
+        // Ensure the test book is in the stock
+        assertTrue(stockBooks.contains(testBook));
+
+        // Clean up: Delete the test file created during the test
+        File testFile = new File(TEMP_STOCK_FILE_PATH);
+        if (testFile.exists()) {
+            testFile.delete();
+        }
+    }
+
 
 
 }
